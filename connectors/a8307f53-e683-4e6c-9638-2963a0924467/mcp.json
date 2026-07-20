@@ -332,6 +332,15 @@
       "url": "https://tec-chi-external-skill-mcp.tec-do.cn/mcp",
       "timeout": 30000,
       "disabled": true
+    },
+    "connector:yingmi-mcp": {
+      "type": "streamableHttp",
+      "url": "https://stargate.yingmi.com/mcp/v2?apiKey=${YINGMI_API_KEY}",
+      "env": {
+        "YINGMI_API_KEY": "${YINGMI_API_KEY}"
+      },
+      "timeout": 30000,
+      "disabled": true
     }
   }
 }
