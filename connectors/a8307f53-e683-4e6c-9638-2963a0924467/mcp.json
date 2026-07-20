@@ -315,12 +315,6 @@
       "url": "https://api.cjbdi.com:8443/354347/mcp_law_service",
       "disabled": true
     },
-    "connector:yzf-invoice-mcp-server": {
-      "type": "streamableHttp",
-      "url": "https://super-ai-app.yunzhangfang.com/api/mcp/invoice/stream",
-      "timeout": 30000,
-      "disabled": true
-    },
     "connector:tongzhou-fin-research": {
       "type": "streamableHttp",
       "url": "https://mcp-gateway.textmind-gz.com/mcp/tongzhou-research",
