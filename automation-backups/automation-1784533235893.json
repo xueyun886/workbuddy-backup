@@ -1,0 +1,26 @@
+{
+  "id": "automation-1784533235893",
+  "name": "WorkBuddy 每日 GitHub 备份",
+  "prompt": "每日执行 WorkBuddy 配置备份到 GitHub 仓库 xueyun886/workbuddy-backup。\n\n1. 在 C:\\Users\\ZWW\\.workbuddy 目录中执行：\n   git add skills mcp.json .mcp.json settings.json automations workbuddy.db experts memory BOOTSTRAP.md IDENTITY.md SOUL.md USER.md automation-backups connectors plugins models.json user-state.json workspace-state.json\n   git commit -m \"auto backup: WorkBuddy config <当前日期>\"\n   git push origin main\n\n2. 如果没有任何变更：\n   - 报告\"今日无变更，无需提交\"并结束。\n\n3. 如果 git push 失败：\n   - 报告：本地提交已创建，但 GitHub 推送失败（缺少凭证或沙箱网络限制）。\n   - 提示用户：本机尚未保存 GitHub 凭据，可使用 GitHub Desktop 登录、或 gh auth login，或提供 PAT 手动推送。\n   - 不要在没有 PAT 的情况下尝试外部网络访问。\n\n注意：\n- 目标仓库已是私有。备份含 workbuddy.db、memory/（对话历史与个人备忘）及身份文件。\n- .gitignore 已排除运行时垃圾（logs/、sessions/、blobs/ 等）与 SQLite 临时文件（workbuddy.db-shm/.wal）。\n- mcp.json / automations / experts 当前可能不存在，git add 会自动跳过。",
+  "status": "ACTIVE",
+  "scheduleType": "recurring",
+  "nextRunAt": 1784595000000.0027,
+  "cwds": [
+    "C:/Users/ZWW/.workbuddy"
+  ],
+  "rrule": "FREQ=DAILY;BYHOUR=9;BYMINUTE=0;BYSECOND=0",
+  "validFrom": "2026-07-20T09:00:00",
+  "modelId": "hy3",
+  "modelIsThinking": false,
+  "skills": [],
+  "pushToWeChat": false,
+  "ownerUserId": "a8307f53-e683-4e6c-9638-2963a0924467",
+  "ownerStatus": "confirmed",
+  "ownerSource": "created",
+  "connectorIds": [
+    "github"
+  ],
+  "permissionMode": "fullAccess",
+  "createdAt": 1784533235893,
+  "updatedAt": 1784533892355
+}

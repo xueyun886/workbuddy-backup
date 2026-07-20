@@ -1,0 +1,23 @@
+[
+  {
+    "id": "agnes-2.0-flash",
+    "name": "agnes-2.0-flash",
+    "vendor": "Custom",
+    "url": "https://apihub.agnes-ai.com/v1/chat/completions",
+    "apiKey": "sk-DO8yFUzePxL7OHriAP1Auejp670bcWKryhQGu4IcwsjG01J9",
+    "supportsToolCall": true,
+    "supportsImages": false,
+    "supportsReasoning": false,
+    "useCustomProtocol": false
+  },
+  {
+    "id": "glm-5",
+    "name": "GLM-5",
+    "vendor": "GLM Coding Plan",
+    "url": "https://open.bigmodel.cn/api/coding/paas/v4",
+    "apiKey": "cfa6e4e768b141689c54c4c0b1aec4c5.iJYg9ZpFrWSRgP2E",
+    "supportsToolCall": true,
+    "supportsImages": false,
+    "supportsReasoning": false
+  }
+]

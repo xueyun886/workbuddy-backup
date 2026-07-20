@@ -1,0 +1,200 @@
+{
+  "mcpServers": {
+    "connector:tdx-connector": {
+      "url": "https://txmcp.tdx.com.cn:3001/txmcp",
+      "type": "streamable-http",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:qq-mail": {
+      "timeout": 600000,
+      "url": "https://api.mail.qq.com/mcp",
+      "disabled": true
+    },
+    "connector:ima-mcp": {
+      "type": "streamableHttp",
+      "url": "https://ima.qq.com/mcp",
+      "timeout": 20000,
+      "disabled": true
+    },
+    "connector:lexiang": {
+      "timeout": 600000,
+      "url": "https://mcp.lexiang-app.com/mcp",
+      "disabled": true
+    },
+    "connector:tencent-docs": {
+      "timeout": 600000,
+      "url": "https://docs.qq.com/openapi/mcp",
+      "disabled": true
+    },
+    "connector:tapd-woa": {
+      "url": "https://mcpgw.knot.woa.com/tapd/",
+      "disabled": true
+    },
+    "connector:iwiki-woa": {
+      "url": "https://prod.mcp.it.woa.com/app_iwiki_mcp/mcp3",
+      "disabled": true
+    },
+    "connector:gongfeng-woa": {
+      "url": "https://mcpgw.knot.woa.com/gongfeng",
+      "disabled": true
+    },
+    "connector:zhiyan-cicd": {
+      "url": "https://mcpgw.knot.woa.com/zhiyan/delivery",
+      "transportType": "streamable-http",
+      "timeout": 60000,
+      "disabled": true
+    },
+    "connector:tencent-survey": {
+      "type": "streamableHttp",
+      "url": "https://wj.qq.com/api/v2/mcp",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:tapd": {
+      "url": "https://websocket.tapd.cn/mcp/mcp",
+      "disabled": true
+    },
+    "connector:tencent-weiyun": {
+      "url": "https://www.weiyun.com/api/v3/mcpserver",
+      "type": "streamableHttp",
+      "timeout": 60000,
+      "disabled": true
+    },
+    "connector:km": {
+      "url": "https://prod.mcp.it.woa.com/paasfront_km-pro_woa_com/mcp",
+      "disabled": true
+    },
+    "connector:fbs-connector": {
+      "type": "streamableHttp",
+      "url": "https://api2.u3w.com/fbs-mcp/mcp",
+      "staticHeaders": {
+        "X-FBS-Connector-Source": "fbs-connector",
+        "X-FBS-Connector-Version": "1.2.9",
+        "X-FBS-Connector-Package-Version": "1.3.1",
+        "X-FBS-Expert-Id": "fbsir-super-partner-group",
+        "X-FBS-Expert-Version": "1.3.0",
+        "X-Request-Source": "workbuddy"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:kdocs": {
+      "timeout": 600000,
+      "url": "https://mcp-center.wps.cn/skill_hub/mcp",
+      "staticHeaders": {
+        "X-Request-Source": "workbuddy",
+        "X-Skill-Version": "1.4.12"
+      },
+      "_workbuddyManagedAuth": "server-side",
+      "disabled": true
+    },
+    "connector:pkulaw": {
+      "type": "streamableHttp",
+      "url": "https://apim-gateway.pkulaw.com/mcp-law-agg/1.0.0/mcp",
+      "timeout": 60000,
+      "disabled": true
+    },
+    "connector:qcc-company": {
+      "type": "streamableHttp",
+      "url": "https://agent.qcc.com/mcp/company/stream",
+      "disabled": true
+    },
+    "connector:tyc-mcp": {
+      "url": "https://mcp.tianyancha.com/v1",
+      "headers": {
+        "Authorization": "${TIANYANCHA_API_KEY}"
+      },
+      "type": "streamableHttp",
+      "timeout": 600000,
+      "disabled": true
+    },
+    "connector:baidu-netdisk": {
+      "type": "sse",
+      "url": "https://mcp-pan.baidu.com/sse?access_token=${BAIDU_NETDISK_ACCESS_TOKEN}",
+      "disabled": true
+    },
+    "connector:github": {
+      "timeout": 600000,
+      "url": "https://api.githubcopilot.com/mcp/",
+      "_workbuddyManagedAuth": "server-side",
+      "disabled": true
+    },
+    "connector:notion": {
+      "url": "https://mcp.notion.com/mcp",
+      "disabled": true
+    },
+    "connector:tencent-qidian-cs": {
+      "url": "https://sse.qidian.qq.com/qidian-cs/mcp",
+      "disabled": true
+    },
+    "connector:edgeone-pages": {
+      "timeout": 600000,
+      "command": "npx",
+      "args": [
+        "edgeone-pages-mcp-fullstack@latest",
+        "--region",
+        "china"
+      ],
+      "runtime": {
+        "type": "node",
+        "version": ">=20"
+      },
+      "disabled": true
+    },
+    "connector:cloudbase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@cloudbase/cloudbase-mcp@latest"
+      ],
+      "runtime": {
+        "type": "node",
+        "version": ">=20"
+      },
+      "staticEnv": {
+        "INTEGRATION_IDE": "WorkBuddy"
+      },
+      "disabled": true
+    },
+    "connector:bugly": {
+      "type": "streamableHttp",
+      "url": "https://bugly.mcp.it.woa.com",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:neo-crm": {
+      "type": "streamableHttp",
+      "url": "https://mcp.xiaoshouyi.com/mcp",
+      "disabled": true
+    },
+    "connector:yuandian-mcp": {
+      "type": "streamableHttp",
+      "url": "https://open.chineselaw.com/mcp",
+      "disabled": true
+    },
+    "connector:weisheng-scrm": {
+      "type": "stdio",
+      "timeout": 120000,
+      "command": "npx",
+      "args": [
+        "mcp-server-weisheng-scrm"
+      ],
+      "env": {
+        "SCRM_APP_KEY": "",
+        "SCRM_BASE_URL": "https://open.wshoto.com"
+      },
+      "disabled": true
+    },
+    "connector:zfs-fssc-ai": {
+      "type": "sse",
+      "url": "https://mcpdemo.ztccloud.com.cn/sse",
+      "headers": {
+        "X-Zfs-Login-Key": "${ZFS_LOGIN_KEY}",
+        "X-Zfs-Login-Password": "${ZFS_PASSWORD}"
+      },
+      "timeout": 120000,
+      "disabled": true
+    }
+  }
+}

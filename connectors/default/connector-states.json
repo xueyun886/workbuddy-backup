@@ -1,0 +1,10 @@
+{
+  "enabled": [],
+  "headerOverrides": {},
+  "envOverrides": {},
+  "userDisabled": [],
+  "disabledToolsOverrides": {},
+  "mcpSecurityMigrated": true,
+  "accountIdentityKey": "default||enterprise",
+  "headerOverridesBearerStripped": true
+}

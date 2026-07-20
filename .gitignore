@@ -1,0 +1,36 @@
+# ===== WorkBuddy 备份仓库 .gitignore =====
+# 排除运行时垃圾、缓存与 SQLite 临时文件，只备份配置与身份文件
+
+# SQLite 临时文件（绝不能进 git）
+workbuddy.db-shm
+workbuddy.db-wal
+
+# 运行时日志与缓存
+logs/
+sessions/
+traces/
+blobs/
+clipboard-images/
+file-history/
+shell-snapshots/
+tasks/
+audit-log/
+artifact-index/
+claw-state/
+local_storage/
+binaries/
+app/
+vendor/
+projects/
+
+# 市场/连接器缓存
+.connectors-marketplace.meta.json
+connectors-marketplace/
+plugin-marketplace-state-new/
+
+# 杂项临时文件
+ioa-im-override.json
+mcp-approvals.json
+usage-log.json
+session_fragment_repair_done*
+.workbuddy/

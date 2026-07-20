@@ -1,0 +1,16 @@
+{
+  "name": "experts",
+  "description": "experts marketplace (auto-generated)",
+  "plugins": [
+    {
+      "name": "ppt-implement",
+      "source": "./plugins/ppt-implement",
+      "description": "智能 PPT 生成助手，一键将您的想法转化为精美演示文稿"
+    },
+    {
+      "name": "mermaid-diagram-expert",
+      "source": "./plugins/mermaid-diagram-expert",
+      "description": "Mermaid diagram design and rendering expert - writes Mermaid code from natural language, renders SVG/ASCII with 15+ themes and 6 diagram types"
+    }
+  ]
+}
