@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "connector-proxy": {
+      "type": "http",
+      "url": "http://127.0.0.1:50059/mcp",
+      "description": "Aggregated proxy containing MCP servers: agent-mail, github, ima-mcp"
+    },
+    "tavily-search": {
+      "type": "http",
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=YOUR_API_KEY_HERE",
+      "description": "Tavily web search MCP server"
+    }
+  }
+}
