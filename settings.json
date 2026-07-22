@@ -41,12 +41,12 @@
     "enabled": false
   },
   "enabledPlugins": {
-    "data-analysis@cb_teams_marketplace": true,
-    "document-skills@cb_teams_marketplace": true,
-    "general-skills@cb_teams_marketplace": true,
-    "ppt-implement@cb_teams_marketplace": true,
-    "deep-research@cb_teams_marketplace": true,
-    "data@cb_teams_marketplace": true,
-    "design-to-code@cb_teams_marketplace": true
+    "data-analysis@cb_teams_marketplace": false,
+    "document-skills@cb_teams_marketplace": false,
+    "general-skills@cb_teams_marketplace": false,
+    "ppt-implement@cb_teams_marketplace": false,
+    "deep-research@cb_teams_marketplace": false,
+    "data@cb_teams_marketplace": false,
+    "design-to-code@cb_teams_marketplace": false
   }
 }

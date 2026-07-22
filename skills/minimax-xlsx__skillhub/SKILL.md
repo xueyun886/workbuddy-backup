@@ -1,6 +1,12 @@
 ---
 name: minimax-xlsx
-description: "MiniMax spreadsheet production system. Engage for any task that involves tabular data, numeric analysis, or spreadsheet generation. Supports XLSX/XLSM/CSV through Python 3 (openpyxl + pandas) for workbook construction, formula recalculation via recalc.py (LibreOffice headless), and the MiniMaxXlsx CLI (C#/.NET) for structural validation, formula auditing, and pivot table synthesis."
+description: MiniMax spreadsheet production system. Engage for any task that
+  involves tabular data, numeric analysis, or spreadsheet generation. Supports
+  XLSX/XLSM/CSV through Python 3 (openpyxl + pandas) for workbook construction,
+  formula recalculation via recalc.py (LibreOffice headless), and the
+  MiniMaxXlsx CLI (C#/.NET) for structural validation, formula auditing, and
+  pivot table synthesis.
+disable: true
 ---
 
 <brief>

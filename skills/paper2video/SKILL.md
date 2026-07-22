@@ -7,8 +7,9 @@ description: >
   order and narration. Preserve the advanced deck route by delegating slide
   authoring to the external `hugohe3/ppt-master` project, then synthesize audio
   with `~/.workbuddy/skills/paper2poster/scripts/generate_audio.py`, render with
-  `~/.workbuddy/skills/paper2video/scripts/render_video.py`, and burn final subtitles with
-  `~/.workbuddy/skills/paper2video/scripts/add_subtitles.py`.
+  `~/.workbuddy/skills/paper2video/scripts/render_video.py`, and burn final
+  subtitles with `~/.workbuddy/skills/paper2video/scripts/add_subtitles.py`.
+disable: true
 ---
 
 # paper2video - paper/assets/deck -> narrated MP4
@@ -75,13 +76,13 @@ clips, rendered frames, reports, and timeline/cue metadata live under `assets/`:
 
 Initialize it before running the route:
 
-**Pick `<video_outdir>` (resolve BEFORE any file writes).** The bundle directory is shared across every paper2* skill â€?when paper2assets, paper2poster, paper2blog, and paper2video target the same root, the video's slides/audio/clips sit next to the poster's HTML, the blog's `.docx`, and the shared narration script in one self-contained package. Resolve deterministically:
+**Pick `<video_outdir>` (resolve BEFORE any file writes).** The bundle directory is shared across every paper2* skill ï¿½?when paper2assets, paper2poster, paper2blog, and paper2video target the same root, the video's slides/audio/clips sit next to the poster's HTML, the blog's `.docx`, and the shared narration script in one self-contained package. Resolve deterministically:
 
-1. **An explicit `<video_outdir>` argument from the caller wins** â€?honor it verbatim. The defaults below only fire when no path was passed.
-2. **A `paper2assets` package already exists** â†?reuse its folder verbatim as `<video_outdir>`. The canonical detection signal is `<dir>/assets/meta/paper_spec.md` (the cross-skill source of truth produced by `paper2assets` Step 4); `<dir>/manifest.json` with `"layout": "v2-assets"` is a confirming hint when present. Writing into the same bundle means Route A reads `assets/meta/narration.json` from the same root it writes `assets/audio/*.mp3` into, with no path swap â€?and downstream tools that walk `manifest.json` see the video MP4s alongside everything else.
-3. **Otherwise (a bare PDF is the only input)** â†?default to **`<input_pdf_dir>/<pdf_stem>/`** â€?the directory containing the input PDF, then a subfolder named after the PDF basename (no extension). Example: `papers/8008_Ink3D_Sculpting.pdf` â†?`<video_outdir> = papers/8008_Ink3D_Sculpting/`. This matches the `paper2assets` default convention, so if Route A invokes `paper2assets`'s `build_package.py` below it lands in the same bundle without a later move.
+1. **An explicit `<video_outdir>` argument from the caller wins** ï¿½?honor it verbatim. The defaults below only fire when no path was passed.
+2. **A `paper2assets` package already exists** ï¿½?reuse its folder verbatim as `<video_outdir>`. The canonical detection signal is `<dir>/assets/meta/paper_spec.md` (the cross-skill source of truth produced by `paper2assets` Step 4); `<dir>/manifest.json` with `"layout": "v2-assets"` is a confirming hint when present. Writing into the same bundle means Route A reads `assets/meta/narration.json` from the same root it writes `assets/audio/*.mp3` into, with no path swap ï¿½?and downstream tools that walk `manifest.json` see the video MP4s alongside everything else.
+3. **Otherwise (a bare PDF is the only input)** ï¿½?default to **`<input_pdf_dir>/<pdf_stem>/`** ï¿½?the directory containing the input PDF, then a subfolder named after the PDF basename (no extension). Example: `papers/8008_Ink3D_Sculpting.pdf` ï¿½?`<video_outdir> = papers/8008_Ink3D_Sculpting/`. This matches the `paper2assets` default convention, so if Route A invokes `paper2assets`'s `build_package.py` below it lands in the same bundle without a later move.
 
-`$VIDEO_OUT` and `$PAPER_ASSETS` are the SAME directory under this rule. The two variable names persist below for readability â€?`$PAPER_ASSETS` is used where the snippet emphasizes "I'm reading paper2assets meta", `$VIDEO_OUT` where it emphasizes "I'm writing the video bundle" â€?but in practice they always point at one root.
+`$VIDEO_OUT` and `$PAPER_ASSETS` are the SAME directory under this rule. The two variable names persist below for readability ï¿½?`$PAPER_ASSETS` is used where the snippet emphasizes "I'm reading paper2assets meta", `$VIDEO_OUT` where it emphasizes "I'm writing the video bundle" ï¿½?but in practice they always point at one root.
 
 ```bash
 # 1. Resolve $VIDEO_OUT per the rule above. $PAPER_ASSETS aliases the same path.
@@ -92,7 +93,7 @@ elif [[ -f "$paper2assets_dir/assets/meta/paper_spec.md" ]]; then
 else
   VIDEO_OUT="$(dirname "$paper_pdf")/$(basename "$paper_pdf" .pdf)"
 fi
-PAPER_ASSETS="$VIDEO_OUT"  # one bundle root â€?Route A reads paper2assets meta from here
+PAPER_ASSETS="$VIDEO_OUT"  # one bundle root ï¿½?Route A reads paper2assets meta from here
 
 # 2. Create the assets/ scaffolding under that root
 VIDEO_ASSETS=$VIDEO_OUT/assets

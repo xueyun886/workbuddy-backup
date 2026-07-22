@@ -1,6 +1,7 @@
 [
   {
     "id": 4,
+    "unified_id": 100,
     "name": "文档处理",
     "icon": "documentation",
     "mode": "working",
@@ -27,6 +28,7 @@
   },
   {
     "id": 28,
+    "unified_id": 101,
     "name": "金融服务",
     "icon": "financial-services",
     "mode": "working",
@@ -85,6 +87,7 @@
   },
   {
     "id": 8,
+    "unified_id": 102,
     "name": "数据分析及可视化",
     "icon": "data-visualization",
     "mode": "working",
@@ -118,6 +121,7 @@
   },
   {
     "id": 2,
+    "unified_id": 103,
     "name": "深度研究",
     "icon": "deep-research",
     "mode": "working",
@@ -144,6 +148,7 @@
   },
   {
     "id": 26,
+    "unified_id": 104,
     "name": "视频生成",
     "icon": "video-generation",
     "mode": "working",
@@ -176,6 +181,7 @@
   },
   {
     "id": 0,
+    "unified_id": 105,
     "name": "幻灯片",
     "icon": "slides-creation",
     "mode": "working",
@@ -204,6 +210,7 @@
   },
   {
     "id": 10,
+    "unified_id": 106,
     "name": "产品管理",
     "icon": "product-management",
     "mode": "working",
@@ -233,9 +240,9 @@
     ],
     "target": "all"
   },
-
   {
     "id": 15,
+    "unified_id": 107,
     "name": "日常开发",
     "icon": "daily-development",
     "mode": "coding",
@@ -260,6 +267,7 @@
   },
   {
     "id": 16,
+    "unified_id": 108,
     "name": "网站开发",
     "icon": "website-development",
     "mode": "coding",
@@ -286,6 +294,7 @@
   },
   {
     "id": 17,
+    "unified_id": 109,
     "name": "Agent 应用",
     "icon": "agent-apps",
     "mode": "coding",
@@ -317,6 +326,7 @@
   },
   {
     "id": 18,
+    "unified_id": 110,
     "name": "Skill 开发",
     "icon": "skill-development",
     "mode": "coding",
@@ -343,6 +353,7 @@
   },
   {
     "id": 22,
+    "unified_id": 111,
     "name": "CI/CD",
     "icon": "ci-cd",
     "mode": "coding",
@@ -361,6 +372,7 @@
   },
   {
     "id": 24,
+    "unified_id": 112,
     "name": "文档",
     "icon": "documentation-tools",
     "mode": "coding",
@@ -379,6 +391,7 @@
   },
   {
     "id": 30,
+    "unified_id": 113,
     "name": "网站设计",
     "icon": "web",
     "mode": "design",
@@ -403,6 +416,7 @@
   },
   {
     "id": 31,
+    "unified_id": 114,
     "name": "移动端App",
     "icon": "phone",
     "mode": "design",
@@ -427,6 +441,7 @@
   },
   {
     "id": 32,
+    "unified_id": 115,
     "name": "设计系统",
     "icon": "paint",
     "mode": "design",
@@ -451,6 +466,7 @@
   },
   {
     "id": 33,
+    "unified_id": 116,
     "name": "Web App",
     "icon": "tools",
     "mode": "design",
@@ -475,6 +491,7 @@
   },
   {
     "id": 34,
+    "unified_id": 117,
     "name": "PPT设计",
     "icon": "slide",
     "mode": "design",
@@ -505,6 +522,7 @@
   },
   {
     "id": 35,
+    "unified_id": 118,
     "name": "交互原型",
     "icon": "mouse",
     "mode": "design",
@@ -529,6 +547,7 @@
   },
   {
     "id": 36,
+    "unified_id": 119,
     "name": "品牌设计",
     "icon": "mouse",
     "mode": "design",
@@ -553,6 +572,7 @@
   },
   {
     "id": 37,
+    "unified_id": 120,
     "name": "图标&插画",
     "icon": "mouse",
     "mode": "design",
@@ -577,6 +597,7 @@
   },
   {
     "id": 38,
+    "unified_id": 121,
     "name": "视觉海报",
     "icon": "mouse",
     "mode": "design",

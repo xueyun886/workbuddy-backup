@@ -1,6 +1,11 @@
 ---
 name: paper-search
-description: Search papers across arXiv, DBLP, OpenAlex, OpenReview, Semantic Scholar, and Crossref for a given query and year range, using ./scripts/search_papers.py. Use when the user asks to find papers, related work, prior art, or recent publications on a specific topic, especially when they mention a date range or specific venues like NeurIPS, ICLR, or ICML.
+description: Search papers across arXiv, DBLP, OpenAlex, OpenReview, Semantic
+  Scholar, and Crossref for a given query and year range, using
+  ./scripts/search_papers.py. Use when the user asks to find papers, related
+  work, prior art, or recent publications on a specific topic, especially when
+  they mention a date range or specific venues like NeurIPS, ICLR, or ICML.
+disable: true
 ---
 
 # Paper Search Skill
@@ -20,7 +25,7 @@ Trigger this skill when the user asks things like:
 - "Get arXiv + Semantic Scholar results for X."
 - "Show me recent prior art on X."
 
-## Inputs (all auto-inferred â€?NEVER ask the user for confirmation or clarification)
+## Inputs (all auto-inferred ï¿½?NEVER ask the user for confirmation or clarification)
 
 Derive these automatically from the user's message. Run the search immediately without asking for confirmation:
 - **query**: Rephrase the user's question into a focused search phrase.
@@ -37,7 +42,7 @@ Derive these automatically from the user's message. Run the search immediately w
 ## How to run
 
 Preferred: call the CLI directly. The script lives at
-`~/.workbuddy/skills/paper_search/scripts/search_papers.py` â€?invoke
+`~/.workbuddy/skills/paper_search/scripts/search_papers.py` ï¿½?invoke
 it by absolute path so the command works regardless of the current working
 directory (relying on `cd scripts && ...` breaks when the model is running
 from a different folder, which happens often).
@@ -78,13 +83,13 @@ python "$SEARCH" \
 ```
 
 Opt-in noise filter (drops papers with relevance score below N; the CLI always
-prints exactly how many were dropped â€?omit for full recall):
+prints exactly how many were dropped ï¿½?omit for full recall):
 
 ```bash
 python "$SEARCH" --query "<QUERY>" --start-year 2024 --end-year 2026 --min-score 2
 ```
 
-Legacy per-source view (no dedup, no ranking â€?raw connector output):
+Legacy per-source view (no dedup, no ranking ï¿½?raw connector output):
 
 ```bash
 python "$SEARCH" --query "<QUERY>" --start-year 2024 --end-year 2026 --raw
@@ -103,7 +108,7 @@ python "$SEARCH" \
 those workers in source order instead of starting them together.
 
 Or call the function directly when more control is needed (e.g. consuming the
-structured dict rather than CLI text output). This is rarely necessary â€?see
+structured dict rather than CLI text output). This is rarely necessary ï¿½?see
 `references/programmatic_api.md` for the snippet.
 
 ## Valid source names
@@ -163,7 +168,7 @@ Semantic Scholar, OpenAlex, arXiv, OpenReview, Crossref, DBLP, Model Knowledge.
 
 Why full recall matters: users invoking this skill are doing literature reviews,
 related-work surveys, or prior-art checks. The value comes from seeing the
-complete set of hits â€?a missed paper can mean a missed citation or a
+complete set of hits ï¿½?a missed paper can mean a missed citation or a
 duplicated research effort. Summaries are meant to *augment* the full tables,
 not replace them, so don't collapse results into a digest "to save space."
 The user can skim; they can't un-skip a paper they never saw.
@@ -176,7 +181,7 @@ where tagged. Reproduce the CLI's per-source hit counts + merged-duplicates
 line above the table, and the drop count line when `--min-score` was used.
 
 ```
-per-source hits: semantic_scholar=10, open_alex=10, arxiv=10 â€?Â· 22 unique (8 duplicates merged)
+per-source hits: semantic_scholar=10, open_alex=10, arxiv=10 ï¿½?Â· 22 unique (8 duplicates merged)
 
 | #   | Title       | Date    | Venue   | Citations | Score | Sources |
 |-----|-------------|---------|---------|-----------|-------|---------|
@@ -186,9 +191,9 @@ per-source hits: semantic_scholar=10, open_alex=10, arxiv=10 â€?Â· 22 unique (8 
 
 With `--raw`: one table per source under a source heading (legacy format).
 If a source returned 0 results, note it explicitly
-(e.g. "### OpenReview (0 papers) â€?No matches found in this window").
+(e.g. "### OpenReview (0 papers) ï¿½?No matches found in this window").
 
-If errors occurred during search, they are printed to stderr by the script â€?
+If errors occurred during search, they are printed to stderr by the script ï¿½?
 surface them to the user, never hide them.
 
 ### Step 2: Summary of all searched results
@@ -200,8 +205,8 @@ following sections, in this exact order:
    two sentences framing what the corpus covers.
 2. **Trends**: Temporal patterns (e.g. "interest surged in 2024"), dominant
    venues, methodological shifts, and recurring author groups or labs.
-3. **Key themes**: 3â€? main research themes / clusters across all results,
-   each with a one-line description and 2â€? representative paper numbers.
+3. **Key themes**: 3ï¿½? main research themes / clusters across all results,
+   each with a one-line description and 2ï¿½? representative paper numbers.
 4. **Keywords frequency**: A table of the most frequent technical terms /
    concepts extracted from titles (abstracts are in the JSON schema but not
    printed by the CLI), with counts. Format:
@@ -213,9 +218,9 @@ following sections, in this exact order:
    `| Rank | Author | Papers in set | Total citations |`.
    The **Author** column must contain ONLY the author's name (e.g. `Jane Doe`).
    Do not append paper titles, affiliations, venues, or any other information
-   in this column â€?paper counts and citation totals live in their own columns.
-7. **Recommendations for reading**: 3â€? papers most relevant and impactful to the user's
-   original query, ordered as a reading path (foundational â†?recent), each
+   in this column ï¿½?paper counts and citation totals live in their own columns.
+7. **Recommendations for reading**: 3ï¿½? papers most relevant and impactful to the user's
+   original query, ordered as a reading path (foundational ï¿½?recent), each
    with a one-line justification.
 
 
@@ -228,7 +233,7 @@ following sections, in this exact order:
 - **Semantic Scholar**: uses Semantic Scholar API.
 - **Crossref**: uses Crossref API.
 - **Model knowledge**: no API call. Papers are recalled from the model's own
-  training data â€?fast and free, but capped by the model's knowledge cutoff
+  training data ï¿½?fast and free, but capped by the model's knowledge cutoff
   and prone to hallucination. See the "Model knowledge source" section below
   for how to use it responsibly.
 
@@ -255,7 +260,7 @@ socket-level progress.
 ## Model knowledge source
 
 The `model_knowledge` source is different from the others: it has no API and
-no script call. Instead, after the CLI search returns, recall 5â€?0 additional
+no script call. Instead, after the CLI search returns, recall 5ï¿½?0 additional
 papers from your own training data that match the query and year range, and
 present them as a separate source in the output.
 
@@ -278,11 +283,11 @@ After the CLI run completes:
 2. List up to 10 papers from your training data that fit the query and year
    range, with: title, primary author(s), year, venue, and a one-line reason
    it's relevant.
-3. Deduplicate against the API results â€?if a paper already appeared in any
+3. Deduplicate against the API results ï¿½?if a paper already appeared in any
    API source, do not repeat it under `model_knowledge`.
 4. Flag confidence honestly. The model knowledge column has no citation count
    and no live URL; if you're not sure a paper exists exactly as you remember
-   it, mark it `(uncertain â€?verify)` in the table rather than presenting it
+   it, mark it `(uncertain ï¿½?verify)` in the table rather than presenting it
    as confirmed.
 
 ### Why honesty matters here
@@ -290,8 +295,8 @@ After the CLI run completes:
 Hallucinated paper titles are the classic LLM failure mode for this task. A
 fake "Smith et al., 2023, NeurIPS" looks identical to a real one in a
 markdown table, and the user has no way to tell. The point of this source is
-to surface *real* papers the APIs missed â€?not to pad the list. If you can't
-recall â‰? papers with reasonable confidence, return fewer; an empty
+to surface *real* papers the APIs missed ï¿½?not to pad the list. If you can't
+recall ï¿½? papers with reasonable confidence, return fewer; an empty
 model-knowledge section is fine and honest.
 
 ### Display format
@@ -306,7 +311,7 @@ canonical paper URL, since you don't have a verified link:
 | #   | Title       | Year | Venue   | Notes |
 |-----|-------------|------|---------|-------|
 | [1](https://scholar.google.com/scholar?q=Title) | Title here | 2018 | NeurIPS | Foundational; often cited by recent work on X |
-| [2](...) | Title here | 2024 | ICLR | (uncertain â€?verify) |
+| [2](...) | Title here | 2024 | ICLR | (uncertain ï¿½?verify) |
 ```
 
 Replace the "Citations" column with "Notes" because you don't have a
@@ -341,10 +346,10 @@ Then read the output and summarize per the rules above.
   markdown file to:
   `./allinone.md`
   - Contents: the full **"Display ALL results from every source"** tables
-    followed by the **"Summary of all searched results"** section â€?in that
+    followed by the **"Summary of all searched results"** section ï¿½?in that
     order, with no truncation.
 - **Display the full report to the user.** Return the complete detailed
-  report inline â€?every paper, every table, plus the analysis and reasoning.
+  report inline ï¿½?every paper, every table, plus the analysis and reasoning.
   Never collapse the tables into a summary, and never abbreviate results to
   "save space".
 - **Never ask for confirmation.** All inputs are auto-inferred (see the

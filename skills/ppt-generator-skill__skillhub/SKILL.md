@@ -1,6 +1,9 @@
 ---
 name: ppt-generator
-description: 智能 PPT 生成助手。根据用户描述的主题、行业、风格，自动生成漂亮的 PPT 文件。支持所有行业（商务、教育、科技、医疗、金融、创意等），支持中英文双语，支持用户提供的模板或 AI 自动配色。触发词：做PPT、生成PPT、制作幻灯片、make ppt、create presentation、帮我做个PPT。
+description: 智能 PPT 生成助手。根据用户描述的主题、行业、风格，自动生成漂亮的 PPT
+  文件。支持所有行业（商务、教育、科技、医疗、金融、创意等），支持中英文双语，支持用户提供的模板或 AI
+  自动配色。触发词：做PPT、生成PPT、制作幻灯片、make ppt、create presentation、帮我做个PPT。
+disable: true
 ---
 
 # PPT Generator - 智能 PPT 生成助手

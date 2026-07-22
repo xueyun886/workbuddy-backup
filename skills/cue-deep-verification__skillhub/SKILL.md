@@ -1,14 +1,15 @@
 ---
 name: cue-deep-verification
 description: >
-  用 Cue 跑「深度核查」场景的深度研究：多源公开数据交叉、结论带来源。
-  Run Cue deep research for the "Deep Verification" scenario.
-  触发 Triggers: 深度核查、企业尽调、信披与监管 / deep verification, fact check, cross-source verification
+  用 Cue 跑「深度核查」场景的深度研究：多源公开数据交叉、结论带来源。 Run Cue deep research for the "Deep
+  Verification" scenario. 触发 Triggers: 深度核查、企业尽调、信披与监管 / deep verification, fact
+  check, cross-source verification
 license: MIT
 metadata:
   source: cuecue.cn/playbook
-  scene: "深度核查"
+  scene: 深度核查
   generated_from: /api/playbook
+disable: true
 ---
 
 # Cue「深度核查」研究 skill

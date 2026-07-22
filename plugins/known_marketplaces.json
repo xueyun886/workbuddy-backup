@@ -3,14 +3,14 @@
     "type": "zip",
     "source": {
       "source": "zip",
-      "url": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-68cb7556-f430-47b6-896c-8d618f7eaa23.zip",
-      "path": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-68cb7556-f430-47b6-896c-8d618f7eaa23.zip"
+      "url": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-c15d8162-9bfa-4ffc-b300-47b82fdd5565.zip",
+      "path": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-c15d8162-9bfa-4ffc-b300-47b82fdd5565.zip"
     },
     "installLocation": "C:\\Users\\ZWW\\.workbuddy\\plugins\\marketplaces\\cb_teams_marketplace",
     "isBuiltIn": true,
     "autoUpdate": true,
     "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
-    "lastUpdated": "2026-07-21T05:01:25.859Z",
+    "lastUpdated": "2026-07-21T08:55:52.249Z",
     "manifest": {
       "name": "cb_teams_marketplace",
       "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
@@ -638,6 +638,34 @@
             "./plugins/ardot-design-generator/rules/design-rules.md",
             "./plugins/ardot-design-generator/rules/style-guide.md"
           ]
+        },
+        {
+          "name": "sheetagent",
+          "description": "由腾讯文档团队出品的电子表格智能助手，支持通过自然语言创建、查询与编辑 xlsx 表格",
+          "description_en": "An intelligent spreadsheet assistant by Tencent Docs team that supports creating, querying, and editing xlsx files via natural language.",
+          "source": "./plugins/sheetagent",
+          "version": "0.1.0",
+          "category": "productivity",
+          "author": {
+            "name": "Tencent Docs SheetAgent Team",
+            "url": "https://docs.qq.com"
+          },
+          "license": "Proprietary",
+          "keywords": [
+            "spreadsheet",
+            "excel",
+            "xlsx",
+            "tencent-docs",
+            "docs.qq.com"
+          ],
+          "skills": [
+            "./plugins/sheetagent/skills/excel-generation",
+            "./plugins/sheetagent/skills/excel-handler"
+          ],
+          "agents": [
+            "./plugins/sheetagent/agents/sheet-agent.md"
+          ],
+          "hooks": "./plugins/sheetagent/hooks/hooks.json"
         }
       ]
     }
@@ -653,7 +681,7 @@
     "isBuiltIn": true,
     "autoUpdate": true,
     "description": "CodeBuddy 官方插件市场",
-    "lastUpdated": "2026-07-21T05:01:25.859Z",
+    "lastUpdated": "2026-07-22T08:04:48.275Z",
     "manifest": {
       "name": "codebuddy-plugins-official",
       "description": "CodeBuddy 官方插件市场",

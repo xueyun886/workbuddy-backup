@@ -1,77 +1,89 @@
 ---
 name: paper2poster
-description: Render a pre-extracted paper's structured 9-section spec (`paper_spec.md`) into a single-page HTML academic poster, fit the layout to the page via an iterative measured-fill loop, and export it to print-ready PDF + PNG thumbnail. Requires the upstream `paper2assets` skill to have produced the input `<outdir>/` package (`manifest.json` at the root + an `assets/` folder holding `meta/paper_spec.md`, `meta/text.txt`, `meta/figures.json`, `meta/metadata.json`, `figures/*.png`, `logos/`, `qr/`) first. Use when the user wants an HTML poster, PDF/PNG export, or PPTX from a paper they already have extracted assets for â€?e.g., "render the poster", "make the poster from this spec", "export poster to PDF", "paper2poster". The three skills paper2assets â†?paper2poster â†?html2pptx run in sequence, each invokable on its own.
+description: Render a pre-extracted paper's structured 9-section spec
+  (`paper_spec.md`) into a single-page HTML academic poster, fit the layout to
+  the page via an iterative measured-fill loop, and export it to print-ready PDF
+  + PNG thumbnail. Requires the upstream `paper2assets` skill to have produced
+  the input `<outdir>/` package (`manifest.json` at the root + an `assets/`
+  folder holding `meta/paper_spec.md`, `meta/text.txt`, `meta/figures.json`,
+  `meta/metadata.json`, `figures/*.png`, `logos/`, `qr/`) first. Use when the
+  user wants an HTML poster, PDF/PNG export, or PPTX from a paper they already
+  have extracted assets for ï¿½?e.g., "render the poster", "make the poster from
+  this spec", "export poster to PDF", "paper2poster". The three skills
+  paper2assets ï¿½?paper2poster ï¿½?html2pptx run in sequence, each invokable on its
+  own.
 allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, AskUserQuestion, WebFetch, WebSearch
+disable: true
 ---
 
-# paper2poster â€?paper_spec.md â†?HTML poster â†?PDF/PNG + editable PPTX
+# paper2poster ï¿½?paper_spec.md ï¿½?HTML poster ï¿½?PDF/PNG + editable PPTX
 
-This skill is the **rendering stage** of a 3-skill pipeline. It assumes `paper2assets` has already produced the input `<outdir>/`. Given that outdir, it picks figures, renders an HTML poster, iteratively fills the layout to fit a fixed page (60Ã—36in landscape or 33.1Ã—46.8in A0 portrait), generates per-section narration audio, hands the HTML to the bundled **html2pptx** sub-skill (vendored at `html2pptx/`) for an editable `.pptx`, and exports PDF + PNG. The html2pptx handoff is a **standard final step**, not optional â€?one run yields `poster.{html,pptx,pdf,png}`, because users want the editable deck in the same pass and won't call html2pptx separately.
+This skill is the **rendering stage** of a 3-skill pipeline. It assumes `paper2assets` has already produced the input `<outdir>/`. Given that outdir, it picks figures, renders an HTML poster, iteratively fills the layout to fit a fixed page (60Ã—36in landscape or 33.1Ã—46.8in A0 portrait), generates per-section narration audio, hands the HTML to the bundled **html2pptx** sub-skill (vendored at `html2pptx/`) for an editable `.pptx`, and exports PDF + PNG. The html2pptx handoff is a **standard final step**, not optional ï¿½?one run yields `poster.{html,pptx,pdf,png}`, because users want the editable deck in the same pass and won't call html2pptx separately.
 
 ```
    <outdir>/                              (produced by paper2assets)
      manifest.json   assets/figures/   assets/logos/   assets/qr/   assets/meta/{paper_spec.md, text.txt, figures.json, metadata.json}
-     â”?
-     â–? Step 1 â€?verify prerequisites
-     â–? Step 2 â€?pick figures (Method / optional Motivation / optional Secondary)
-     â–? Step 2.5 â€?optional per-figure visual box cut (asymmetric noise the
-     â”?            paper2assets deterministic chain couldn't catch â€?most
-     â”?            figures need no further work here)
-     â”?
-     â–? Step 3 â€?compose (layout Ã— style Ã— header) + substitute  (references/compose_poster.py â†?poster.html)
-     â”?        â†?<outdir>/poster.html (lean: 6 core sections, Necessary only)
-     â”?
-     â–? Step 4 â€?iterative fill loop (check_poster.py slack + polish)
-     â”?        â†?<outdir>/poster.html (every section FULL, every figure â‰?0% on one axis)
-     â”?
-     â–? Step 5 â€?generate_audio.py â†?<outdir>/assets/audio/<id>.mp3   (free Edge TTS, from <outdir>/assets/meta/narration.json)
-     â”?        â†?the Listen buttons + Full Listen play these clips by id
-     â”?
-     â–? Step 5.9 â€?fit_logos.py â†?pack the header institution logos to fill their zone
-     â”?            (browser-measure + greedy shape-pack; baked into poster.html)
-     â”?
-     â–? Step 6 â€?render_poster.py â†?<outdir>/poster.pdf + <outdir>/poster.png   (applies + bakes the expand into poster.html)
-     â”?
-     â–? Step 7 â€?html2pptx skill â†?<outdir>/poster.pptx   (reads the baked poster.html; users want the editable pptx in one run)
-     â”?        (render FIRST â€?bakes the expand into poster.html; html2pptx then reads it, isolated under assets/_pptx_build/)
-     â”?        then check_poster.py verify-final
-     â”?
-     â–? Step 7.5 â€?check_poster.py deliverables (MANDATORY final gate)
-     â”?
-     â””â”€â†? Step 8 â€?Report absolute paths (html + pptx + pdf + png)
+     ï¿½?
+     ï¿½? Step 1 ï¿½?verify prerequisites
+     ï¿½? Step 2 ï¿½?pick figures (Method / optional Motivation / optional Secondary)
+     ï¿½? Step 2.5 ï¿½?optional per-figure visual box cut (asymmetric noise the
+     ï¿½?            paper2assets deterministic chain couldn't catch ï¿½?most
+     ï¿½?            figures need no further work here)
+     ï¿½?
+     ï¿½? Step 3 ï¿½?compose (layout Ã— style Ã— header) + substitute  (references/compose_poster.py ï¿½?poster.html)
+     ï¿½?        ï¿½?<outdir>/poster.html (lean: 6 core sections, Necessary only)
+     ï¿½?
+     ï¿½? Step 4 ï¿½?iterative fill loop (check_poster.py slack + polish)
+     ï¿½?        ï¿½?<outdir>/poster.html (every section FULL, every figure ï¿½?0% on one axis)
+     ï¿½?
+     ï¿½? Step 5 ï¿½?generate_audio.py ï¿½?<outdir>/assets/audio/<id>.mp3   (free Edge TTS, from <outdir>/assets/meta/narration.json)
+     ï¿½?        ï¿½?the Listen buttons + Full Listen play these clips by id
+     ï¿½?
+     ï¿½? Step 5.9 ï¿½?fit_logos.py ï¿½?pack the header institution logos to fill their zone
+     ï¿½?            (browser-measure + greedy shape-pack; baked into poster.html)
+     ï¿½?
+     ï¿½? Step 6 ï¿½?render_poster.py ï¿½?<outdir>/poster.pdf + <outdir>/poster.png   (applies + bakes the expand into poster.html)
+     ï¿½?
+     ï¿½? Step 7 ï¿½?html2pptx skill ï¿½?<outdir>/poster.pptx   (reads the baked poster.html; users want the editable pptx in one run)
+     ï¿½?        (render FIRST ï¿½?bakes the expand into poster.html; html2pptx then reads it, isolated under assets/_pptx_build/)
+     ï¿½?        then check_poster.py verify-final
+     ï¿½?
+     ï¿½? Step 7.5 ï¿½?check_poster.py deliverables (MANDATORY final gate)
+     ï¿½?
+     â””â”€ï¿½? Step 8 ï¿½?Report absolute paths (html + pptx + pdf + png)
 ```
 
 The canvas is fixed per orientation (landscape 60Ã—36in 5:3 / portrait A0 33.1Ã—46.8in 0.708) in the templates; do not change it.
 
 ## Mandatory finishing gates (NEVER ship outside these bands)
 
-Two hard requirements gate the final poster. They are NOT warnings, NOT advisory, NOT "polish for next iteration" â€?a poster that violates either MUST be re-iterated before you call the task done:
+Two hard requirements gate the final poster. They are NOT warnings, NOT advisory, NOT "polish for next iteration" ï¿½?a poster that violates either MUST be re-iterated before you call the task done:
 
-1. **Every card figure fills 90â€?00% of its section on at least one axis (width OR height).** `check_poster.py polish` reports this as `FIG/NARROW`. A figure painting under 90% on *both* axes is a small stamp marooned in its card â€?a visible defect. Stated as one number: `fillRatio = max(w_fig / w_section, h_fig / h_section)` MUST land in `[0.90, 1.00]`. The fix order (cap tune â†?tighten the figure-section's prose â†?shorten the figcaption â†?rebalance the column) is in `references/staged_fill.md`. Do not exit the staged-fill loop with any figure below 90%.
+1. **Every card figure fills 90ï¿½?00% of its section on at least one axis (width OR height).** `check_poster.py polish` reports this as `FIG/NARROW`. A figure painting under 90% on *both* axes is a small stamp marooned in its card ï¿½?a visible defect. Stated as one number: `fillRatio = max(w_fig / w_section, h_fig / h_section)` MUST land in `[0.90, 1.00]`. The fix order (cap tune ï¿½?tighten the figure-section's prose ï¿½?shorten the figcaption ï¿½?rebalance the column) is in `references/staged_fill.md`. Do not exit the staged-fill loop with any figure below 90%.
 
-2. **Every section reads `FULL` (fullRatio 0.90â€?.00).** `check_poster.py slack` reports this. `OVERFLOW` (>1.10), `SPILLAGE` (1.00â€?.10), `SPARSE` (0.70â€?.90), and `EMPTY` (<0.70) are all unacceptable finishing states.
+2. **Every section reads `FULL` (fullRatio 0.90ï¿½?.00).** `check_poster.py slack` reports this. `OVERFLOW` (>1.10), `SPILLAGE` (1.00ï¿½?.10), `SPARSE` (0.70ï¿½?.90), and `EMPTY` (<0.70) are all unacceptable finishing states.
 
-Both gates compose: an edit that fixes one but breaks the other must be rolled back. Loop until `slack` shows every section `FULL` AND `polish` reports zero `FIG/NARROW` warnings â€?then render PDF/PNG and run `verify-final` + `deliverables`.
+Both gates compose: an edit that fixes one but breaks the other must be rolled back. Loop until `slack` shows every section `FULL` AND `polish` reports zero `FIG/NARROW` warnings ï¿½?then render PDF/PNG and run `verify-final` + `deliverables`.
 
 ## When to consult which reference
 
 | Step | When you hit it, read |
 |---|---|
-| Step 3 â€?compose the template | `references/compose_poster.py` (assemble layout Ã— style Ã— header â†?self-contained `poster.html`; landscape only) |
-| Step 3 â€?substitute placeholders | `references/template_substitution.md` (placeholder map, theme color randomization, per-section accents, vertical-sizing rule, lean-render policy) |
-| Step 3 â€?content patterns | `references/content_patterns.md` (catalog of 16 reusable CSS widgets â€?callouts, key-stat, vs-compare, numbered-steps, timeline Ã—4 variants, chips, definition, highlight-table, pullquote, bento, equation, banner â€?to break up wall-of-text monotony in section bodies) |
-| Step 3 â€?polish | `references/visual_polish.md` (typography, color/contrast, inline emphasis rules, stat grid, figure cap, callouts, arch banners, print hygiene) |
-| Step 4 â€?staged fill | `references/staged_fill.md` (slack command, the iterative measureâ†’selectâ†’applyâ†’review loop, the modification-method catalog, shave-back rules) |
-| Step 5.9 â€?pack header logos | `references/fit_logos.py` (browser-measure each logo zone + greedy shape-pack so the marks fill it; bakes rows into poster.html â€?run after the fill loop, before render) |
-| Step 5 â€?audio (generate) | `scripts/generate_audio.py` synthesizes `<outdir>/assets/audio/<id>.mp3` from the `<outdir>/assets/meta/narration.json` script (produced upstream by paper2assets; free Edge TTS) for the Listen buttons. See `references/audio_narration.md`. |
+| Step 3 ï¿½?compose the template | `references/compose_poster.py` (assemble layout Ã— style Ã— header ï¿½?self-contained `poster.html`; landscape only) |
+| Step 3 ï¿½?substitute placeholders | `references/template_substitution.md` (placeholder map, theme color randomization, per-section accents, vertical-sizing rule, lean-render policy) |
+| Step 3 ï¿½?content patterns | `references/content_patterns.md` (catalog of 16 reusable CSS widgets ï¿½?callouts, key-stat, vs-compare, numbered-steps, timeline Ã—4 variants, chips, definition, highlight-table, pullquote, bento, equation, banner ï¿½?to break up wall-of-text monotony in section bodies) |
+| Step 3 ï¿½?polish | `references/visual_polish.md` (typography, color/contrast, inline emphasis rules, stat grid, figure cap, callouts, arch banners, print hygiene) |
+| Step 4 ï¿½?staged fill | `references/staged_fill.md` (slack command, the iterative measureâ†’selectâ†’applyâ†’review loop, the modification-method catalog, shave-back rules) |
+| Step 5.9 ï¿½?pack header logos | `references/fit_logos.py` (browser-measure each logo zone + greedy shape-pack so the marks fill it; bakes rows into poster.html ï¿½?run after the fill loop, before render) |
+| Step 5 ï¿½?audio (generate) | `scripts/generate_audio.py` synthesizes `<outdir>/assets/audio/<id>.mp3` from the `<outdir>/assets/meta/narration.json` script (produced upstream by paper2assets; free Edge TTS) for the Listen buttons. See `references/audio_narration.md`. |
 
 ## Workflow
 
-### Parallel-safety (READ FIRST â€?never violate)
+### Parallel-safety (READ FIRST ï¿½?never violate)
 
-This skill is frequently run on MANY papers at once â€?a batch driver
+This skill is frequently run on MANY papers at once ï¿½?a batch driver
 launches one `claude -p` session per paper, each with its own separate
-`<outdir>` (e.g. `papers/foo_portrait/`, `papers/bar_portrait/`, â€?
+`<outdir>` (e.g. `papers/foo_portrait/`, `papers/bar_portrait/`, ï¿½?
 running concurrently). Therefore:
 
 - **NEVER run `ps`, `pkill`, `kill`, `killall`, or otherwise inspect or
@@ -83,21 +95,21 @@ running concurrently). Therefore:
   touch another paper's directory or the shared template/config dirs.
 - **If `<outdir>/poster.html` appears to have "changed unexpectedly"
   between a Read and an Edit, it changed because of YOUR OWN prior tool
-  call** (a Write, a substitution script you ran, a prior Edit) â€?NOT a
+  call** (a Write, a substitution script you ran, a prior Edit) ï¿½?NOT a
   competing process. Re-Read the file and continue. Do not investigate
-  "who else is modifying it" â€?nobody else is.
+  "who else is modifying it" ï¿½?nobody else is.
 - The shared template at `<config>/skills/paper2poster/assets/*.html`
-  is READ-ONLY input â€?copy it into your `<outdir>`, never edit it
+  is READ-ONLY input ï¿½?copy it into your `<outdir>`, never edit it
   in place.
 
 Violating any of the above is the single most common cause of a
 fast-fail (~400s) where the agent rabbit-holes on phantom "process
 conflicts" instead of building the poster.
 
-### Step 0 â€?Cache check (do this FIRST, before any other work)
+### Step 0 ï¿½?Cache check (do this FIRST, before any other work)
 
 Rendering a poster runs Stage 2's iterative staged-fill loop (~15-30
-min of Claude tokens) and overwrites `<outdir>/poster.html` â€?
+min of Claude tokens) and overwrites `<outdir>/poster.html` ï¿½?
 destroying any inline edits, manual figure swaps, or layout tweaks the
 user may have made. Before starting, **check whether the deliverables
 already exist**:
@@ -106,7 +118,7 @@ already exist**:
 if [[ -f "$outdir/poster.html" \
       && -f "$outdir/poster.pdf" \
       && -f "$outdir/poster.png" ]]; then
-  echo "[paper2poster] CACHED in $outdir â€?poster from prior run, reusing."
+  echo "[paper2poster] CACHED in $outdir ï¿½?poster from prior run, reusing."
   echo "  poster.html  $(stat -c%s "$outdir/poster.html") bytes"
   echo "  poster.pdf   $(stat -c%s "$outdir/poster.pdf") bytes"
   echo "  poster.png   $(stat -c%s "$outdir/poster.png") bytes"
@@ -120,14 +132,14 @@ fi
 If all three core deliverables are present, REPORT and STOP.
 
 Re-render ONLY when:
-- one of `poster.{html,pdf,png}` is missing â†?resume from the
-  appropriate step (`poster.html` missing â†?start from Step 2 fill loop;
-  only `poster.pdf` / `poster.png` missing â†?just run Step 6 render)
+- one of `poster.{html,pdf,png}` is missing ï¿½?resume from the
+  appropriate step (`poster.html` missing ï¿½?start from Step 2 fill loop;
+  only `poster.pdf` / `poster.png` missing ï¿½?just run Step 6 render)
 - the user explicitly requests it ("rebuild the poster", "regenerate",
   "fresh render", "from scratch", "redo the layout"). In that case,
   delete `<outdir>/poster.html` first so the cache check doesn't fire.
 
-### Step 1 â€?Verify paper2assets prerequisites
+### Step 1 ï¿½?Verify paper2assets prerequisites
 
 Required argument: an `<outdir>/` path produced by the `paper2assets` skill, or a path to a source `*.pdf`. Verify the required files exist before doing any work:
 
@@ -138,7 +150,7 @@ ls <outdir>/assets/figures/*.png
 
 If any of the five required files is missing, automatically invoke the `paper2assets` skill on the source PDF to produce/populate the `<outdir>/`, then continue.
 
-**Optional files `<outdir>/assets/logos/` and `<outdir>/assets/qr/` may be absent** â€?but **DO NOT silently delete the logo/QR HTML blocks** just because the directory is missing. Two common reasons the directory is missing are recoverable:
+**Optional files `<outdir>/assets/logos/` and `<outdir>/assets/qr/` may be absent** ï¿½?but **DO NOT silently delete the logo/QR HTML blocks** just because the directory is missing. Two common reasons the directory is missing are recoverable:
 
 1. paper2assets's Step 6 was skipped, or
 2. paper2assets's Step 6 was called with the wrong CLI flags (the `--spec` / `--outdir <outdir>/assets/logos` traps documented in paper2assets SKILL.md Step 6 caused most papers to land logos at `<outdir>/assets/logos/logos/<slug>.png` instead of `<outdir>/assets/logos/<slug>.png`).
@@ -162,24 +174,24 @@ python ~/.workbuddy/skills/paper2assets/scripts/make_qr.py \
     --from-metadata <outdir>/assets/meta/metadata.json --outdir <outdir>
 ```
 
-Only AFTER the retry, if logos/ is still empty (institute names didn't resolve to any Wikipedia infobox â€?happens for "Anonymous Institution" submissions and obscure labs), then remove the unused `<img class="logo">` elements from the poster HTML as a final fallback. Same for missing QR codes.
+Only AFTER the retry, if logos/ is still empty (institute names didn't resolve to any Wikipedia infobox ï¿½?happens for "Anonymous Institution" submissions and obscure labs), then remove the unused `<img class="logo">` elements from the poster HTML as a final fallback. Same for missing QR codes.
 
-### Step 2 â€?Pick figures
+### Step 2 ï¿½?Pick figures
 
 Read `figures.json` + `captions.json` + `paper_spec.md`. Pick:
 
-- **Method figure** â€?the figure that visualizes the paper's proposed approach. Usually labeled "Figure 1" or "Figure 2" and described in the Method section's caption ("our pipeline", "overview", "architecture"). Record its `width`, `height`, and `layout` from `figures.json`.
-- **Motivation figure (optional)** â€?a figure that motivates the problem (a "failure mode" plot, a side-by-side comparison with prior art, a teaser). Pick only when one of the early figures clearly carries motivational signal. **Disjoint from Method.** Always rendered as `{column=half}` â€?full-width motivation figures are not supported.
-- **Secondary figure (optional but encouraged)** â€?a Key Result plot, ablation chart, or qualitative samples figure. **Disjoint from Method + Motivation.** **Target â‰? figures per poster** â€?Method alone leaves the empirical side as a prose-and-numbers wall.
-- **Figure-rich mode â†?3-column layout.** If the paper carries **more than 3 high-signal figures** (multiple result plots, a qualitative-samples gallery, architecture + component diagrams), select them all (soft cap ~6) instead of stopping at 2 â€?and render with the **3-column layout** (`--layout 3col`, Step 3) whose wider columns hold bigger figures, the way most author-GT posters do. Distribute the figures across all three columns; the Method figure stays the anchor. Pick only genuinely informative figures â€?never pad to hit a count.
+- **Method figure** ï¿½?the figure that visualizes the paper's proposed approach. Usually labeled "Figure 1" or "Figure 2" and described in the Method section's caption ("our pipeline", "overview", "architecture"). Record its `width`, `height`, and `layout` from `figures.json`.
+- **Motivation figure (optional)** ï¿½?a figure that motivates the problem (a "failure mode" plot, a side-by-side comparison with prior art, a teaser). Pick only when one of the early figures clearly carries motivational signal. **Disjoint from Method.** Always rendered as `{column=half}` ï¿½?full-width motivation figures are not supported.
+- **Secondary figure (optional but encouraged)** ï¿½?a Key Result plot, ablation chart, or qualitative samples figure. **Disjoint from Method + Motivation.** **Target ï¿½? figures per poster** ï¿½?Method alone leaves the empirical side as a prose-and-numbers wall.
+- **Figure-rich mode ï¿½?3-column layout.** If the paper carries **more than 3 high-signal figures** (multiple result plots, a qualitative-samples gallery, architecture + component diagrams), select them all (soft cap ~6) instead of stopping at 2 ï¿½?and render with the **3-column layout** (`--layout 3col`, Step 3) whose wider columns hold bigger figures, the way most author-GT posters do. Distribute the figures across all three columns; the Method figure stays the anchor. Pick only genuinely informative figures ï¿½?never pad to hit a count.
 
 Cite each picked figure with its file path: `assets/figures/<page>_figure<n>.png`. Verify the file exists on disk before relying on it.
 
-### Step 2.5 â€?Per-figure visual box cut (optional, for asymmetric noise the deterministic chain couldn't catch)
+### Step 2.5 ï¿½?Per-figure visual box cut (optional, for asymmetric noise the deterministic chain couldn't catch)
 
-`paper2assets` already ran the deterministic cleanup pipeline (`top-check` â†?`decaption` â†?`autotrim`) on every figure. Most picked figures need no further work.
+`paper2assets` already ran the deterministic cleanup pipeline (`top-check` ï¿½?`decaption` ï¿½?`autotrim`) on every figure. Most picked figures need no further work.
 
-If a picked figure has **asymmetric noise** the deterministic chain couldn't catch â€?multi-figure-page bleed on a SIDE (a vertical strip of an adjacent panel), an obvious orphan caption line a tight `decaption` threshold missed, or a region of figure content you want excluded â€?do one visual `box` pass:
+If a picked figure has **asymmetric noise** the deterministic chain couldn't catch ï¿½?multi-figure-page bleed on a SIDE (a vertical strip of an adjacent panel), an obvious orphan caption line a tight `decaption` threshold missed, or a region of figure content you want excluded ï¿½?do one visual `box` pass:
 
 1. **Read** the figure with the Read tool.
 2. **Decide** a tight pixel bbox `(X0, Y0, X1, Y1)`.
@@ -190,106 +202,106 @@ If a picked figure has **asymmetric noise** the deterministic chain couldn't cat
    This writes a one-time `<file>.png.bak` (or preserves the existing one from paper2assets' earlier work) and updates `figures.json`.
 4. **Re-Read** the result. Cap at 3 attempts per figure; restore from `.bak` with `cp` if you over-cut.
 
-For most papers this step is a no-op â€?skip when the picked figures look clean after paper2assets' deterministic pipeline.
+For most papers this step is a no-op ï¿½?skip when the picked figures look clean after paper2assets' deterministic pipeline.
 
-### Step 3 â€?Render the HTML poster
+### Step 3 ï¿½?Render the HTML poster
 
-**Pick THREE independent axes â€?layout Ã— style Ã— header â€?then COMPOSE.**
+**Pick THREE independent axes ï¿½?layout Ã— style Ã— header ï¿½?then COMPOSE.**
 
 Landscape posters are now assembled from three orthogonal source axes under `assets/` (instead of one monolithic file per combination):
 
-- `assets/layouts/{full,half,3col}.html` â€?**STRUCTURE** (column grid + `.section` cards + base CSS),
-- `assets/styles/{solid,framed,simple}.css` â€?**VISUAL** style,
-- `assets/headers/{v1,v2,v3,v4}.html` â€?the **TITLEBAR**.
+- `assets/layouts/{full,half,3col}.html` ï¿½?**STRUCTURE** (column grid + `.section` cards + base CSS),
+- `assets/styles/{solid,framed,simple}.css` ï¿½?**VISUAL** style,
+- `assets/headers/{v1,v2,v3,v4}.html` ï¿½?the **TITLEBAR**.
 
-`references/compose_poster.py` injects the chosen style at `{{STYLE_CSS}}` and the chosen header at `{{HEADER}}` into the chosen layout and writes ONE self-contained `poster.html` â€?structurally identical to the old monolithic templates, so `check_poster.py` / `render_poster.py` / the staged-fill loop all work UNCHANGED. Pick each axis independently â€?**four orthogonal axes** (layout Ã— style Ã— header Ã— scan) composed from ~30 small source files, not an NÃ—MÃ—KÃ—J explosion of monolithic templates.
+`references/compose_poster.py` injects the chosen style at `{{STYLE_CSS}}` and the chosen header at `{{HEADER}}` into the chosen layout and writes ONE self-contained `poster.html` ï¿½?structurally identical to the old monolithic templates, so `check_poster.py` / `render_poster.py` / the staged-fill loop all work UNCHANGED. Pick each axis independently ï¿½?**four orthogonal axes** (layout Ã— style Ã— header Ã— scan) composed from ~30 small source files, not an NÃ—MÃ—KÃ—J explosion of monolithic templates.
 
-**Portrait is now composed** (`--orientation portrait`, `assets/layouts_portrait/{full,half}.html`) â€?it takes the STYLE + COLOR + **HEADER** axes (all 11 styles + 8 themes + 5 A0 title formats `pv1`â€“`pv5`, light-default header). It has no Scan-to-Read section, so it composes those three axes only. Portrait sections must use the **content-pattern widgets** (`references/content_patterns.md`) with the same â‰?-distinct-types discipline as landscape â€?the narrow A0 columns make it *easier* to collapse to plain bullets/tables, so it needs the widget palette more.
+**Portrait is now composed** (`--orientation portrait`, `assets/layouts_portrait/{full,half}.html`) ï¿½?it takes the STYLE + COLOR + **HEADER** axes (all 11 styles + 8 themes + 5 A0 title formats `pv1`â€“`pv5`, light-default header). It has no Scan-to-Read section, so it composes those three axes only. Portrait sections must use the **content-pattern widgets** (`references/content_patterns.md`) with the same ï¿½?-distinct-types discipline as landscape ï¿½?the narrow A0 columns make it *easier* to collapse to plain bullets/tables, so it needs the widget palette more.
 
-**Axis 0 â€?orientation:**
+**Axis 0 ï¿½?orientation:**
 
-1. **`landscape`** (default) â€?ICML / NeurIPS / CVPR standard 60Ã—36 in, 5:3 aspect. 4-column outer grid. **Always use landscape unless the user has explicitly opted into portrait.**
-2. **`portrait`** â€?ACL / NAACL / AAAI 2025 standard A0 portrait, 33.1Ã—46.8 in, 0.708 aspect. 2-column outer grid. Use **ONLY** when the pipeline sets `POSTER_ORIENTATION=portrait`. **Do NOT auto-detect orientation from the Method figure aspect ratio** â€?figure shape drives the layout axis (full vs half) WITHIN an orientation, not the orientation itself. A tall Method figure in landscape goes in a `half` template's single column; it does not flip the whole poster to portrait.
+1. **`landscape`** (default) ï¿½?ICML / NeurIPS / CVPR standard 60Ã—36 in, 5:3 aspect. 4-column outer grid. **Always use landscape unless the user has explicitly opted into portrait.**
+2. **`portrait`** ï¿½?ACL / NAACL / AAAI 2025 standard A0 portrait, 33.1Ã—46.8 in, 0.708 aspect. 2-column outer grid. Use **ONLY** when the pipeline sets `POSTER_ORIENTATION=portrait`. **Do NOT auto-detect orientation from the Method figure aspect ratio** ï¿½?figure shape drives the layout axis (full vs half) WITHIN an orientation, not the orientation itself. A tall Method figure in landscape goes in a `half` template's single column; it does not flip the whole poster to portrait.
 
 If `POSTER_ORIENTATION` is unset (or set to `landscape`), use landscape templates. Period.
 
-**Axis 1 â€?layout (driven by Method figure shape):**
+**Axis 1 ï¿½?layout (driven by Method figure shape):**
 
-1. **`full`** (landscape `--layout full`; portrait `layouts_portrait/full.html`) â€?use when the Method figure is **horizontally wide**: in landscape `AR â‰?2.5`, in portrait `AR â‰?1.2`. Also use when `{column=full}` in `figures.json`. In landscape, this picks a 4-col outer grid with the middle two columns merged into a `.mid-wide` block. In portrait, this picks a layout with the Method section in a full-width hero band (`.method-hero` â€?bullets-left + wide-figure-right side-by-side) above the 2-col body.
+1. **`full`** (landscape `--layout full`; portrait `layouts_portrait/full.html`) ï¿½?use when the Method figure is **horizontally wide**: in landscape `AR ï¿½?2.5`, in portrait `AR ï¿½?1.2`. Also use when `{column=full}` in `figures.json`. In landscape, this picks a 4-col outer grid with the middle two columns merged into a `.mid-wide` block. In portrait, this picks a layout with the Method section in a full-width hero band (`.method-hero` ï¿½?bullets-left + wide-figure-right side-by-side) above the 2-col body.
 
-   **Portrait pseudo-section for bullets fill:** the hero band's LEFT bullets cell is wrapped in `<div class="section method-text" data-section="method-text">â€?/div>` â€?a visually-transparent pseudo-section that participates in the staged-fill loop. slack.py measures its fill ratio as `bullets_content_h / row_h`. When the figure stretches the row taller than the bullets need, the verdict surfaces `method-text SPARSE` and the LLM expands bullets until the cell fills. This is why the AR threshold can stay loose at 1.2 instead of the safer 1.8 â€?the pseudo-section absorbs medium-aspect-figure whitespace automatically.
-2. **`half`** (landscape `--layout half`; portrait `layouts_portrait/half.html`) â€?default within the orientation. Use when Method figure AR is moderate or tall AND `{column=half}` in figures.json, OR when Method figure is `**Figure:** none`. In landscape, Method is a half-width card in 1 of 4 cols. In portrait, Method is a card in 1 of 2 cols.
+   **Portrait pseudo-section for bullets fill:** the hero band's LEFT bullets cell is wrapped in `<div class="section method-text" data-section="method-text">ï¿½?/div>` ï¿½?a visually-transparent pseudo-section that participates in the staged-fill loop. slack.py measures its fill ratio as `bullets_content_h / row_h`. When the figure stretches the row taller than the bullets need, the verdict surfaces `method-text SPARSE` and the LLM expands bullets until the cell fills. This is why the AR threshold can stay loose at 1.2 instead of the safer 1.8 ï¿½?the pseudo-section absorbs medium-aspect-figure whitespace automatically.
+2. **`half`** (landscape `--layout half`; portrait `layouts_portrait/half.html`) ï¿½?default within the orientation. Use when Method figure AR is moderate or tall AND `{column=half}` in figures.json, OR when Method figure is `**Figure:** none`. In landscape, Method is a half-width card in 1 of 4 cols. In portrait, Method is a card in 1 of 2 cols.
 
 Read the Method figure's `width` and `height` from `figures.json`, compute `AR = width / height`, then:
-- Landscape: `full` if AR â‰?2.5 OR `{column=full}`, else `half`.
-- Portrait: `full` if AR â‰?1.2 OR `{column=full}`, else `half`. (The hero band's bullets cell is a pseudo-section that auto-fills via the staged-fill loop; medium-aspect figures are safe.)
+- Landscape: `full` if AR ï¿½?2.5 OR `{column=full}`, else `half`.
+- Portrait: `full` if AR ï¿½?1.2 OR `{column=full}`, else `half`. (The hero band's bullets cell is a pseudo-section that auto-fills via the staged-fill loop; medium-aspect figures are safe.)
 
-**Figure-rich override (landscape â€?takes precedence over full/half).** If Step 2 selected **more than 3 figures**, use the **3-column layout** (`--layout 3col`) regardless of the Method figure's AR â€?its 3 wide equal columns (`1fr 1fr 1fr`) hold bigger, more numerous figures, matching the dominant author-GT layout. The Method figure card stays prominent in the middle column; the other figures distribute across columns. Via composition, `3col` now combines with **any** style and **any** header (the old "solid-only" limit is gone). The full/half choice above applies only when the poster carries â‰?3 figures.
+**Figure-rich override (landscape ï¿½?takes precedence over full/half).** If Step 2 selected **more than 3 figures**, use the **3-column layout** (`--layout 3col`) regardless of the Method figure's AR ï¿½?its 3 wide equal columns (`1fr 1fr 1fr`) hold bigger, more numerous figures, matching the dominant author-GT layout. The Method figure card stays prominent in the middle column; the other figures distribute across columns. Via composition, `3col` now combines with **any** style and **any** header (the old "solid-only" limit is gone). The full/half choice above applies only when the poster carries ï¿½?3 figures.
 
-**Method-driven override (OPT-IN â€?only when the user explicitly asks for a "method-driven" poster).** Use `--layout methoddriven`. The **Method owns the wide middle block** (`.mid-wide`, the merged centre columns): a **large priority Method figure** on top, then the method split into **solid rounded subsection cards** (`.section.msub`, `data-section="method-1"â€?method-N"`) that organize its sub-parts; the benchmark-style filler cards are dropped (side columns carry Problem/Motivation left, Key-Results/Headline/Takeaway right). This is opt-in â€?`--layout random` never selects it, and every other layout/style is unchanged. Rules:
-- **Colour** = `multi-accent` by default: same hue as the theme `--accent`, different **depth per card** (`.msub.d1â€¦d4`, theme-derived â€?tracks the 8-theme axis). Opt into distinct hues by adding class `mhue` to `<body>`.
-- **The Method figure is the priority** â€?it fills the column WIDTH (so a wide banner clears the 90% figure-fill gate on width; NO exemption needed) and is bounded only by a generous, fill-loop-tunable height guard `--method-fig-max` (default `42cqh`). Raise/lower `--method-fig-max` to trade figure size against card room. The `<figcaption>` flows below.
-- **The subsection cards adapt to the figure â€?the fill loop chooses the arrangement per-paper** (no fixed 2Ã—2). `.msubs` is a span-composable grid; tag individual cards + order them to compose the layout:
-  - `.msub.wide` â†?full-width long **row** (first card = top row, last card = bottom row)
-  - `.msub.tall` â†?**tall** card spanning 2 rows (the two normal cards flow the other column)
-  - add `cols-3` to `.msubs` â†?a **3-up** equal-column row
+**Method-driven override (OPT-IN ï¿½?only when the user explicitly asks for a "method-driven" poster).** Use `--layout methoddriven`. The **Method owns the wide middle block** (`.mid-wide`, the merged centre columns): a **large priority Method figure** on top, then the method split into **solid rounded subsection cards** (`.section.msub`, `data-section="method-1"ï¿½?method-N"`) that organize its sub-parts; the benchmark-style filler cards are dropped (side columns carry Problem/Motivation left, Key-Results/Headline/Takeaway right). This is opt-in ï¿½?`--layout random` never selects it, and every other layout/style is unchanged. Rules:
+- **Colour** = `multi-accent` by default: same hue as the theme `--accent`, different **depth per card** (`.msub.d1â€¦d4`, theme-derived ï¿½?tracks the 8-theme axis). Opt into distinct hues by adding class `mhue` to `<body>`.
+- **The Method figure is the priority** ï¿½?it fills the column WIDTH (so a wide banner clears the 90% figure-fill gate on width; NO exemption needed) and is bounded only by a generous, fill-loop-tunable height guard `--method-fig-max` (default `42cqh`). Raise/lower `--method-fig-max` to trade figure size against card room. The `<figcaption>` flows below.
+- **The subsection cards adapt to the figure ï¿½?the fill loop chooses the arrangement per-paper** (no fixed 2Ã—2). `.msubs` is a span-composable grid; tag individual cards + order them to compose the layout:
+  - `.msub.wide` ï¿½?full-width long **row** (first card = top row, last card = bottom row)
+  - `.msub.tall` ï¿½?**tall** card spanning 2 rows (the two normal cards flow the other column)
+  - add `cols-3` to `.msubs` ï¿½?a **3-up** equal-column row
   - Examples: **tall+2** (one `.tall` + two normal); **row-top/bottom+2** (a leading/trailing `.wide` + two normal); **2Ã—2** (four normal); **3-up** (`.cols-3` + three normal). Add/remove cards freely.
-- **Fit the cards into the room the figure left.** Run the `pack` pre-check; measure every `.msub` with `slack` (each must read FULL 0.90â€?.00). If cards are SPARSE/OVERFLOW or unbalanced, **re-pick the arrangement** (add/remove a `.wide`/`.tall`, change card count, switch to `.cols-3`) or nudge `--method-fig-max`, rather than only padding prose. In any multi-card row, **balance the cards' content** or the shorter one trails blank (polish Gate C / CARD-TRAILING).
+- **Fit the cards into the room the figure left.** Run the `pack` pre-check; measure every `.msub` with `slack` (each must read FULL 0.90ï¿½?.00). If cards are SPARSE/OVERFLOW or unbalanced, **re-pick the arrangement** (add/remove a `.wide`/`.tall`, change card count, switch to `.cols-3`) or nudge `--method-fig-max`, rather than only padding prose. In any multi-card row, **balance the cards' content** or the shorter one trails blank (polish Gate C / CARD-TRAILING).
 
-**Axis 2 â€?style (`POSTER_STYLE`, default randomize):**
+**Axis 2 ï¿½?style (`POSTER_STYLE`, default randomize):**
 
-The first three are **full themes** (they retheme the header + page background); styles 4â€?1 are **block-only** card treatments that ride the solid theme (accent header, flat white logo chips) and just change the section-card look.
+The first three are **full themes** (they retheme the header + page background); styles 4ï¿½?1 are **block-only** card treatments that ride the solid theme (accent header, flat white logo chips) and just change the section-card look.
 
-1. **`solid`** â€?the *classic* look: solid-filled accent titlebar (accent bg, white text), section `h2` = colored accent text with a thin underline. Sections are quiet warm cards with a top accent stripe.
-2. **`framed`** â€?the *editorial* look: outlined rounded titlebar frame (white bg, accent border + accent title), section `h2` = solid accent-filled banner edge-to-edge; white section cards with a neutral thin frame.
-3. **`simple`** â€?the *minimal white* look: white header + a single thin rule beneath it, near-black plain headings, frameless section cards separated only by a hairline top rule.
-4. **`left-bar`** â€?thick accent rail down the card's left edge; plain accent heading.
-5. **`elevated`** â€?floating white card with a soft deep shadow, rounded corners.
-6. **`neo-brutal`** â€?hard black border + offset accent drop-shadow; uppercase headings.
-7. **`tag`** â€?heading rendered as an inline accent pill.
-8. **`underline`** â€?bold accent rule hugging the heading.
-9. **`tinted`** â€?faint accent-tinted card background.
-10. **`double-rule`** â€?centered heading between two thin accent lines.
-11. **`legend-frame`** â€?heavy accent border with the centered heading sitting on the top edge, breaking the border (fieldset/legend look).
+1. **`solid`** ï¿½?the *classic* look: solid-filled accent titlebar (accent bg, white text), section `h2` = colored accent text with a thin underline. Sections are quiet warm cards with a top accent stripe.
+2. **`framed`** ï¿½?the *editorial* look: outlined rounded titlebar frame (white bg, accent border + accent title), section `h2` = solid accent-filled banner edge-to-edge; white section cards with a neutral thin frame.
+3. **`simple`** ï¿½?the *minimal white* look: white header + a single thin rule beneath it, near-black plain headings, frameless section cards separated only by a hairline top rule.
+4. **`left-bar`** ï¿½?thick accent rail down the card's left edge; plain accent heading.
+5. **`elevated`** ï¿½?floating white card with a soft deep shadow, rounded corners.
+6. **`neo-brutal`** ï¿½?hard black border + offset accent drop-shadow; uppercase headings.
+7. **`tag`** ï¿½?heading rendered as an inline accent pill.
+8. **`underline`** ï¿½?bold accent rule hugging the heading.
+9. **`tinted`** ï¿½?faint accent-tinted card background.
+10. **`double-rule`** ï¿½?centered heading between two thin accent lines.
+11. **`legend-frame`** ï¿½?heavy accent border with the centered heading sitting on the top edge, breaking the border (fieldset/legend look).
 
-**Default style policy:** for landscape, **randomize across all 11**. Pass **`--style random`** so `compose_poster.py` picks one DETERMINISTICALLY from a hash of the output path â€?a reproducible spread across a wave. Do NOT ask the model to "pick a random style" (it defaults to solid in headless); use the `random` keyword. Override a specific one via `POSTER_STYLE=<name>`. The block-only styles (4â€?1) ride the solid header theme. **Portrait now composes too** (`--orientation portrait`, reads `assets/layouts_portrait/`): it takes the STYLE + COLOR + HEADER axes, so all 11 styles + 8 themes + **5 A0 title formats** (`pv1`â€“`pv5`, `assets/headers_portrait/`) ride portrait, all on the light-default header. The portrait title formats: **pv1** centered-classic, **pv2** title-left, **pv3** banner masthead (centered title + rule, venue/logos row below), **pv4** logo-forward (marks left, title right), **pv5** centered stack.
+**Default style policy:** for landscape, **randomize across all 11**. Pass **`--style random`** so `compose_poster.py` picks one DETERMINISTICALLY from a hash of the output path ï¿½?a reproducible spread across a wave. Do NOT ask the model to "pick a random style" (it defaults to solid in headless); use the `random` keyword. Override a specific one via `POSTER_STYLE=<name>`. The block-only styles (4ï¿½?1) ride the solid header theme. **Portrait now composes too** (`--orientation portrait`, reads `assets/layouts_portrait/`): it takes the STYLE + COLOR + HEADER axes, so all 11 styles + 8 themes + **5 A0 title formats** (`pv1`â€“`pv5`, `assets/headers_portrait/`) ride portrait, all on the light-default header. The portrait title formats: **pv1** centered-classic, **pv2** title-left, **pv3** banner masthead (centered title + rule, venue/logos row below), **pv4** logo-forward (marks left, title right), **pv5** centered stack.
 
-**Axis 5 â€?color/theme (`POSTER_THEME`, default `random`):** 8 academic accent bundles (`blue` Â· `teal` Â· `green` Â· `burgundy` Â· `purple` Â· `rust` Â· `slate` Â· `plum`) â€?the palette the paper's gallery recolor used. Each swaps `{--accent, --accent-soft}` (and the audio `--play-highlight-blue`); the result-register `--callout` (crimson) stays fixed across all themes. With the landscape **light-default header** (`--tb-bg: var(--accent-soft)`, dark title) each theme paints a pale-tint header + colored `<h2>` text/underlines on white cards â€?the light look, not a dark filled band. `--theme random` hash-samples one theme from the output path â€?**truly random and reproducible**, replacing the old "model hand-edits `:root`" step. Defined once in `references/apply_theme.py` (`THEMES`); shared by landscape and portrait (both via `compose_poster.py`).
+**Axis 5 ï¿½?color/theme (`POSTER_THEME`, default `random`):** 8 academic accent bundles (`blue` Â· `teal` Â· `green` Â· `burgundy` Â· `purple` Â· `rust` Â· `slate` Â· `plum`) ï¿½?the palette the paper's gallery recolor used. Each swaps `{--accent, --accent-soft}` (and the audio `--play-highlight-blue`); the result-register `--callout` (crimson) stays fixed across all themes. With the landscape **light-default header** (`--tb-bg: var(--accent-soft)`, dark title) each theme paints a pale-tint header + colored `<h2>` text/underlines on white cards ï¿½?the light look, not a dark filled band. `--theme random` hash-samples one theme from the output path ï¿½?**truly random and reproducible**, replacing the old "model hand-edits `:root`" step. Defined once in `references/apply_theme.py` (`THEMES`); shared by landscape and portrait (both via `compose_poster.py`).
 
-**Axis 3 â€?header (`POSTER_HEADER`, default randomize):**
+**Axis 3 ï¿½?header (`POSTER_HEADER`, default randomize):**
 
-1. **`v1`** â€?venue (left) Â· title (center) Â· institution logos (right). Symmetric 3-zone band.
-2. **`v2`** â€?mirror of v1: institution logos (left) Â· title (center) Â· venue (right).
-3. **`v3`** â€?title centered full-width with a single equal-height logo strip below (conference mark + institutions).
-4. **`v4`** â€?title (left) Â· venue + institution logos stacked (right). A common GT layout.
-5. **`v5`** â€?*classic*: venue **text** badge (left) Â· title (center) Â· institution logos **+ Paper/Code QR tiles** (right). The one header that carries the QR in the titlebar. **Opt-in only** (`POSTER_HEADER=v5`) â€?when chosen, suppress the standalone `scan-to-read` section (set both `{{QR_*}}` empty) so the QR is not duplicated.
+1. **`v1`** ï¿½?venue (left) Â· title (center) Â· institution logos (right). Symmetric 3-zone band.
+2. **`v2`** ï¿½?mirror of v1: institution logos (left) Â· title (center) Â· venue (right).
+3. **`v3`** ï¿½?title centered full-width with a single equal-height logo strip below (conference mark + institutions).
+4. **`v4`** ï¿½?title (left) Â· venue + institution logos stacked (right). A common GT layout.
+5. **`v5`** ï¿½?*classic*: venue **text** badge (left) Â· title (center) Â· institution logos **+ Paper/Code QR tiles** (right). The one header that carries the QR in the titlebar. **Opt-in only** (`POSTER_HEADER=v5`) ï¿½?when chosen, suppress the standalone `scan-to-read` section (set both `{{QR_*}}` empty) so the QR is not duplicated.
 
-v1â€“v4 each render the conference **logo** when `assets/logos/_venue.png` exists (Step 6 `fetch_conf_logo.py`), else a text venue/year fallback in the same chip; v5 uses a text venue badge by design. All work for **2â€? institutions** (empty `LOGO_n` slots auto-hide). Logos are sized to **fill** their zone (single venue logo + a 2-row institution grid), and the logo chips **theme to the chosen style** via `--tb-chip-bg` / `--tb-chip-shadow`: solid â†?flat white chip (no shadow) on the accent band; framed â†?flat white chip on the white card; **simple â†?transparent chip (no frame), logos sit directly on the white header**. Default: pass **`--header random`** â€?`compose_poster.py` picks one DETERMINISTICALLY (output-path hash) from **all five (v1â€“v5)**; v5 fills its own titlebar QR via `{{HDR_QR_*}}` (see the QR contract). Override via `POSTER_HEADER={v1|v2|v3|v4|v5}`.
+v1â€“v4 each render the conference **logo** when `assets/logos/_venue.png` exists (Step 6 `fetch_conf_logo.py`), else a text venue/year fallback in the same chip; v5 uses a text venue badge by design. All work for **2ï¿½? institutions** (empty `LOGO_n` slots auto-hide). Logos are sized to **fill** their zone (single venue logo + a 2-row institution grid), and the logo chips **theme to the chosen style** via `--tb-chip-bg` / `--tb-chip-shadow`: solid ï¿½?flat white chip (no shadow) on the accent band; framed ï¿½?flat white chip on the white card; **simple ï¿½?transparent chip (no frame), logos sit directly on the white header**. Default: pass **`--header random`** ï¿½?`compose_poster.py` picks one DETERMINISTICALLY (output-path hash) from **all five (v1â€“v5)**; v5 fills its own titlebar QR via `{{HDR_QR_*}}` (see the QR contract). Override via `POSTER_HEADER={v1|v2|v3|v4|v5}`.
 
-**Default font policy:** the poster body font defaults to **Arial** â€?a cross-platform-safe family pre-installed on Mac + Windows PowerPoint, so the exported `.pptx` needs **no font embedding** and round-trips cleanly. To override, edit the chosen template's `--font-latin` CSS variable (in the `:root` block) to any of the 8 PPT-safe families: `Calibri | Aptos | Cambria | Arial | "Times New Roman" | Verdana | Georgia | "Trebuchet MS"`. The optional `POSTER_FONT` env var, when set, carries the same choice â€?but the default lives in the templates, not in any external script. To use **Inter** (the bundled webfont â€?more editorial, but not pre-installed), flip `--font-latin` back to `Inter, â€¦` *and* run the html2pptx Inter embed step so the `.pptx` ships the font; the 4 Inter `@font-face` blocks stay defined (inert) in every template for exactly this one-line override.
+**Default font policy:** the poster body font defaults to **Arial** ï¿½?a cross-platform-safe family pre-installed on Mac + Windows PowerPoint, so the exported `.pptx` needs **no font embedding** and round-trips cleanly. To override, edit the chosen template's `--font-latin` CSS variable (in the `:root` block) to any of the 8 PPT-safe families: `Calibri | Aptos | Cambria | Arial | "Times New Roman" | Verdana | Georgia | "Trebuchet MS"`. The optional `POSTER_FONT` env var, when set, carries the same choice ï¿½?but the default lives in the templates, not in any external script. To use **Inter** (the bundled webfont ï¿½?more editorial, but not pre-installed), flip `--font-latin` back to `Inter, â€¦` *and* run the html2pptx Inter embed step so the `.pptx` ships the font; the 4 Inter `@font-face` blocks stay defined (inert) in every template for exactly this one-line override.
 
 **Composition catalog (landscape):**
 
 | Axis | Choices | Source files | Pick via |
 |------|---------|--------------|----------|
-| layout | `full` Â· `half` Â· `3col` | `assets/layouts/<layout>.html` | Method-figure AR / figure count (Axis 1) â†?`--layout` |
-| style | `solid` Â· `framed` Â· `simple` Â· `left-bar` Â· `elevated` Â· `neo-brutal` Â· `tag` Â· `underline` Â· `tinted` Â· `double-rule` Â· `legend-frame` (11) | `assets/styles/<style>.css` | `POSTER_STYLE` (default randomize all 11) â†?`--style` |
-| header | landscape `v1`Â·`v2`Â·`v3`Â·`v4`Â·`v5`(opt-in) / portrait `pv1`Â·`pv2`Â·`pv3`Â·`pv4`Â·`pv5` | `assets/headers/<v>.html` Â· `assets/headers_portrait/<pv>.html` | `POSTER_HEADER` (default random) â†?`--header` |
-| scan | `single` Â· `dual` (group keywords â€?recommended) Â· `aside`(default) Â· `hero` Â· `contact` Â· `directory` Â· `banner` Â· `twin` Â· `chips` | `assets/scan/<variant>.html` | code QR resolves â†?`--scan dual`, else `--scan single` (Axis 4) â†?`--scan` |
-| color/theme | `blue` Â· `teal` Â· `green` Â· `burgundy` Â· `purple` Â· `rust` Â· `slate` Â· `plum` (8 accents) | `references/apply_theme.py` (`THEMES`) | `POSTER_THEME` (default `random`, deterministic per output-path) â†?`--theme`. Applies to landscape (via compose) **and portrait** (explicit `apply_theme.py` call). |
+| layout | `full` Â· `half` Â· `3col` | `assets/layouts/<layout>.html` | Method-figure AR / figure count (Axis 1) ï¿½?`--layout` |
+| style | `solid` Â· `framed` Â· `simple` Â· `left-bar` Â· `elevated` Â· `neo-brutal` Â· `tag` Â· `underline` Â· `tinted` Â· `double-rule` Â· `legend-frame` (11) | `assets/styles/<style>.css` | `POSTER_STYLE` (default randomize all 11) ï¿½?`--style` |
+| header | landscape `v1`Â·`v2`Â·`v3`Â·`v4`Â·`v5`(opt-in) / portrait `pv1`Â·`pv2`Â·`pv3`Â·`pv4`Â·`pv5` | `assets/headers/<v>.html` Â· `assets/headers_portrait/<pv>.html` | `POSTER_HEADER` (default random) ï¿½?`--header` |
+| scan | `single` Â· `dual` (group keywords ï¿½?recommended) Â· `aside`(default) Â· `hero` Â· `contact` Â· `directory` Â· `banner` Â· `twin` Â· `chips` | `assets/scan/<variant>.html` | code QR resolves ï¿½?`--scan dual`, else `--scan single` (Axis 4) ï¿½?`--scan` |
+| color/theme | `blue` Â· `teal` Â· `green` Â· `burgundy` Â· `purple` Â· `rust` Â· `slate` Â· `plum` (8 accents) | `references/apply_theme.py` (`THEMES`) | `POSTER_THEME` (default `random`, deterministic per output-path) ï¿½?`--theme`. Applies to landscape (via compose) **and portrait** (explicit `apply_theme.py` call). |
 
-`compose_poster.py` validates each choice and, on a bad name, aborts listing the available options. The old monolithic `poster_*_{solid,framed}.html` / `poster_portrait_*.html` templates have been **retired** â€?`compose_poster.py` (layout Ã— style Ã— header Ã— scan Ã— color, `--orientation portrait` for A0) is the only path; the source now lives entirely in `assets/{layouts,layouts_portrait,styles,headers,headers_portrait,scan}/`.
+`compose_poster.py` validates each choice and, on a bad name, aborts listing the available options. The old monolithic `poster_*_{solid,framed}.html` / `poster_portrait_*.html` templates have been **retired** ï¿½?`compose_poster.py` (layout Ã— style Ã— header Ã— scan Ã— color, `--orientation portrait` for A0) is the only path; the source now lives entirely in `assets/{layouts,layouts_portrait,styles,headers,headers_portrait,scan}/`.
 
-**Generate `poster.html` WITHOUT ever emitting its full contents through your output channel â€?hard requirement.** The template is ~100 KB (â‰?30â€?0k tokens); writing it inline with the `Write` tool overflows the per-turn output-token cap (`CLAUDE_CODE_MAX_OUTPUT_TOKENS`, default **32000**) and **kills the run** â€?and the measured-fill loop would re-pay that cost every round. Generate it *indirectly* so the bulk template never passes through your output:
+**Generate `poster.html` WITHOUT ever emitting its full contents through your output channel ï¿½?hard requirement.** The template is ~100 KB (ï¿½?30ï¿½?0k tokens); writing it inline with the `Write` tool overflows the per-turn output-token cap (`CLAUDE_CODE_MAX_OUTPUT_TOKENS`, default **32000**) and **kills the run** ï¿½?and the measured-fill loop would re-pay that cost every round. Generate it *indirectly* so the bulk template never passes through your output:
 
-1. **Compose the template** (disk-to-disk, zero output tokens â€?do NOT `Write` it):
+1. **Compose the template** (disk-to-disk, zero output tokens ï¿½?do NOT `Write` it):
    ```bash
-   # landscape â€?assemble layout Ã— style Ã— header into ONE self-contained poster.html
+   # landscape ï¿½?assemble layout Ã— style Ã— header into ONE self-contained poster.html
    python references/compose_poster.py \
      --layout <full|half|3col> --style <solid|framed|simple|left-bar|elevated|neo-brutal|tag|underline|tinted|double-rule|legend-frame> --header <v1|v2|v3|v4|v5> \
      --scan <single|dual> --theme <random|blue|teal|green|burgundy|purple|rust|slate|plum> \
      --out <outdir>/poster.html
-   # portrait â€?composed too (STYLE + COLOR + HEADER axes; 5 A0 title formats pv1-pv5,
+   # portrait ï¿½?composed too (STYLE + COLOR + HEADER axes; 5 A0 title formats pv1-pv5,
    # no scan section): reads assets/layouts_portrait/ + assets/headers_portrait/
    python references/compose_poster.py --orientation portrait \
      --layout <full|half> --style <solid|framed|simple|left-bar|elevated|neo-brutal|tag|underline|tinted|double-rule|legend-frame> \
@@ -297,44 +309,44 @@ v1â€“v4 each render the conference **logo** when `assets/logos/_venue.png` exist
      --theme <random|blue|teal|green|burgundy|purple|rust|slate|plum> \
      --out <outdir>/poster.html
    ```
-   `compose_poster.py` resolves the STRUCTURAL hooks (`{{STYLE_CSS}}`, `{{HEADER}}`, and landscape-only `{{SCAN_SECTION}}`) AND the COLOR axis (rewrites the `:root` accent vars to the resolved theme); every CONTENT `{{...}}` placeholder survives for the next step. **`--scan`:** pass the GROUP keyword `dual` only when `make_qr.py` emitted TWO QR slots (two genuinely distinct URLs survived de-duplication), else `single` â€?compose deterministically picks a fitting variant within the group (so a 2-QR layout never lands on a 1-link paper, whose paper/project/code URLs collapse to one QR); `--scan random` or an explicit variant name also work. **QR-count guard (belt-and-suspenders):** if you pass a single-QR context (`single`, or an explicit `hero`/`contact`/`banner`) but `metadata.json` actually carries **two** QR files on disk, `compose_poster.py` auto-upgrades to the `dual` group so the second (project/code) QR is never silently dropped â€?still pass `dual` explicitly when a code QR resolved. **`--theme`:** default `random` picks one of 8 academic themes DETERMINISTICALLY from the output-path hash (reproducible spread across a wave) â€?do NOT hand-edit `:root` colors; override a specific one with `--theme <name>` or `POSTER_THEME`. **`--header`:** default `random` (landscape v1-v5 / portrait pv1-pv5). **`--math`:** the math-typesetting engine, default **`katex`** (thinner glyphs, posterskill-like) â€?the ONE place to switch is `MATH_ENGINE_DEFAULT` in `compose_poster.py`, or per-run `--math mathjax` / `POSTER_MATH=mathjax`. Both engines are bundled offline (`assets/katex/`, `assets/mathjax/`) and intercepted by the renderer + html2pptx (whose math pass is engine-agnostic), so flipping it needs no template/pptx change. Injected at the `{{MATH_HEAD}}` hook in every layout (landscape + portrait).
-2. **Substitute placeholders with the `Edit` tool**, one `{{...}}` token (or one section block) at a time â€?each `Edit` emits only the small placeholder plus your paper-specific content, never the surrounding template. **Never reconstruct and `Write` the whole file.**
+   `compose_poster.py` resolves the STRUCTURAL hooks (`{{STYLE_CSS}}`, `{{HEADER}}`, and landscape-only `{{SCAN_SECTION}}`) AND the COLOR axis (rewrites the `:root` accent vars to the resolved theme); every CONTENT `{{...}}` placeholder survives for the next step. **`--scan`:** pass the GROUP keyword `dual` only when `make_qr.py` emitted TWO QR slots (two genuinely distinct URLs survived de-duplication), else `single` ï¿½?compose deterministically picks a fitting variant within the group (so a 2-QR layout never lands on a 1-link paper, whose paper/project/code URLs collapse to one QR); `--scan random` or an explicit variant name also work. **QR-count guard (belt-and-suspenders):** if you pass a single-QR context (`single`, or an explicit `hero`/`contact`/`banner`) but `metadata.json` actually carries **two** QR files on disk, `compose_poster.py` auto-upgrades to the `dual` group so the second (project/code) QR is never silently dropped ï¿½?still pass `dual` explicitly when a code QR resolved. **`--theme`:** default `random` picks one of 8 academic themes DETERMINISTICALLY from the output-path hash (reproducible spread across a wave) ï¿½?do NOT hand-edit `:root` colors; override a specific one with `--theme <name>` or `POSTER_THEME`. **`--header`:** default `random` (landscape v1-v5 / portrait pv1-pv5). **`--math`:** the math-typesetting engine, default **`katex`** (thinner glyphs, posterskill-like) ï¿½?the ONE place to switch is `MATH_ENGINE_DEFAULT` in `compose_poster.py`, or per-run `--math mathjax` / `POSTER_MATH=mathjax`. Both engines are bundled offline (`assets/katex/`, `assets/mathjax/`) and intercepted by the renderer + html2pptx (whose math pass is engine-agnostic), so flipping it needs no template/pptx change. Injected at the `{{MATH_HEAD}}` hook in every layout (landscape + portrait).
+2. **Substitute placeholders with the `Edit` tool**, one `{{...}}` token (or one section block) at a time ï¿½?each `Edit` emits only the small placeholder plus your paper-specific content, never the surrounding template. **Never reconstruct and `Write` the whole file.**
 
-Equivalent Opus-style alternative when you have many substitutions: **copy the ready skeleton at `references/build_poster.py`** (it carries the real placeholder names, a depth-aware optional-section drop for the lean render, and a leftover-`{{...}}` check), fill its `SUBS` dict with this paper's content, and run it on the composed `poster.html` â€?the template is read from disk at runtime and never enters your output. Either path is fine; the invariant is identical: **the full HTML must never appear in a tool call's output** (this is the single most common cause of a smaller model aborting on a large poster).
+Equivalent Opus-style alternative when you have many substitutions: **copy the ready skeleton at `references/build_poster.py`** (it carries the real placeholder names, a depth-aware optional-section drop for the lean render, and a leftover-`{{...}}` check), fill its `SUBS` dict with this paper's content, and run it on the composed `poster.html` ï¿½?the template is read from disk at runtime and never enters your output. Either path is fine; the invariant is identical: **the full HTML must never appear in a tool call's output** (this is the single most common cause of a smaller model aborting on a large poster).
 
-**Read `references/template_substitution.md` now** â€?it carries the full placeholder map, the code-driven theme color (1-of-5, applied by compose / `apply_theme.py` â€?do NOT hand-edit `:root`), per-section accent palette, vertical-sizing convention (`grow` on the bottom-most section only), and the **lean initial render policy**: only `Necessary` of the six core sections; all three optional sections (Contribution, Dataset / Benchmark, Ablation Study) and every `Additional` paragraph are deliberately withheld at this stage.
+**Read `references/template_substitution.md` now** ï¿½?it carries the full placeholder map, the code-driven theme color (1-of-5, applied by compose / `apply_theme.py` ï¿½?do NOT hand-edit `:root`), per-section accent palette, vertical-sizing convention (`grow` on the bottom-most section only), and the **lean initial render policy**: only `Necessary` of the six core sections; all three optional sections (Contribution, Dataset / Benchmark, Ablation Study) and every `Additional` paragraph are deliberately withheld at this stage.
 
-**Decoupled-header + QR placeholder contract (NEW â€?edge cases).** The composed headers (v1â€“v4) replace the old titlebar, so the placeholder set changed:
-- **Venue:** the header uses `{{VENUE_NAME}}` + `{{VENUE_YEAR}}` (text) and an optional `{{VENUE_LOGO}}`. Set `VENUE_LOGO` to `assets/logos/_venue.png` **only if that file exists**, else `""` â€?when empty, the header paints the VENUE/YEAR text in the conference chip (and preflight won't flag a dead image). The old `{{VENUE}}` / `{{VENUE_LINK}}` / `{{VENUE_TAG}}` header fields are **gone**; don't emit them.
-- **Institution logos:** `{{LOGO_1}}`â€¦`{{LOGO_6}}` (up to six). Fill each present institution's path; set every **unused** slot to `""` (empty/unfilled chips auto-hide). Works for 2â€? institutions.
-- **QR placement depends ONLY on the header â€?the QR appears in exactly ONE place, and NEVER in the Title Section except for `v5`:**
-  - **Headers `v1` / `v2` / `v3` / `v4` â†?* the Title Section carries NO QR (these headers have no QR slot at all). ALWAYS fill the standalone **Scan to Read** `.section` (`data-section="scan-to-read"`, right after Takeaway) via `{{QR_PAPER}}` / `{{QR_CODE}}`, and set the header's `{{HDR_QR_PAPER}}` / `{{HDR_QR_CODE}}` to `""`. Institution count is **irrelevant** â€?the old "â‰?2 institutions â†?header QR" rule is **RETIRED**; the QR never joins the logo row. The section's **internal layout is the `--scan` axis** (Step 3): pass `--scan dual` when a code QR resolves, else `--scan single`, so a two-QR layout never lands on a one-QR paper. Beyond `{{QR_PAPER}}`/`{{QR_CODE}}`, the picked variant may also expose the display-URL placeholders `{{URL_PAPER}}` / `{{URL_CODE}}` / `{{URL_PROJECT}}` (short URL text from `metadata.json`, e.g. `arxiv.org/abs/2106.09711`) and `{{CONTACT}}` â€?fill whatever exists and leave the rest `""`; every one auto-hides when empty. **Exception â€?`--layout 3col`:** the standalone Scan-to-Read section is **suppressed** in the 3col layout (its 1/3-width column is too wide for the section's small content and reads as empty), so a 3col poster intentionally carries **NO QR**. When you compose with `--layout 3col`, leave `{{QR_PAPER}}` / `{{QR_CODE}}` (and the other scan content placeholders) empty â€?they would render into a hidden section anyway.
-  - **Header `v5`** (classic) is the ONLY header with a titlebar QR â€?with `v5`, ALWAYS fill `{{HDR_QR_PAPER}}` / `{{HDR_QR_CODE}}` and leave the section `{{QR_*}}` empty, so the QR shows once (in the v5 header) and the `scan-to-read` section auto-hides.
-  - **Render-time guarantee (CSS â€?belt-and-suspenders, you do NOT rely on the build filling the right one):** every layout hides `.section[data-section="scan-to-read"]` whenever the titlebar carries a FILLED QR (`body:has(.titlebar img.qr-img[filled]) , body:has(.titlebar .qr-tile .chip.qr img[filled]) -> [data-section="scan-to-read"]{display:none}`). So even if BOTH the header QR and the section QR get filled, the standalone Scan-to-Read section is suppressed at render time and the QR can never appear twice.
-  - Every QR placeholder auto-hides when empty or when its `assets/qr/*.png` is absent â€?set a path only if the file exists.
-- **Logo autotrim:** `fetch_logos.py` / `fetch_conf_logo.py` now rasterize (SVGâ†’PNG) and crop the transparent/near-white border so chips hug the mark â€?automatic, best-effort, no action needed here.
+**Decoupled-header + QR placeholder contract (NEW ï¿½?edge cases).** The composed headers (v1â€“v4) replace the old titlebar, so the placeholder set changed:
+- **Venue:** the header uses `{{VENUE_NAME}}` + `{{VENUE_YEAR}}` (text) and an optional `{{VENUE_LOGO}}`. Set `VENUE_LOGO` to `assets/logos/_venue.png` **only if that file exists**, else `""` ï¿½?when empty, the header paints the VENUE/YEAR text in the conference chip (and preflight won't flag a dead image). The old `{{VENUE}}` / `{{VENUE_LINK}}` / `{{VENUE_TAG}}` header fields are **gone**; don't emit them.
+- **Institution logos:** `{{LOGO_1}}`â€¦`{{LOGO_6}}` (up to six). Fill each present institution's path; set every **unused** slot to `""` (empty/unfilled chips auto-hide). Works for 2ï¿½? institutions.
+- **QR placement depends ONLY on the header ï¿½?the QR appears in exactly ONE place, and NEVER in the Title Section except for `v5`:**
+  - **Headers `v1` / `v2` / `v3` / `v4` ï¿½?* the Title Section carries NO QR (these headers have no QR slot at all). ALWAYS fill the standalone **Scan to Read** `.section` (`data-section="scan-to-read"`, right after Takeaway) via `{{QR_PAPER}}` / `{{QR_CODE}}`, and set the header's `{{HDR_QR_PAPER}}` / `{{HDR_QR_CODE}}` to `""`. Institution count is **irrelevant** ï¿½?the old "ï¿½?2 institutions ï¿½?header QR" rule is **RETIRED**; the QR never joins the logo row. The section's **internal layout is the `--scan` axis** (Step 3): pass `--scan dual` when a code QR resolves, else `--scan single`, so a two-QR layout never lands on a one-QR paper. Beyond `{{QR_PAPER}}`/`{{QR_CODE}}`, the picked variant may also expose the display-URL placeholders `{{URL_PAPER}}` / `{{URL_CODE}}` / `{{URL_PROJECT}}` (short URL text from `metadata.json`, e.g. `arxiv.org/abs/2106.09711`) and `{{CONTACT}}` ï¿½?fill whatever exists and leave the rest `""`; every one auto-hides when empty. **Exception ï¿½?`--layout 3col`:** the standalone Scan-to-Read section is **suppressed** in the 3col layout (its 1/3-width column is too wide for the section's small content and reads as empty), so a 3col poster intentionally carries **NO QR**. When you compose with `--layout 3col`, leave `{{QR_PAPER}}` / `{{QR_CODE}}` (and the other scan content placeholders) empty ï¿½?they would render into a hidden section anyway.
+  - **Header `v5`** (classic) is the ONLY header with a titlebar QR ï¿½?with `v5`, ALWAYS fill `{{HDR_QR_PAPER}}` / `{{HDR_QR_CODE}}` and leave the section `{{QR_*}}` empty, so the QR shows once (in the v5 header) and the `scan-to-read` section auto-hides.
+  - **Render-time guarantee (CSS ï¿½?belt-and-suspenders, you do NOT rely on the build filling the right one):** every layout hides `.section[data-section="scan-to-read"]` whenever the titlebar carries a FILLED QR (`body:has(.titlebar img.qr-img[filled]) , body:has(.titlebar .qr-tile .chip.qr img[filled]) -> [data-section="scan-to-read"]{display:none}`). So even if BOTH the header QR and the section QR get filled, the standalone Scan-to-Read section is suppressed at render time and the QR can never appear twice.
+  - Every QR placeholder auto-hides when empty or when its `assets/qr/*.png` is absent ï¿½?set a path only if the file exists.
+- **Logo autotrim:** `fetch_logos.py` / `fetch_conf_logo.py` now rasterize (SVGâ†’PNG) and crop the transparent/near-white border so chips hug the mark ï¿½?automatic, best-effort, no action needed here.
 
-After substitution, apply the visual polish layer â€?**read `references/visual_polish.md`** for typography, color, the inline-emphasis vocabulary (`<strong>` / `.hi` / `.num`), stat grid, figure cap, callout and arch components, and print hygiene (the canvas locks per orientation: landscape 60Ã—36in / `cqw` / `aspect-ratio: 5 / 3`; portrait 33.1Ã—46.8in / `cqw` / `aspect-ratio: 33.1 / 46.8` â€?**never edit**).
+After substitution, apply the visual polish layer ï¿½?**read `references/visual_polish.md`** for typography, color, the inline-emphasis vocabulary (`<strong>` / `.hi` / `.num`), stat grid, figure cap, callout and arch components, and print hygiene (the canvas locks per orientation: landscape 60Ã—36in / `cqw` / `aspect-ratio: 5 / 3`; portrait 33.1Ã—46.8in / `cqw` / `aspect-ratio: 33.1 / 46.8` ï¿½?**never edit**).
 
-**Read `references/content_patterns.md` now and BREAK UP THE WALL-OF-TEXT.** This is not optional reference material â€?it is a hard requirement for visual quality. The 16-widget catalog (callouts, key-stat, vs-compare, numbered-steps, timeline Ã—4, chips, definition, highlight-table, pullquote, bento, equation, banner) exists specifically because plain `<p>` + `<ul>` across every section makes the poster read as undifferentiated text. **Rules:**
+**Read `references/content_patterns.md` now and BREAK UP THE WALL-OF-TEXT.** This is not optional reference material ï¿½?it is a hard requirement for visual quality. The 16-widget catalog (callouts, key-stat, vs-compare, numbered-steps, timeline Ã—4, chips, definition, highlight-table, pullquote, bento, equation, banner) exists specifically because plain `<p>` + `<ul>` across every section makes the poster read as undifferentiated text. **Rules:**
 
-- **Every section body MUST contain at least ONE pattern widget.** Plain `<p>` + `<ul>` alone is a failure mode (verified empirically â€?without this rule, posters ship with only 1 widget across 9 sections).
+- **Every section body MUST contain at least ONE pattern widget.** Plain `<p>` + `<ul>` alone is a failure mode (verified empirically ï¿½?without this rule, posters ship with only 1 widget across 9 sections).
 - **Across the full poster, use at least 5 DISTINCT pattern types.** A poster that uses `.p-callout-soft` 9 times still reads as monotonous. Vary the widget across sections so adjacent sections look visually different.
 - **Cap at 2 widgets per section** (so a section doesn't stack 3 callouts + a key-stat + a chips strip = different kind of clutter).
-- **Match widget to content shape:** pick from the catalog's "Shape of content it suits" column â€?`key-stat` for sections dominated by one number, `vs-compare` for Theirs/Ours sections, `numbered-steps` for pipelines, `chips` for taxonomy/dataset/baseline lists, etc.
+- **Match widget to content shape:** pick from the catalog's "Shape of content it suits" column ï¿½?`key-stat` for sections dominated by one number, `vs-compare` for Theirs/Ours sections, `numbered-steps` for pipelines, `chips` for taxonomy/dataset/baseline lists, etc.
 
-The figure/logo/QR assets live under `<outdir>/assets/{figures,logos,qr}/` (placed there by paper2assets), and `poster.html` references them with `src="assets/figures/â€?`, `src="assets/logos/â€?`, `src="assets/qr/â€?`. The `path`/`file` values in `figures.json`, `fetch_logos.py`, and `make_qr.py` manifests already carry the `assets/` prefix, so dropping them verbatim into `src` makes the relative paths resolve from the poster's own location without further action.
+The figure/logo/QR assets live under `<outdir>/assets/{figures,logos,qr}/` (placed there by paper2assets), and `poster.html` references them with `src="assets/figures/ï¿½?`, `src="assets/logos/ï¿½?`, `src="assets/qr/ï¿½?`. The `path`/`file` values in `figures.json`, `fetch_logos.py`, and `make_qr.py` manifests already carry the `assets/` prefix, so dropping them verbatim into `src` makes the relative paths resolve from the poster's own location without further action.
 
-### Step 4 â€?Iterative fill to exactly fit the page
+### Step 4 ï¿½?Iterative fill to exactly fit the page
 
-**First, the column-pack pre-check (one calculation, before any fill round).** Run `python3 scripts/check_poster.py pack <outdir>/poster.html`. It flags any column whose figure floors + minimum text already exceed the column height â€?a **negative-slack column is INFEASIBLE**, and the fill loop would oscillate there for ~20 rounds (the single biggest time-sink measured: one opus run burned ~15 min on one such column). Re-pack a flagged column *before* filling â€?move a text section or the figure to a looser/wider column, or (if TOTAL slack is negative) drop/shrink a figure or cut text â€?and enter the loop only when every column's slack â‰?0. Details: `references/staged_fill.md` â†?"Column-pack pre-check".
+**First, the column-pack pre-check (one calculation, before any fill round).** Run `python3 scripts/check_poster.py pack <outdir>/poster.html`. It flags any column whose figure floors + minimum text already exceed the column height ï¿½?a **negative-slack column is INFEASIBLE**, and the fill loop would oscillate there for ~20 rounds (the single biggest time-sink measured: one opus run burned ~15 min on one such column). Re-pack a flagged column *before* filling ï¿½?move a text section or the figure to a looser/wider column, or (if TOTAL slack is negative) drop/shrink a figure or cut text ï¿½?and enter the loop only when every column's slack ï¿½?0. Details: `references/staged_fill.md` ï¿½?"Column-pack pre-check".
 
-The lean initial render usually leaves some sections under-filled. Grow content with an **iterative loop** until every section reads `FULL` (`fullRatio` 90â€?00% of the card height, padding included). Each pass: **first run `check_poster.py autofit <outdir>/poster.html`** â€?it deterministically closes the continuous-lever gaps a machine can size exactly (every `.grow`-card row-gap gap AND the scan-to-read QR height, using the `needPx` the report already computes, bounded by the column budget) and prints the residual sections that still need YOUR content/figure edits â€?then measure with `check_poster.py slack --with-polish`, read the per-section verdicts, pick the **one or two modification methods** best matched to the current defects, apply them, then re-measure to review and keep-or-rollback. There is no fixed order of methods â€?the measurement tells you what's wrong and you choose the remedy. Each off-band verdict suggests its remedy:
+The lean initial render usually leaves some sections under-filled. Grow content with an **iterative loop** until every section reads `FULL` (`fullRatio` 90ï¿½?00% of the card height, padding included). Each pass: **first run `check_poster.py autofit <outdir>/poster.html`** ï¿½?it deterministically closes the continuous-lever gaps a machine can size exactly (every `.grow`-card row-gap gap AND the scan-to-read QR height, using the `needPx` the report already computes, bounded by the column budget) and prints the residual sections that still need YOUR content/figure edits ï¿½?then measure with `check_poster.py slack --with-polish`, read the per-section verdicts, pick the **one or two modification methods** best matched to the current defects, apply them, then re-measure to review and keep-or-rollback. There is no fixed order of methods ï¿½?the measurement tells you what's wrong and you choose the remedy. Each off-band verdict suggests its remedy:
 
-- `EMPTY` (<70%) â†?**add** Additional text or **add** the optional section for that column.
-- `SPARSE` (70â€?0%) â†?**polish to enhance** the existing prose (pad with material from the spec's `Additional`) so the card fills.
-- `SPILLAGE` (100â€?10%) â†?**polish to reduce** content (tighten prose so it fits in fewer lines).
-- `OVERFLOW` (>110%) â†?**remove** Additional text or **remove** the optional section to claw back vertical space.
+- `EMPTY` (<70%) ï¿½?**add** Additional text or **add** the optional section for that column.
+- `SPARSE` (70ï¿½?0%) ï¿½?**polish to enhance** the existing prose (pad with material from the spec's `Additional`) so the card fills.
+- `SPILLAGE` (100ï¿½?10%) ï¿½?**polish to reduce** content (tighten prose so it fits in fewer lines).
+- `OVERFLOW` (>110%) ï¿½?**remove** Additional text or **remove** the optional section to claw back vertical space.
 
 When two methods are independent (different columns) you may apply both in one pass; when they touch the same column, apply one at a time so a rollback decision stays unambiguous. When several methods could fill the same gap, prefer the highest-value content (real numbers, the Method figure, named contributions) over filler prose.
 
@@ -345,34 +357,34 @@ python ~/.workbuddy/skills/paper2poster/scripts/check_poster.py slack \
     <outdir>/poster.html --with-polish --strict
 ```
 
-`--with-polish` runs the fill gate (`slack`) and the visual-polish gate (`FIG/NARROW` etc.) on **one** rendered page â€?a single browser launch instead of two â€?and under `--strict` **both** must pass, so this one command replaces the old separate `slack` + `polish` calls. Do not stop iterating while it exits non-zero. `--strict` is the same measurement you read each pass, but with a hard exit code â€?there is no "acceptable SPARSE" or "figure too tight to fix" escape. Keep applying the modification methods (and, for a stubborn figure, the column-width nudge / vertical-room methods in `references/staged_fill.md`) until the gate passes.
+`--with-polish` runs the fill gate (`slack`) and the visual-polish gate (`FIG/NARROW` etc.) on **one** rendered page ï¿½?a single browser launch instead of two ï¿½?and under `--strict` **both** must pass, so this one command replaces the old separate `slack` + `polish` calls. Do not stop iterating while it exits non-zero. `--strict` is the same measurement you read each pass, but with a hard exit code ï¿½?there is no "acceptable SPARSE" or "figure too tight to fix" escape. Keep applying the modification methods (and, for a stubborn figure, the column-width nudge / vertical-room methods in `references/staged_fill.md`) until the gate passes.
 
-**Converge fast, and bound the loop (critical for smaller models).** The `slack` report gives each off-band section a precise **`needPx`** delta â€?e.g. `key-result  SPARSE  grow +50px [+18..+83]`. Edit *by that number* with a continuous CSS lever (`margin-bottom` / `.col` gap / figure `max-height`), don't guess with whole text lines and overshoot the 0.05-wide FULL band. Track recent measurements and switch levers the instant a section ping-pongs `SPARSE`â†”`SPILLAGE`. And the loop is **bounded**: if both gates aren't green after **~12 rounds / ~20 min**, render the best-measured state, mark the stage **DEGRADED** with the residual off-band section ids, and move on â€?never grind indefinitely. This is **script-enforced**: `slack` counts every call in `<poster_dir>/.fill_budget.json` and **exits 3 with a `CIRCUIT BREAKER` banner** once it passes `--max-iterations` (default **80**) â€?an on-disk cap that survives context compaction, so a lost round-count can't make you grind. Treat **exit 3 as a hard stop** (render best state, mark DEGRADED). The exit gate stays strict; only the iteration count is capped. Full rules: the **"Convergence protocol"** at the top of `references/staged_fill.md`.
+**Converge fast, and bound the loop (critical for smaller models).** The `slack` report gives each off-band section a precise **`needPx`** delta ï¿½?e.g. `key-result  SPARSE  grow +50px [+18..+83]`. Edit *by that number* with a continuous CSS lever (`margin-bottom` / `.col` gap / figure `max-height`), don't guess with whole text lines and overshoot the 0.05-wide FULL band. Track recent measurements and switch levers the instant a section ping-pongs `SPARSE`â†”`SPILLAGE`. And the loop is **bounded**: if both gates aren't green after **~12 rounds / ~20 min**, render the best-measured state, mark the stage **DEGRADED** with the residual off-band section ids, and move on ï¿½?never grind indefinitely. This is **script-enforced**: `slack` counts every call in `<poster_dir>/.fill_budget.json` and **exits 3 with a `CIRCUIT BREAKER` banner** once it passes `--max-iterations` (default **80**) ï¿½?an on-disk cap that survives context compaction, so a lost round-count can't make you grind. Treat **exit 3 as a hard stop** (render best state, mark DEGRADED). The exit gate stays strict; only the iteration count is capped. Full rules: the **"Convergence protocol"** at the top of `references/staged_fill.md`.
 
-**When the `.grow` section is persistently `EMPTY` or `SPARSE`** even after exhausting its own Additional/optional content, don't keep stretching that one section â€?instead **refine the content of the other (non-grow) sections in the same column**: lift their `Additional` paragraphs into the rendered card, promote bullets from concise to expanded form, or fold in a paper-specific custom section. The `.grow` section then absorbs the residual slack naturally instead of inflating a single card with filler.
+**When the `.grow` section is persistently `EMPTY` or `SPARSE`** even after exhausting its own Additional/optional content, don't keep stretching that one section ï¿½?instead **refine the content of the other (non-grow) sections in the same column**: lift their `Additional` paragraphs into the rendered card, promote bullets from concise to expanded form, or fold in a paper-specific custom section. The `.grow` section then absorbs the residual slack naturally instead of inflating a single card with filler.
 
-**When a column is at budget (`slackRatio` â‰?0) but *lopsided*** â€?one card `SPARSE` while its siblings read `FULL`, so neither adding nor removing content works â€?use the **rebalance-adjacent-sections** method: relocate a *reserved, on-topic* line from a FULL sibling into the SPARSE card (a net-zero swap that shifts the column's height budget without changing its total). This only moves content that genuinely belongs to the destination section.
+**When a column is at budget (`slackRatio` ï¿½?0) but *lopsided*** ï¿½?one card `SPARSE` while its siblings read `FULL`, so neither adding nor removing content works ï¿½?use the **rebalance-adjacent-sections** method: relocate a *reserved, on-topic* line from a FULL sibling into the SPARSE card (a net-zero swap that shifts the column's height budget without changing its total). This only moves content that genuinely belongs to the destination section.
 
-**Read `references/staged_fill.md` now** â€?it carries the `check_poster.py slack` command, the JSON report shape, the measureâ†’selectâ†’applyâ†’review loop, the flat catalog of modification methods, and the shave-back order.
+**Read `references/staged_fill.md` now** ï¿½?it carries the `check_poster.py slack` command, the JSON report shape, the measureâ†’selectâ†’applyâ†’review loop, the flat catalog of modification methods, and the shave-back order.
 
 Run preflight first (`check_poster.py preflight`) to catch LaTeX residue / raw `<` in math / missing images before measuring.
 
-**Debug aid.** When the fill loop misbehaves â€?slackRatio says one thing, your eyes see another â€?write `check_poster.py slack --json-out <outdir>/assets/meta/poster_debug.json` output, open `poster.html` in a browser, and press `d`. Every column/section/figure gets outlined; badges show actual rendered height alongside the estimator's prediction and the delta.
+**Debug aid.** When the fill loop misbehaves ï¿½?slackRatio says one thing, your eyes see another ï¿½?write `check_poster.py slack --json-out <outdir>/assets/meta/poster_debug.json` output, open `poster.html` in a browser, and press `d`. Every column/section/figure gets outlined; badges show actual rendered height alongside the estimator's prediction and the delta.
 
-### Step 5 â€?Synthesize narration audio for the Listen buttons
+### Step 5 ï¿½?Synthesize narration audio for the Listen buttons
 
-paper2assets produced the narration **script** (`<outdir>/assets/meta/narration.json`); paper2poster turns it into the mp3s the Listen buttons play â€?paper2poster is where TTS happens (paper2assets does NOT):
+paper2assets produced the narration **script** (`<outdir>/assets/meta/narration.json`); paper2poster turns it into the mp3s the Listen buttons play ï¿½?paper2poster is where TTS happens (paper2assets does NOT):
 
 ```bash
 python ~/.workbuddy/skills/paper2poster/scripts/generate_audio.py \
     <outdir>/assets/meta/narration.json --outdir <outdir>/assets/audio
 ```
 
-- **Backend = free Edge TTS by default** â€?Microsoft Edge online voices via the `edge-tts` package: no API key, no config file, just network. Default voice `en-US-AndrewNeural`; `narration.json` carries `"provider": "edge"`. Override per run with `--provider azure` (needs `~/.azure/speech.json` + `AZURE_API_KEY`) or `--voice <name>`. See `references/audio_narration.md`.
-- **Graceful skip:** if `edge-tts` isn't installed or the network is down, the script exits with a clear message and writes nothing â€?the poster's HTML/PDF still render, only the Listen buttons stay silent. Surface that message; don't fabricate audio.
+- **Backend = free Edge TTS by default** ï¿½?Microsoft Edge online voices via the `edge-tts` package: no API key, no config file, just network. Default voice `en-US-AndrewNeural`; `narration.json` carries `"provider": "edge"`. Override per run with `--provider azure` (needs `~/.azure/speech.json` + `AZURE_API_KEY`) or `--voice <name>`. See `references/audio_narration.md`.
+- **Graceful skip:** if `edge-tts` isn't installed or the network is down, the script exits with a clear message and writes nothing ï¿½?the poster's HTML/PDF still render, only the Listen buttons stay silent. Surface that message; don't fabricate audio.
 - **Keep `PLAYLIST` in sync:** the template's `PLAYLIST` (and the per-section `data-section` ids) must match the clip ids in `<outdir>/assets/audio/`. The Listen buttons + Full Listen play `assets/audio/<id>.mp3` by id; an id with no file flashes the highlight and falls silent. So if you drop a section at render time (e.g. `dataset-benchmark`) or inject a custom one, keep `PLAYLIST` in sync with the audio files present. If `<outdir>/assets/audio/` is absent entirely, the buttons gracefully no-op and the poster still works visually.
 
-### Step 5.9 â€?Pack the header logos to fill their zone (fit_logos.py)
+### Step 5.9 ï¿½?Pack the header logos to fill their zone (fit_logos.py)
 
 After the fill loop converges, BEFORE rendering, pack the header's institution logos so they FILL their zone regardless of count or shape:
 
@@ -380,19 +392,19 @@ After the fill loop converges, BEFORE rendering, pack the header's institution l
 python references/fit_logos.py --poster <outdir>/poster.html
 ```
 
-`fit_logos.py` opens the poster headless at true canvas scale, measures each logo zone (`.logo-grid` / `.logo-block`), greedily searches row partitions to MAXIMISE the single **uniform height** shared by EVERY institution logo (they enlarge *together* â€?never some big, some small); logos are reorderable. It also (a) wires the venue logo **into the conference chip** (`.chip.conf`) when `assets/logos/_venue.png` exists, so the `:has(img)` CSS fires and the venue year-text auto-hides â€?it never duplicates the mark; and (b) for `v1`â€“`v4` headers, pulls any QR **out of the titlebar** and re-homes it in the standalone **Scan-to-Read** section (re-creating that section after Takeaway if an older render dropped it) â€?only `v5` keeps a titlebar QR. It rewrites the zone into rows â€?baked into `poster.html` **disk-to-disk** (it never emits the full HTML through your output channel). Every logo renders at the SAME height, as large as the zone allows (one logo fills it; many balance into rows of equal-height marks). The widest mark and the short header band cap that uniform height, so there is **no fixed fill target** â€?the packer maximises the shared height. **`render_poster.py` (Step 6) now auto-runs `fit_logos.py` for you** right before it renders (it was routinely skipped when manual), so the exported PDF/PNG always has packed logos; you may still run it standalone to preview.
+`fit_logos.py` opens the poster headless at true canvas scale, measures each logo zone (`.logo-grid` / `.logo-block`), greedily searches row partitions to MAXIMISE the single **uniform height** shared by EVERY institution logo (they enlarge *together* ï¿½?never some big, some small); logos are reorderable. It also (a) wires the venue logo **into the conference chip** (`.chip.conf`) when `assets/logos/_venue.png` exists, so the `:has(img)` CSS fires and the venue year-text auto-hides ï¿½?it never duplicates the mark; and (b) for `v1`â€“`v4` headers, pulls any QR **out of the titlebar** and re-homes it in the standalone **Scan-to-Read** section (re-creating that section after Takeaway if an older render dropped it) ï¿½?only `v5` keeps a titlebar QR. It rewrites the zone into rows ï¿½?baked into `poster.html` **disk-to-disk** (it never emits the full HTML through your output channel). Every logo renders at the SAME height, as large as the zone allows (one logo fills it; many balance into rows of equal-height marks). The widest mark and the short header band cap that uniform height, so there is **no fixed fill target** ï¿½?the packer maximises the shared height. **`render_poster.py` (Step 6) now auto-runs `fit_logos.py` for you** right before it renders (it was routinely skipped when manual), so the exported PDF/PNG always has packed logos; you may still run it standalone to preview.
 
-### Step 6 â€?Render the poster to PDF + PNG (FIRST â€?applies + bakes the expand)
+### Step 6 ï¿½?Render the poster to PDF + PNG (FIRST ï¿½?applies + bakes the expand)
 
 ```bash
 python ~/.workbuddy/skills/paper2poster/scripts/render_poster.py <outdir>/poster.html
 ```
 
-Run this **before Step 7 (html2pptx)** so the expand is baked into `poster.html` *before* html2pptx reads it â€?the editable `poster.pptx` then matches the PDF/PNG instead of shipping the pre-expand layout. The script reads `@page { size: <W> <H> }` from the HTML, mirrors the bundled Inter webfonts into `<outdir>/assets/fonts/` (so the poster.html + its `assets/fonts/` stay self-contained for sharing across platforms), opens Chromium with print emulation, waits for MathJax to settle, applies the render-time expand, **bakes that expand back into `poster.html`**, then writes `<outdir>/poster.pdf` and `<outdir>/poster.png` (0.35Ã— scale by default).
+Run this **before Step 7 (html2pptx)** so the expand is baked into `poster.html` *before* html2pptx reads it ï¿½?the editable `poster.pptx` then matches the PDF/PNG instead of shipping the pre-expand layout. The script reads `@page { size: <W> <H> }` from the HTML, mirrors the bundled Inter webfonts into `<outdir>/assets/fonts/` (so the poster.html + its `assets/fonts/` stay self-contained for sharing across platforms), opens Chromium with print emulation, waits for MathJax to settle, applies the render-time expand, **bakes that expand back into `poster.html`**, then writes `<outdir>/poster.pdf` and `<outdir>/poster.png` (0.35Ã— scale by default).
 
-**Render-time "expand" (automatic, on by default).** Right before writing the PDF/PNG, `render_poster.py` runs one render-time fill pass: for every under-filled card it grows the row-gaps *between* the card's inner rows until the content reaches `POSTER_EXPAND_THRESHOLD` (default **0.98**). This makes a poster that converged at the 0.90 FULL gate read as visually full â€?no trailing whitespace â€?*without* re-grinding the fill loop to a tighter, ~2Ã— slower gate. It is safe by construction, on two guardrails: (1) **figures are never resized** â€?they stay `flex:0 0 auto`, so a card's `<img>` keeps its exact pixel dimensions and aspect ratio even when the card it lives in is filled; (2) **a card is reverted if filling it would change its column/container height** (parent-height guard) â€?so a flex `.grow` card absorbs the fill *inside* its column (column bottom unchanged â†?fills the trailing column-bottom whitespace), while a grid/content card that would push the fixed-canvas layout taller is left alone. A card also stops at its **bottom-padding ceiling** (never eats padding â†?column bottoms stay aligned), so smaller cards finish a bit under 0.98 â€?that ceiling, `1 âˆ?padBot/cardHeight`, is their real "full". The expand result is then **persisted into `poster.html`** as a single `<style id="poster-expand-baked">` block (one `row-gap` rule per expanded section), so the editable HTML, its `D` debug overlay, the PDF/PNG, and the downstream html2pptx read all show the *same* expanded layout â€?not the pre-expand one. This is responsive-safe (the templates use a fixed internal layout scaled by an outer `transform: scale()`, so an inline px `row-gap` renders identically at any view size) and idempotent (a re-render replaces the block). It is written **only at this final render**, after Step 4's fill loop â€?so `check_poster.py slack/polish` during the loop still measure the natural top-aligned layout and the 0.90 FULL gate stays correct.
+**Render-time "expand" (automatic, on by default).** Right before writing the PDF/PNG, `render_poster.py` runs one render-time fill pass: for every under-filled card it grows the row-gaps *between* the card's inner rows until the content reaches `POSTER_EXPAND_THRESHOLD` (default **0.98**). This makes a poster that converged at the 0.90 FULL gate read as visually full ï¿½?no trailing whitespace ï¿½?*without* re-grinding the fill loop to a tighter, ~2Ã— slower gate. It is safe by construction, on two guardrails: (1) **figures are never resized** ï¿½?they stay `flex:0 0 auto`, so a card's `<img>` keeps its exact pixel dimensions and aspect ratio even when the card it lives in is filled; (2) **a card is reverted if filling it would change its column/container height** (parent-height guard) ï¿½?so a flex `.grow` card absorbs the fill *inside* its column (column bottom unchanged ï¿½?fills the trailing column-bottom whitespace), while a grid/content card that would push the fixed-canvas layout taller is left alone. A card also stops at its **bottom-padding ceiling** (never eats padding ï¿½?column bottoms stay aligned), so smaller cards finish a bit under 0.98 ï¿½?that ceiling, `1 ï¿½?padBot/cardHeight`, is their real "full". The expand result is then **persisted into `poster.html`** as a single `<style id="poster-expand-baked">` block (one `row-gap` rule per expanded section), so the editable HTML, its `D` debug overlay, the PDF/PNG, and the downstream html2pptx read all show the *same* expanded layout ï¿½?not the pre-expand one. This is responsive-safe (the templates use a fixed internal layout scaled by an outer `transform: scale()`, so an inline px `row-gap` renders identically at any view size) and idempotent (a re-render replaces the block). It is written **only at this final render**, after Step 4's fill loop ï¿½?so `check_poster.py slack/polish` during the loop still measure the natural top-aligned layout and the 0.90 FULL gate stays correct.
 
-**Two tuning knobs (env vars) â€?the only layout dials you normally touch:**
+**Two tuning knobs (env vars) ï¿½?the only layout dials you normally touch:**
 
 | Env var | Default | Controls |
 |---|---|---|
@@ -406,7 +418,7 @@ Useful flags (defaults usually fine):
 - `--thumb-scale 0.5` for a larger thumbnail, `0.2` for smaller.
 - `--mathjax-timeout-ms 15000` if the poster has heavy LaTeX.
 
-**This is a SOFT path.** A blocked CDN, MathJax fetch failure, or slow web font produces a stderr warning and a PDF that may show raw `$...$` instead of typeset math. Surface warnings verbatim, but **do not re-run** the script in response â€?fix upstream.
+**This is a SOFT path.** A blocked CDN, MathJax fetch failure, or slow web font produces a stderr warning and a PDF that may show raw `$...$` instead of typeset math. Surface warnings verbatim, but **do not re-run** the script in response ï¿½?fix upstream.
 
 **Prerequisites:** `playwright` + Chromium. If the script exits with `ImportError`, run the install commands it prints and re-run.
 
@@ -417,21 +429,21 @@ python ~/.workbuddy/skills/paper2poster/scripts/check_poster.py verify-final \
     <outdir>/poster.pdf --from-html <outdir>/poster.html
 ```
 
-A `FAIL` means the upstream HTML or `render_poster.py` invocation is wrong (e.g., `@page` was edited out). Surface the error and stop â€?re-running without fixing the HTML produces the same failure.
+A `FAIL` means the upstream HTML or `render_poster.py` invocation is wrong (e.g., `@page` was edited out). Surface the error and stop ï¿½?re-running without fixing the HTML produces the same failure.
 
-### Step 7 â€?Convert poster.html â†?poster.pptx (html2pptx â€?STANDARD final handoff)
+### Step 7 ï¿½?Convert poster.html ï¿½?poster.pptx (html2pptx ï¿½?STANDARD final handoff)
 
-Users almost always want the editable PowerPoint in the **same run** â€?do NOT treat this as optional or wait for a separate request. Once Step 6 has rendered and **baked the expand into** `poster.html`, hand it to the bundled **html2pptx sub-skill** (vendored inside this skill at `html2pptx/`; no longer a separate git submodule). From a Claude session, say:
+Users almost always want the editable PowerPoint in the **same run** ï¿½?do NOT treat this as optional or wait for a separate request. Once Step 6 has rendered and **baked the expand into** `poster.html`, hand it to the bundled **html2pptx sub-skill** (vendored inside this skill at `html2pptx/`; no longer a separate git submodule). From a Claude session, say:
 
-> "Use the html2pptx skill to convert `<outdir>/poster.html` into `<outdir>/poster.pptx`. The default poster font is **Arial**, pre-installed on Mac + Windows PowerPoint, so **no font embedding is needed** â€?skip the embed step. ONLY if this poster was rendered with the optional **Inter** override, also run the html2pptx Inter embed (its own `scripts/font_embedder.py`) so the .pptx ships the font."
+> "Use the html2pptx skill to convert `<outdir>/poster.html` into `<outdir>/poster.pptx`. The default poster font is **Arial**, pre-installed on Mac + Windows PowerPoint, so **no font embedding is needed** ï¿½?skip the embed step. ONLY if this poster was rendered with the optional **Inter** override, also run the html2pptx Inter embed (its own `scripts/font_embedder.py`) so the .pptx ships the font."
 
 The skill extracts the DOM via Playwright, builds a native `.pptx` (editable text + native shapes + images, NOT a PNG-in-slide), renders a soffice sanity PNG, and runs a Claude-vision fidelity audit (on by default). **Run it with `--outdir <outdir>/assets/_pptx_build/`** so every html2pptx artifact (DOM json, sanity PNGs, the soffice render) stays under `assets/`, then promote the deck to the deliverable top level: `cp <outdir>/assets/_pptx_build/poster.pptx <outdir>/poster.pptx`. Final deliverable: `<outdir>/poster.pptx` (bundle root); build artifacts isolated under `<outdir>/assets/_pptx_build/`. Because it reads the **already-baked** `poster.html` from Step 6, the pptx carries the same expanded layout as the PDF/PNG.
 
 **Ordering.** html2pptx runs **after** Step 6's render+bake so it reads the expanded `poster.html`. Its soffice sanity render writes into `<outdir>/assets/_pptx_build/`, so it never clobbers the bundle-root `poster.pdf` / `poster.png` (which is what made this safe to run last).
 
-**Non-fatal.** If html2pptx genuinely cannot run (e.g. `soffice` or a Python dep missing), record a clear **WARNING** and **CONTINUE** to Step 7.5 â€?a pptx failure must never block the core `poster.{html,pdf,png}`. Report the warning explicitly; never drop the pptx silently.
+**Non-fatal.** If html2pptx genuinely cannot run (e.g. `soffice` or a Python dep missing), record a clear **WARNING** and **CONTINUE** to Step 7.5 ï¿½?a pptx failure must never block the core `poster.{html,pdf,png}`. Report the warning explicitly; never drop the pptx silently.
 
-### Step 7.5 â€?Final deliverable check (MANDATORY before declaring done)
+### Step 7.5 ï¿½?Final deliverable check (MANDATORY before declaring done)
 
 ```bash
 python ~/.workbuddy/skills/paper2poster/scripts/check_poster.py deliverables <outdir>
@@ -440,74 +452,74 @@ python ~/.workbuddy/skills/paper2poster/scripts/check_poster.py deliverables <ou
 Deterministic gate, not advisory. It exits `0` only when **all four** core artifacts exist in `<outdir>` and meet minimum size thresholds:
 
 - `paper_spec.md` (from paper2assets)
-- `poster.html` (from Step 3â€?)
+- `poster.html` (from Step 3ï¿½?)
 - `poster.pdf` (from Step 6)
 - `poster.png` (from Step 6)
 
-If exit is non-zero, the command prints which files are missing and the exact command to produce them â€?run those, then re-run this check. Loop until exit `0`. Then confirm `poster.pptx` (Step 7) is also present; if html2pptx warned out, say so in the report instead of silently dropping it.
+If exit is non-zero, the command prints which files are missing and the exact command to produce them ï¿½?run those, then re-run this check. Loop until exit `0`. Then confirm `poster.pptx` (Step 7) is also present; if html2pptx warned out, say so in the report instead of silently dropping it.
 
-**FAILURE MODE this gate catches** â€?models routinely exit after Step 4's fill loop passes its `slack`/`polish` hard gates and skip the render steps entirely, rationalizing "all gates passed = task done." This is wrong: the fill loop only verifies the HTML; it does NOT produce or verify the PPTX/PDF/PNG. The same Claude model, on the same paper, will sometimes run Steps 6â€? and sometimes skip them â€?there is no warning sign you can rely on internally. **Do not declare done without running this check.**
+**FAILURE MODE this gate catches** ï¿½?models routinely exit after Step 4's fill loop passes its `slack`/`polish` hard gates and skip the render steps entirely, rationalizing "all gates passed = task done." This is wrong: the fill loop only verifies the HTML; it does NOT produce or verify the PPTX/PDF/PNG. The same Claude model, on the same paper, will sometimes run Steps 6ï¿½? and sometimes skip them ï¿½?there is no warning sign you can rely on internally. **Do not declare done without running this check.**
 
-### Step 8 â€?Report
+### Step 8 ï¿½?Report
 
 Tell the user the absolute paths of all artifacts:
 
 - `<outdir>/assets/meta/paper_spec.md` (from paper2assets)
 - `<outdir>/poster.html`
-- `<outdir>/poster.pptx` (editable PowerPoint, from Step 7 â€?note it explicitly if html2pptx warned out)
+- `<outdir>/poster.pptx` (editable PowerPoint, from Step 7 ï¿½?note it explicitly if html2pptx warned out)
 - `<outdir>/poster.pdf`
 - `<outdir>/poster.png`
-- `<outdir>/assets/audio/` (generated here by Step 5's `generate_audio.py` from `narration.json`; absent if edge-tts/network unavailable â€?Listen buttons then no-op)
+- `<outdir>/assets/audio/` (generated here by Step 5's `generate_audio.py` from `narration.json`; absent if edge-tts/network unavailable ï¿½?Listen buttons then no-op)
 
-**Do not dump file contents into the chat** â€?the spec and HTML are long, and the PPTX/PDF/PNG are binaries. For the PNG, inline-display if the chat surface supports image attachments. Mention that the user can open `poster.html` directly in a browser; the poster auto-fits the browser window (no scrolling needed). Press `s` for fullscreen, `a` to toggle Listen buttons, `d` to toggle a debug overlay.
+**Do not dump file contents into the chat** ï¿½?the spec and HTML are long, and the PPTX/PDF/PNG are binaries. For the PNG, inline-display if the chat surface supports image attachments. Mention that the user can open `poster.html` directly in a browser; the poster auto-fits the browser window (no scrolling needed). Press `s` for fullscreen, `a` to toggle Listen buttons, `d` to toggle a debug overlay.
 
-The full chain is `paper2assets` â†?`paper2poster` (which now ends by producing the editable `.pptx` via the bundled html2pptx); each skill is still invokable on its own from a Claude session against the previous stage's `<outdir>/`.
+The full chain is `paper2assets` ï¿½?`paper2poster` (which now ends by producing the editable `.pptx` via the bundled html2pptx); each skill is still invokable on its own from a Claude session against the previous stage's `<outdir>/`.
 
 ## Tools
 
 ```
 scripts/
-â”œâ”€â”€ check_poster.py      â†?CLI: slack / preflight / polish / verify-final / deliverables
-â”œâ”€â”€ render_poster.py     â†?CLI: print-emulated PDF + scaled PNG thumbnail (mirrors bundled fonts)
-â”œâ”€â”€ generate_audio.py    â†?CLI: narration.json â†?assets/audio/<id>.mp3 (free Edge TTS default; --provider azure)
-â””â”€â”€ utils/               â†?internal modules (canvas parser, Playwright + settle, etc.)
+â”œâ”€â”€ check_poster.py      ï¿½?CLI: slack / preflight / polish / verify-final / deliverables
+â”œâ”€â”€ render_poster.py     ï¿½?CLI: print-emulated PDF + scaled PNG thumbnail (mirrors bundled fonts)
+â”œâ”€â”€ generate_audio.py    ï¿½?CLI: narration.json ï¿½?assets/audio/<id>.mp3 (free Edge TTS default; --provider azure)
+â””â”€â”€ utils/               ï¿½?internal modules (canvas parser, Playwright + settle, etc.)
 ```
 
-`check_poster.py slack` and `render_poster.py` both read `@page { size: W H }` from the input HTML â€?the templates set this â€?so the canvas size doesn't need to be passed on the command line.
+`check_poster.py slack` and `render_poster.py` both read `@page { size: W H }` from the input HTML ï¿½?the templates set this ï¿½?so the canvas size doesn't need to be passed on the command line.
 
 Note: figure-cropping tools (`crop_figure.py`, `extract_pdf.py`, `fetch_logos.py`, `make_qr.py`) live in the **paper2assets** skill. If you need a one-off visual `box` re-crop on a figure paper2assets' deterministic chain couldn't handle, invoke them via `~/.workbuddy/skills/paper2assets/scripts/` (see Step 2.5).
 
 ## Templates
 
-All templates live in `assets/`. They share placeholder tokens, audio markup, keybinding scripts, design tokens; only the canvas size + column grid differ across orientation/layout. Step 3 routes between them by orientation trigger (`POSTER_ORIENTATION=portrait` â†?portrait; else landscape â€?DO NOT auto-detect orientation from figure AR) and then Method-figure shape (landscape: AR â‰?2.5 OR `{column=full}` â†?`full`, else `half`; portrait: AR â‰?1.2 OR `{column=full}` â†?`full`, else `half`).
+All templates live in `assets/`. They share placeholder tokens, audio markup, keybinding scripts, design tokens; only the canvas size + column grid differ across orientation/layout. Step 3 routes between them by orientation trigger (`POSTER_ORIENTATION=portrait` ï¿½?portrait; else landscape ï¿½?DO NOT auto-detect orientation from figure AR) and then Method-figure shape (landscape: AR ï¿½?2.5 OR `{column=full}` ï¿½?`full`, else `half`; portrait: AR ï¿½?1.2 OR `{column=full}` ï¿½?`full`, else `half`).
 
 **Landscape (60Ã—36in, 5:3):**
-- `poster_half_<style>.html` â€?**4-column grid** for half-width Method figures. Default landscape layout; Method is a half-width card alongside the other sections.
-- `poster_full_<style>.html` â€?**4-column outer grid with the middle two columns merged into `.mid-wide`** for wide / full-width Method figures (AR â‰?2.5 OR `{column=full}`). The `.mid-wide` block spans grid columns 2â€? and stacks Method (full mid-width, with the wide-figure floor enforcing â‰?75% of available width) above a 2-col `.mid-sub` carrying Dataset + Key Result.
+- `poster_half_<style>.html` ï¿½?**4-column grid** for half-width Method figures. Default landscape layout; Method is a half-width card alongside the other sections.
+- `poster_full_<style>.html` ï¿½?**4-column outer grid with the middle two columns merged into `.mid-wide`** for wide / full-width Method figures (AR ï¿½?2.5 OR `{column=full}`). The `.mid-wide` block spans grid columns 2ï¿½? and stacks Method (full mid-width, with the wide-figure floor enforcing ï¿½?75% of available width) above a 2-col `.mid-sub` carrying Dataset + Key Result.
 
 **Portrait (33.1Ã—46.8in A0, 0.708):**
-- `layouts_portrait/half.html` â€?**2-column grid** for tall / moderate-AR Method figures. Default portrait layout; LEFT col carries Problem / Motivation / Method (with figure); RIGHT col carries Dataset / Key Results / Ablation / Headline Numbers / Takeaway.
-- `layouts_portrait/full.html` â€?**5-band magazine sandwich layout** for wide Method figures (AR â‰?1.2 OR `{column=full}`). Reading order: titlebar â†?Band 1 (Problem | Motivation, 2-col equal) â†?Band 2 (.method-hero centerpiece, full-width: vertical-rotated SIDE-TITLE on left + bullets + wide-figure on right â€?magazine editorial style) â†?Band 3 (Key Results 1.5fr | Ablation 1fr | Headline Numbers 1fr, asymmetric 3-col data band) â†?Band 4 (Takeaway full-width punchline). The Method centerpiece sits in the visual middle, not at the top â€?this matches poster narrative convention (Problem/Motivation set up the WHY, then Method delivers the HOW, then Results/Numbers pay off, then Takeaway lands the WIN). The bottom 3-col band is intentionally unbalanced (1.5/1/1) so the data display reads as hierarchy, not parallelism. Takeaway gets the full canvas width â€?the eye lands on it as the closing word. The bullets cell inside the method-hero is wrapped in a **pseudo-section** (`<div class="section method-text" data-section="method-text">`) that's invisible to viewers but measured by `slack.py` â€?when the figure stretches the row taller than the bullets need, the staged-fill loop sees `method-text SPARSE` and the LLM expands bullets until the cell fills, unbinding the "narrow bullets cell next to tall figure â†?whitespace" trap. Optional sections (Contribution, Dataset/Benchmark) are NOT in the default layout â€?see the inline-commented recipe at the bottom of the template body to paste them in only when the paper genuinely needs them.
+- `layouts_portrait/half.html` ï¿½?**2-column grid** for tall / moderate-AR Method figures. Default portrait layout; LEFT col carries Problem / Motivation / Method (with figure); RIGHT col carries Dataset / Key Results / Ablation / Headline Numbers / Takeaway.
+- `layouts_portrait/full.html` ï¿½?**5-band magazine sandwich layout** for wide Method figures (AR ï¿½?1.2 OR `{column=full}`). Reading order: titlebar ï¿½?Band 1 (Problem | Motivation, 2-col equal) ï¿½?Band 2 (.method-hero centerpiece, full-width: vertical-rotated SIDE-TITLE on left + bullets + wide-figure on right ï¿½?magazine editorial style) ï¿½?Band 3 (Key Results 1.5fr | Ablation 1fr | Headline Numbers 1fr, asymmetric 3-col data band) ï¿½?Band 4 (Takeaway full-width punchline). The Method centerpiece sits in the visual middle, not at the top ï¿½?this matches poster narrative convention (Problem/Motivation set up the WHY, then Method delivers the HOW, then Results/Numbers pay off, then Takeaway lands the WIN). The bottom 3-col band is intentionally unbalanced (1.5/1/1) so the data display reads as hierarchy, not parallelism. Takeaway gets the full canvas width ï¿½?the eye lands on it as the closing word. The bullets cell inside the method-hero is wrapped in a **pseudo-section** (`<div class="section method-text" data-section="method-text">`) that's invisible to viewers but measured by `slack.py` ï¿½?when the figure stretches the row taller than the bullets need, the staged-fill loop sees `method-text SPARSE` and the LLM expands bullets until the cell fills, unbinding the "narrow bullets cell next to tall figure ï¿½?whitespace" trap. Optional sections (Contribution, Dataset/Benchmark) are NOT in the default layout ï¿½?see the inline-commented recipe at the bottom of the template body to paste them in only when the paper genuinely needs them.
 
 If you add a template: keep it venue-neutral, preserve the `{{...}}` placeholder vocabulary, preserve `data-section` attributes and `PLAYLIST` markup, and keep the canvas / `cqw` / `aspect-ratio` lock intact for that orientation.
 
-Bundled in `assets/fonts/`: Inter Regular / SemiBold / Bold / ExtraBold in both `.woff2` (web) and `.ttf` (pptx-embedding) formats â€?the HTML templates' `@font-face` rules use the relative `fonts/Inter-*.woff2` path, and `render_poster.py` mirrors them into each `<outdir>/fonts/` so the deliverable is self-contained.
+Bundled in `assets/fonts/`: Inter Regular / SemiBold / Bold / ExtraBold in both `.woff2` (web) and `.ttf` (pptx-embedding) formats ï¿½?the HTML templates' `@font-face` rules use the relative `fonts/Inter-*.woff2` path, and `render_poster.py` mirrors them into each `<outdir>/fonts/` so the deliverable is self-contained.
 
 ## Content guidelines
 
 - **Section semantics:**
-  - **Problem** â€?the concrete gap or failure mode the paper addresses.
-  - **Motivation** â€?why this matters now; what's broken about prior approaches.
-  - **Contribution** â€?the paper's explicit contributions (usually the bulleted "we contribute" list from the intro): the new artifact, dataset, algorithm, theorem, or insight.
-  - **Method** â€?how the proposed approach works (the technical realization of the contribution).
-  - **Key equation / Formulation** â€?the paper's core formula(s): the objective, loss, governing equation, or the one expression that defines the method. **Include at least one key equation on every poster that has meaningful math** (most ML / theory papers do), rendered with the `equation` widget (MathJax typesets `$â€?` / `$$â€?$`). The model chooses placement â€?fold it into **Method**, or give it its own compact **Formulation** card when the math is central. Pull the LaTeX from `paper_spec.md` (Method's `Key equation` subfield, produced by paper2assets) / `text.txt`; never fabricate. Skip only for genuinely formula-free papers (pure systems / empirical).
-  - **Dataset / Benchmark** â€?the datasets, splits, scale, and any new benchmark the paper introduces. If the paper just consumes standard public benchmarks without elaboration, this section is optional. If the paper *introduces* a dataset or benchmark, treat it as a first-class contribution.
-  - **Key Result** â€?the headline experimental finding and qualitative takeaway.
-  - **Ablation Study** â€?which components/design choices matter, quantified. Top 1â€? rows (hard cap 3). If the paper has no ablation, state so and omit numbers.
-  - **Headline Numbers** â€?the 1â€? standout quantitative results. The numbers themselves are the visual; no figure. **MUST render as the template's hero+supporting layout** â€?a `<div class="headline-hero">` containing `.hero-val` + `.hero-label` + `.hero-note` AND a `<div class="supporting">` row holding **at minimum 2** `.stat-mini` tiles (each with `.val` + `.lbl`). Bullets here OR a solo hero without supporting tiles = poster failure mode (caught by polish gates HEADLINE/HERO and HEADLINE/SUPPORTING).
-  - **Takeaway** â€?the one-sentence "so what".
+  - **Problem** ï¿½?the concrete gap or failure mode the paper addresses.
+  - **Motivation** ï¿½?why this matters now; what's broken about prior approaches.
+  - **Contribution** ï¿½?the paper's explicit contributions (usually the bulleted "we contribute" list from the intro): the new artifact, dataset, algorithm, theorem, or insight.
+  - **Method** ï¿½?how the proposed approach works (the technical realization of the contribution).
+  - **Key equation / Formulation** ï¿½?the paper's core formula(s): the objective, loss, governing equation, or the one expression that defines the method. **Include at least one key equation on every poster that has meaningful math** (most ML / theory papers do), rendered with the `equation` widget (MathJax typesets `$ï¿½?` / `$$ï¿½?$`). The model chooses placement ï¿½?fold it into **Method**, or give it its own compact **Formulation** card when the math is central. Pull the LaTeX from `paper_spec.md` (Method's `Key equation` subfield, produced by paper2assets) / `text.txt`; never fabricate. Skip only for genuinely formula-free papers (pure systems / empirical).
+  - **Dataset / Benchmark** ï¿½?the datasets, splits, scale, and any new benchmark the paper introduces. If the paper just consumes standard public benchmarks without elaboration, this section is optional. If the paper *introduces* a dataset or benchmark, treat it as a first-class contribution.
+  - **Key Result** ï¿½?the headline experimental finding and qualitative takeaway.
+  - **Ablation Study** ï¿½?which components/design choices matter, quantified. Top 1ï¿½? rows (hard cap 3). If the paper has no ablation, state so and omit numbers.
+  - **Headline Numbers** ï¿½?the 1ï¿½? standout quantitative results. The numbers themselves are the visual; no figure. **MUST render as the template's hero+supporting layout** ï¿½?a `<div class="headline-hero">` containing `.hero-val` + `.hero-label` + `.hero-note` AND a `<div class="supporting">` row holding **at minimum 2** `.stat-mini` tiles (each with `.val` + `.lbl`). Bullets here OR a solo hero without supporting tiles = poster failure mode (caught by polish gates HEADLINE/HERO and HEADLINE/SUPPORTING).
+  - **Takeaway** ï¿½?the one-sentence "so what".
 - **Tables vs figures:** tables (from `captions.json`) are not eligible as Method figures (only PNGs in `figures/`). Their numbers flow into `Headline Numbers` and `Key Result` necessary text.
-- **Every kept figure carries a one-line caption.** A `<figure>` (Method, Motivation, or any secondary figure injected during fill) must always have a non-empty `<figcaption>` drawn from `captions.json` â€?a bare, unlabeled figure is a defect (`check_poster.py preflight` warns on empty captions). If a figure has no caption source, either write a short factual one-liner from the paper text or drop the figure; never ship it caption-less.
+- **Every kept figure carries a one-line caption.** A `<figure>` (Method, Motivation, or any secondary figure injected during fill) must always have a non-empty `<figcaption>` drawn from `captions.json` ï¿½?a bare, unlabeled figure is a defect (`check_poster.py preflight` warns on empty captions). If a figure has no caption source, either write a short factual one-liner from the paper text or drop the figure; never ship it caption-less.
 - **Prefer 3+ column tables.** A two-column `Method | Metric` table stretched to the section width reads sparse (wide empty gutter). When the paper reports more than one metric, give the table a column per metric so it holds more and fills its width. See `content_patterns.md` P12.
 - **No fabrication.** Every number, claim, and figure caption must trace to `text.txt` (produced by paper2assets) or `figures.json`. When uncertain, prefer omission to invention.
 
@@ -519,38 +531,38 @@ Bundled in `assets/fonts/`: Inter Regular / SemiBold / Bold / ExtraBold in both 
 | `figures.json` is empty | Proceed; Method's figure is `none`. |
 | Selected figure file missing on disk | Treat as `none`. |
 | Method figure `none` | Use `<orientation>_half_<style>.html`, remove the Method `<figure>` block. |
-| `POSTER_ORIENTATION=portrait` set (the ONLY trigger â€?do not auto-flip on figure AR) | Use `layouts_portrait/{full,half}.html` â€?A0 portrait canvas (33.1Ã—46.8 in), 2-col body. |
-| Method figure AR â‰?2.5 in landscape (horizontally wide) | Use `poster_full_<style>.html` â€?wide pipeline / architecture figures get the merged-middle layout regardless of source-column attribute. |
-| Method figure AR â‰?1.2 in portrait | Use `layouts_portrait/full.html` â€?5-band magazine sandwich. Reading order: Problem\|Motivation (top 2-col) â†?`.method-hero` centerpiece (full-width, vertical-rotated SIDE-TITLE on left + bullets + wide figure on right) â†?Key Results\|Ablation\|Headline (asymmetric 3-col 1.5/1/1) â†?Takeaway full-width punchline. Bullets cell is a pseudo-section that auto-fills the row height. |
+| `POSTER_ORIENTATION=portrait` set (the ONLY trigger ï¿½?do not auto-flip on figure AR) | Use `layouts_portrait/{full,half}.html` ï¿½?A0 portrait canvas (33.1Ã—46.8 in), 2-col body. |
+| Method figure AR ï¿½?2.5 in landscape (horizontally wide) | Use `poster_full_<style>.html` ï¿½?wide pipeline / architecture figures get the merged-middle layout regardless of source-column attribute. |
+| Method figure AR ï¿½?1.2 in portrait | Use `layouts_portrait/full.html` ï¿½?5-band magazine sandwich. Reading order: Problem\|Motivation (top 2-col) ï¿½?`.method-hero` centerpiece (full-width, vertical-rotated SIDE-TITLE on left + bullets + wide figure on right) ï¿½?Key Results\|Ablation\|Headline (asymmetric 3-col 1.5/1/1) ï¿½?Takeaway full-width punchline. Bullets cell is a pseudo-section that auto-fills the row height. |
 | Method figure `{column=full}` in landscape | Use `poster_full_<style>.html` (merged-middle layout). |
 | Method figure `{column=full}` in portrait | Use `layouts_portrait/full.html` (5-band magazine sandwich, Method centerpiece in middle with vertical-rotated SIDE-TITLE). |
 | Method figure `{column=half}` and AR < 2.5 in landscape | Use `poster_half_<style>.html`. |
-| Method figure AR < 1.2 in portrait (tall) | Use `layouts_portrait/half.html` â€?figure in a single col with text above, no hero band. |
-| `<outdir>/assets/logos/` empty | Remove any `<img class="logo">` element whose institute didn't resolve â€?don't leave a literal `{{LOGO_N}}` token in `src`. |
+| Method figure AR < 1.2 in portrait (tall) | Use `layouts_portrait/half.html` ï¿½?figure in a single col with text above, no hero band. |
+| `<outdir>/assets/logos/` empty | Remove any `<img class="logo">` element whose institute didn't resolve ï¿½?don't leave a literal `{{LOGO_N}}` token in `src`. |
 | `<outdir>/assets/qr/code.png` missing | Remove the code QR `<img>` from the title bar (paper QR alone is fine). |
-| Fewer than 4 headline numbers | Remove unused `.stat` divs (keep the â‰? supporting tile floor). |
+| Fewer than 4 headline numbers | Remove unused `.stat` divs (keep the ï¿½? supporting tile floor). |
 | No clean baseline-vs-ours comparison | Replace `<table class="results">` with a `<p>` carrying Key Result **Necessary**. |
 | `poster.html` already exists | Overwrite without prompting. |
 | Paper has no ablation study | One-line `Necessary` noting no ablations; empty `Additional`; remove the Ablation Study `.section` block and drop `"ablation-study"` from `PLAYLIST`. |
-| Paper just uses standard public benchmarks (no new dataset) | Dataset / Benchmark is optional. Default = omit the `.section` block at lean-render time; the staged-fill loop may add a one-line "Standard benchmarks: â€? card if a column has slack. Drop `"dataset-benchmark"` from `PLAYLIST` if the block is omitted. |
+| Paper just uses standard public benchmarks (no new dataset) | Dataset / Benchmark is optional. Default = omit the `.section` block at lean-render time; the staged-fill loop may add a one-line "Standard benchmarks: ï¿½? card if a column has slack. Drop `"dataset-benchmark"` from `PLAYLIST` if the block is omitted. |
 | Paper *introduces* a new dataset or benchmark | Render the Dataset / Benchmark section in the initial pass (treat as first-class, like Method); keep `"dataset-benchmark"` in `PLAYLIST`. |
 
 ## Key rules
 
 - **Never invent numbers.** Pull from `text.txt` (paper2assets' output). Every stat, delta, and table cell must trace back to the spec.
-- **Never emit the full `poster.html` through your output channel.** It's ~100 KB; a full-file `Write` (or any inline emission of the whole template) overflows the per-turn output-token cap (`CLAUDE_CODE_MAX_OUTPUT_TOKENS`, default 32000) and aborts the run â€?the single most common way a smaller model fails on a large poster. Generate it indirectly (shell `cp` the template + surgical `Edit`s for placeholders, or a `build_poster.py` generator â€?see Step 3), and keep every fill-loop change a partial `Edit`, never a full rewrite.
-- **Never re-`Read` the whole `poster.html` during the fill loop (INPUT-context twin of the rule above).** At ~100 KB, re-reading it each round floods a smaller model's context window â†?**auto-compaction** â†?lost fill state â†?the loop thrashes and never converges. Work from the `slack` report â€?it now prints an `EDIT TARGETS` block with the verbatim source of every off-band section, so lift your `Edit` `old_string` straight from there and never re-read the whole file. See `staged_fill.md` rule 6.
-- **Lean render first, measured fill second.** Don't guess at fit during placeholder substitution. Render the core sections' `Necessary` only â€?Problem, Motivation, Method (**with the key equation**), Key Result, Headline Numbers, Takeaway â€?then let `check_poster.py slack` decide what to add. **Contribution is dropped by default** (keep only when the paper's headline novelty IS its contribution list). **Ablation Study, Dataset / Benchmark, and a filler Takeaway are deprioritized** â€?render only when they carry real first-class content (Dataset only when the paper *introduces* one; Ablation only with real ablation rows). The fill loop reaches for the **key equation, real numbers, the Method figure, and secondary/qualitative figures** before Ablation, Dataset, or padded prose â€?and before resurrecting Contribution.
-- **Target â‰? figures per poster.** Method alone leaves the right-side empirical story as a prose-and-numbers wall. Step 2 picks a secondary figure whenever the paper has one â€?the eye needs at least one *empirical* visual beyond the Method diagram. 1-figure posters are acceptable only when no remaining figure carries real signal (rare).
-- **Include the key equation.** Every poster for a paper with meaningful math MUST show at least one key equation/formula (objective, loss, or governing expression) via the `equation` widget â€?integrated into Method or as a compact Formulation card. Rendering zero equations for an equation-driven paper is a quality failure (the single most common gap vs author GT). Pull the LaTeX from the spec / `text.txt`; never invent symbols.
-- **No contentless section.** A section that would render with no real content is **omitted, not shown empty** â€?never ship a heading over a placeholder or a lone "N/A". This is the flip side of the FULL fill gate: deprioritized sections (Ablation, a filler Takeaway, Dataset when not introduced) are dropped rather than padded. Every kept section must carry genuine, paper-specific content.
-- **Strict per-section fit gate.** Stop the staged-fill loop only when **every** section is `FULL` (fullRatio 0.90â€?.00) **and every card figure fills 90â€?00% of its box on at least one axis** (`polish` reports zero `FIG/NARROW`). There is **no per-column SPARSE allowance** â€?a `SPARSE` card is not done, it is a card you have not finished filling.
-- **Fill-loop pass â‰?task done.** Passing the slack/polish gates means the HTML is well-laid-out â€?it does NOT mean the deliverables are produced. Step 6 (PDF/PNG render) and Step 7 (html2pptx) are separate steps and are routinely skipped by models who mistake "fill loop converged" for "task done." The `check_poster.py deliverables` gate in Step 7.5 is non-negotiable: run it before reporting, loop until exit 0.
-- **`.grow` cards are gated, not exempted.** A `.grow` card stretched by flexbox to absorb leftover column space can read as FULL in old tooling yet still show a visible band of trailing whitespace. Apply the same fullRatio gate to it â€?fill it (Additional / extra bullet) or shift content from its non-grow siblings instead of leaving the whitespace.
-- **Multi-tile content uniformity (RECURRING DEFECT â€?read carefully).** Whenever a section emits a horizontal row of small stat / number tiles, every tile in the row MUST share the same visual shape â€?same line count for the big number, same line count for the label. Mismatched heights look broken: one tile's value sits high while its neighbor sits low, or the labels show a 2-line / 3-line zig-zag baseline. Applies broadly â€?not just `.headline-hero .supporting` `.stat-mini` tiles, but also `.p-stat-strip` cells, any ad-hoc number-card row in `Motivation` / `Method` / `Key Results`, and any future tile widget.
-  - **The template now structurally backstops this**: `.headline-hero .supporting` uses `align-items: flex-start` (all `.val` numbers top-align so they always sit at the same height regardless of label height) and `.stat-mini .lbl` carries `min-height: 2.4em` (every label reserves 2 lines, so a 1-line and a 2-line label occupy identical vertical space). This means a label that wraps can no longer shove its value up out of line. **But the CSS only reserves the slot â€?you must still keep every label â‰?2 lines** or a 3-line label overflows the reserved 2-line slot and the row breaks again. Do NOT rely on the CSS as an excuse to write uneven labels.
-  - **Big numbers**: either ALL tiles fit on one line OR ALL tiles wrap to two. Never mix 1-line and 2-line within the same row. Fix by shortening the longest tile's value (e.g. `âˆ?4% FLOPs Î”` â†?`âˆ?4%`), or by rephrasing short tiles to wrap too â€?usually the first option.
-  - **Labels**: keep all tiles in a row to the SAME line count, **â‰?2 lines each** (the reserved slot is exactly 2 lines). Target either all-1-line (short tokens: `pts`, `params`, `mAP`) or all-2-line, never a mix that reads as a zig-zag. If one label naturally goes to 3 lines while siblings stay at 2, shorten the long one (drop adjectives, prefer abbreviations, use unit shortcuts like `M` / `B`, `acc` for accuracy) â€?do NOT pad the shorter ones.
-  - **Check before declaring done.** Visually scan every multi-tile row in the rendered poster. If values are at different y-positions or labels show a stair-step baseline, the row fails uniformity â€?fix the content before signing off.
+- **Never emit the full `poster.html` through your output channel.** It's ~100 KB; a full-file `Write` (or any inline emission of the whole template) overflows the per-turn output-token cap (`CLAUDE_CODE_MAX_OUTPUT_TOKENS`, default 32000) and aborts the run ï¿½?the single most common way a smaller model fails on a large poster. Generate it indirectly (shell `cp` the template + surgical `Edit`s for placeholders, or a `build_poster.py` generator ï¿½?see Step 3), and keep every fill-loop change a partial `Edit`, never a full rewrite.
+- **Never re-`Read` the whole `poster.html` during the fill loop (INPUT-context twin of the rule above).** At ~100 KB, re-reading it each round floods a smaller model's context window ï¿½?**auto-compaction** ï¿½?lost fill state ï¿½?the loop thrashes and never converges. Work from the `slack` report ï¿½?it now prints an `EDIT TARGETS` block with the verbatim source of every off-band section, so lift your `Edit` `old_string` straight from there and never re-read the whole file. See `staged_fill.md` rule 6.
+- **Lean render first, measured fill second.** Don't guess at fit during placeholder substitution. Render the core sections' `Necessary` only ï¿½?Problem, Motivation, Method (**with the key equation**), Key Result, Headline Numbers, Takeaway ï¿½?then let `check_poster.py slack` decide what to add. **Contribution is dropped by default** (keep only when the paper's headline novelty IS its contribution list). **Ablation Study, Dataset / Benchmark, and a filler Takeaway are deprioritized** ï¿½?render only when they carry real first-class content (Dataset only when the paper *introduces* one; Ablation only with real ablation rows). The fill loop reaches for the **key equation, real numbers, the Method figure, and secondary/qualitative figures** before Ablation, Dataset, or padded prose ï¿½?and before resurrecting Contribution.
+- **Target ï¿½? figures per poster.** Method alone leaves the right-side empirical story as a prose-and-numbers wall. Step 2 picks a secondary figure whenever the paper has one ï¿½?the eye needs at least one *empirical* visual beyond the Method diagram. 1-figure posters are acceptable only when no remaining figure carries real signal (rare).
+- **Include the key equation.** Every poster for a paper with meaningful math MUST show at least one key equation/formula (objective, loss, or governing expression) via the `equation` widget ï¿½?integrated into Method or as a compact Formulation card. Rendering zero equations for an equation-driven paper is a quality failure (the single most common gap vs author GT). Pull the LaTeX from the spec / `text.txt`; never invent symbols.
+- **No contentless section.** A section that would render with no real content is **omitted, not shown empty** ï¿½?never ship a heading over a placeholder or a lone "N/A". This is the flip side of the FULL fill gate: deprioritized sections (Ablation, a filler Takeaway, Dataset when not introduced) are dropped rather than padded. Every kept section must carry genuine, paper-specific content.
+- **Strict per-section fit gate.** Stop the staged-fill loop only when **every** section is `FULL` (fullRatio 0.90ï¿½?.00) **and every card figure fills 90ï¿½?00% of its box on at least one axis** (`polish` reports zero `FIG/NARROW`). There is **no per-column SPARSE allowance** ï¿½?a `SPARSE` card is not done, it is a card you have not finished filling.
+- **Fill-loop pass ï¿½?task done.** Passing the slack/polish gates means the HTML is well-laid-out ï¿½?it does NOT mean the deliverables are produced. Step 6 (PDF/PNG render) and Step 7 (html2pptx) are separate steps and are routinely skipped by models who mistake "fill loop converged" for "task done." The `check_poster.py deliverables` gate in Step 7.5 is non-negotiable: run it before reporting, loop until exit 0.
+- **`.grow` cards are gated, not exempted.** A `.grow` card stretched by flexbox to absorb leftover column space can read as FULL in old tooling yet still show a visible band of trailing whitespace. Apply the same fullRatio gate to it ï¿½?fill it (Additional / extra bullet) or shift content from its non-grow siblings instead of leaving the whitespace.
+- **Multi-tile content uniformity (RECURRING DEFECT ï¿½?read carefully).** Whenever a section emits a horizontal row of small stat / number tiles, every tile in the row MUST share the same visual shape ï¿½?same line count for the big number, same line count for the label. Mismatched heights look broken: one tile's value sits high while its neighbor sits low, or the labels show a 2-line / 3-line zig-zag baseline. Applies broadly ï¿½?not just `.headline-hero .supporting` `.stat-mini` tiles, but also `.p-stat-strip` cells, any ad-hoc number-card row in `Motivation` / `Method` / `Key Results`, and any future tile widget.
+  - **The template now structurally backstops this**: `.headline-hero .supporting` uses `align-items: flex-start` (all `.val` numbers top-align so they always sit at the same height regardless of label height) and `.stat-mini .lbl` carries `min-height: 2.4em` (every label reserves 2 lines, so a 1-line and a 2-line label occupy identical vertical space). This means a label that wraps can no longer shove its value up out of line. **But the CSS only reserves the slot ï¿½?you must still keep every label ï¿½?2 lines** or a 3-line label overflows the reserved 2-line slot and the row breaks again. Do NOT rely on the CSS as an excuse to write uneven labels.
+  - **Big numbers**: either ALL tiles fit on one line OR ALL tiles wrap to two. Never mix 1-line and 2-line within the same row. Fix by shortening the longest tile's value (e.g. `ï¿½?4% FLOPs Î”` ï¿½?`ï¿½?4%`), or by rephrasing short tiles to wrap too ï¿½?usually the first option.
+  - **Labels**: keep all tiles in a row to the SAME line count, **ï¿½?2 lines each** (the reserved slot is exactly 2 lines). Target either all-1-line (short tokens: `pts`, `params`, `mAP`) or all-2-line, never a mix that reads as a zig-zag. If one label naturally goes to 3 lines while siblings stay at 2, shorten the long one (drop adjectives, prefer abbreviations, use unit shortcuts like `M` / `B`, `acc` for accuracy) ï¿½?do NOT pad the shorter ones.
+  - **Check before declaring done.** Visually scan every multi-tile row in the rendered poster. If values are at different y-positions or labels show a stair-step baseline, the row fails uniformity ï¿½?fix the content before signing off.
 - **Do not edit the canvas lock.** The 60Ã—36in / `cqw` / `aspect-ratio: 5 / 3` rules in both templates are what makes the browser preview, print PDF, and PNG thumbnail look like the same layout at different magnifications.
-- **paper2assets owns the figure-cleanup pipeline (top-check â†?decaption â†?autotrim).** Don't re-run the deterministic chain here â€?it's already done. Step 2.5's visual `box` cut is for residual asymmetric noise only.
+- **paper2assets owns the figure-cleanup pipeline (top-check ï¿½?decaption ï¿½?autotrim).** Don't re-run the deterministic chain here ï¿½?it's already done. Step 2.5's visual `box` cut is for residual asymmetric noise only.

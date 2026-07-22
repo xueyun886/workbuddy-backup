@@ -1,9 +1,12 @@
 ---
 name: pdf-ocr-md
 version: 3.3.0
-description: 当用户需要从 PDF、图片、扫描件中提取文字内容时使用。适合处理合同、发票、报告等文档，尤其是中文扫描件、手机拍照的弯曲页面、歪斜的文档。支持 PP-OCRv6 三档模型 (Tiny/Small/Medium)。
+description: 当用户需要从
+  PDF、图片、扫描件中提取文字内容时使用。适合处理合同、发票、报告等文档，尤其是中文扫描件、手机拍照的弯曲页面、歪斜的文档。支持 PP-OCRv6 三档模型
+  (Tiny/Small/Medium)。
 related_skills:
   - ocr-and-documents
+disable: true
 ---
 
 # pdf-ocr-md — PDF → OCR → 结构化 Markdown

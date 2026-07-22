@@ -1,6 +1,26 @@
 ---
 name: html2pptx
-description: "Convert a rendered HTML page (especially A0 conference posters) into a native PowerPoint .pptx with editable text + native shapes — NOT a PNG-in-slide. Walks the live DOM via headless chromium, extracts BLOCK-level text containers (p/h1-h6/li/td) as TextBoxes with inline <strong>/<em> as mixed-style Runs, <img> as Picture with object-fit:contain respected (plus white-tile decoration under transparent-PNG logos), CSS ::before/::after generated content (e.g. 'So what →' callouts) as inherited-style runs, SVG via cairosvg rasterization, decorative <div>/<section> with bg/border/gradient/box-shadow as Rectangle/RoundedRect with matching fill (solid + linear-gradient + outer shadow). All CSS colors (including color-mix/oklab/color()) normalized via canvas. CSS hyphens:auto becomes OOXML soft hyphens via pyphen. CSS line-height absolute Pt for paragraph spacing. Native OOXML bullets with hanging indent. Optional Claude-vision fidelity auditor runs by default (toggle with `--no-vision-audit`); diffs HTML truth vs PPT render → structured 12-category issue report. Supports both direct API (`ANTHROPIC_AUTH_TOKEN`) and base-URL proxy (`ANTHROPIC_BASE_URL`) auth. Targets ~95% visual fidelity with web fonts installed. TRIGGER when user asks: 'HTML to PPT', 'poster to PowerPoint', 'editable PPT from HTML', 'pptx from html', '1:1 PPT clone', or wants an HTML render shipped as an editable .pptx for a non-developer collaborator."
+description: "Convert a rendered HTML page (especially A0 conference posters)
+  into a native PowerPoint .pptx with editable text + native shapes — NOT a
+  PNG-in-slide. Walks the live DOM via headless chromium, extracts BLOCK-level
+  text containers (p/h1-h6/li/td) as TextBoxes with inline <strong>/<em> as
+  mixed-style Runs, <img> as Picture with object-fit:contain respected (plus
+  white-tile decoration under transparent-PNG logos), CSS ::before/::after
+  generated content (e.g. 'So what →' callouts) as inherited-style runs, SVG via
+  cairosvg rasterization, decorative <div>/<section> with
+  bg/border/gradient/box-shadow as Rectangle/RoundedRect with matching fill
+  (solid + linear-gradient + outer shadow). All CSS colors (including
+  color-mix/oklab/color()) normalized via canvas. CSS hyphens:auto becomes OOXML
+  soft hyphens via pyphen. CSS line-height absolute Pt for paragraph spacing.
+  Native OOXML bullets with hanging indent. Optional Claude-vision fidelity
+  auditor runs by default (toggle with `--no-vision-audit`); diffs HTML truth vs
+  PPT render → structured 12-category issue report. Supports both direct API
+  (`ANTHROPIC_AUTH_TOKEN`) and base-URL proxy (`ANTHROPIC_BASE_URL`) auth.
+  Targets ~95% visual fidelity with web fonts installed. TRIGGER when user asks:
+  'HTML to PPT', 'poster to PowerPoint', 'editable PPT from HTML', 'pptx from
+  html', '1:1 PPT clone', or wants an HTML render shipped as an editable .pptx
+  for a non-developer collaborator."
+disable: true
 ---
 
 # html2pptx

@@ -1,13 +1,23 @@
 ---
 name: nature-experiment-log
-description: "标准化实验日志记录——接收原始材料（图/语音/文字），产出带 YAML frontmatter 的标准日志到 Obsidian vault。需配合飞书 CLI 或手动输入使用。"
+description: 标准化实验日志记录——接收原始材料（图/语音/文字），产出带 YAML frontmatter 的标准日志到 Obsidian
+  vault。需配合飞书 CLI 或手动输入使用。
 version: 1.0.0
 author: 十五 (JL Lab)
 license: MIT
 metadata:
   hermes:
-    tags: [research, experiment, logging, feishu, obsidian, automation]
-    related_skills: [nature-literature-pipeline, feishu-cli-integration]
+    tags:
+      - research
+      - experiment
+      - logging
+      - feishu
+      - obsidian
+      - automation
+    related_skills:
+      - nature-literature-pipeline
+      - feishu-cli-integration
+disable: true
 ---
 
 # experiment-log — 实验日志标准化

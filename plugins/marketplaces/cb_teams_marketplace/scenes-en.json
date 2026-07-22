@@ -1,6 +1,7 @@
 [
   {
     "id": 5,
+    "unified_id": 100,
     "name": "Documentation",
     "icon": "documentation",
     "mode": "working",
@@ -28,6 +29,7 @@
   },
   {
     "id": 29,
+    "unified_id": 101,
     "name": "Financial Services",
     "icon": "financial-services",
     "mode": "working",
@@ -86,6 +88,7 @@
   },
   {
     "id": 42,
+    "unified_id": 102,
     "name": "Visualization",
     "icon": "data-visualization",
     "mode": "working",
@@ -121,6 +124,7 @@
   },
   {
     "id": 3,
+    "unified_id": 103,
     "name": "Deep Research",
     "icon": "deep-research",
     "mode": "working",
@@ -148,6 +152,7 @@
   },
   {
     "id": 27,
+    "unified_id": 104,
     "name": "Video Generation",
     "icon": "video-generation",
     "mode": "working",
@@ -180,6 +185,7 @@
   },
   {
     "id": 1,
+    "unified_id": 105,
     "name": "Slides Creation",
     "icon": "slides-creation",
     "mode": "working",
@@ -207,6 +213,7 @@
   },
   {
     "id": 11,
+    "unified_id": 106,
     "name": "Product",
     "icon": "product-management",
     "mode": "working",
@@ -238,9 +245,9 @@
     ],
     "target": "all"
   },
-
   {
     "id": 16,
+    "unified_id": 107,
     "name": "Daily Development",
     "icon": "daily-development",
     "mode": "coding",
@@ -265,6 +272,7 @@
   },
   {
     "id": 17,
+    "unified_id": 108,
     "name": "Website Development",
     "icon": "website-development",
     "mode": "coding",
@@ -291,6 +299,7 @@
   },
   {
     "id": 18,
+    "unified_id": 109,
     "name": "Agent Apps",
     "icon": "agent-apps",
     "mode": "coding",
@@ -322,6 +331,7 @@
   },
   {
     "id": 19,
+    "unified_id": 110,
     "name": "Skill Development",
     "icon": "skill-development",
     "mode": "coding",
@@ -348,6 +358,7 @@
   },
   {
     "id": 23,
+    "unified_id": 111,
     "name": "CI/CD",
     "icon": "ci-cd",
     "mode": "coding",
@@ -366,6 +377,7 @@
   },
   {
     "id": 25,
+    "unified_id": 112,
     "name": "Documentation",
     "icon": "documentation-tools",
     "mode": "coding",
@@ -384,6 +396,7 @@
   },
   {
     "id": 30,
+    "unified_id": 113,
     "name": "Web Design",
     "icon": "web",
     "mode": "design",
@@ -408,6 +421,7 @@
   },
   {
     "id": 31,
+    "unified_id": 114,
     "name": "Mobile App",
     "icon": "phone",
     "mode": "design",
@@ -432,6 +446,7 @@
   },
   {
     "id": 32,
+    "unified_id": 115,
     "name": "Design System",
     "icon": "paint",
     "mode": "design",
@@ -456,6 +471,7 @@
   },
   {
     "id": 33,
+    "unified_id": 116,
     "name": "Web App",
     "icon": "tools",
     "mode": "design",
@@ -480,6 +496,7 @@
   },
   {
     "id": 34,
+    "unified_id": 117,
     "name": "PPT Design",
     "icon": "slide",
     "mode": "design",
@@ -510,6 +527,7 @@
   },
   {
     "id": 35,
+    "unified_id": 118,
     "name": "Interactive Prototype",
     "icon": "mouse",
     "mode": "design",
@@ -534,6 +552,7 @@
   },
   {
     "id": 36,
+    "unified_id": 119,
     "name": "Brand Design",
     "icon": "mouse",
     "mode": "design",
@@ -558,6 +577,7 @@
   },
   {
     "id": 37,
+    "unified_id": 120,
     "name": "Icons & Illustrations",
     "icon": "mouse",
     "mode": "design",
@@ -582,6 +602,7 @@
   },
   {
     "id": 38,
+    "unified_id": 121,
     "name": "Visual Posters",
     "icon": "mouse",
     "mode": "design",

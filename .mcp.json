@@ -3,7 +3,7 @@
     "connector-proxy": {
       "type": "http",
       "url": "http://127.0.0.1:57149/mcp",
-      "description": "Aggregated proxy containing MCP servers: agent-mail, github, ima-mcp"
+      "description": "Aggregated proxy containing MCP servers: ima-mcp"
     },
     "tavily-search": {
       "type": "http",

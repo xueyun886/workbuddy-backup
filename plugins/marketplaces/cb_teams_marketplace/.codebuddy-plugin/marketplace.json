@@ -625,6 +625,34 @@
         "./plugins/ardot-design-generator/rules/design-rules.md",
         "./plugins/ardot-design-generator/rules/style-guide.md"
       ]
+    },
+    {
+      "name": "sheetagent",
+      "description": "由腾讯文档团队出品的电子表格智能助手，支持通过自然语言创建、查询与编辑 xlsx 表格",
+      "description_en": "An intelligent spreadsheet assistant by Tencent Docs team that supports creating, querying, and editing xlsx files via natural language.",
+      "source": "./plugins/sheetagent",
+      "version": "0.1.0",
+      "category": "productivity",
+      "author": {
+        "name": "Tencent Docs SheetAgent Team",
+        "url": "https://docs.qq.com"
+      },
+      "license": "Proprietary",
+      "keywords": [
+        "spreadsheet",
+        "excel",
+        "xlsx",
+        "tencent-docs",
+        "docs.qq.com"
+      ],
+      "skills": [
+        "./plugins/sheetagent/skills/excel-generation",
+        "./plugins/sheetagent/skills/excel-handler"
+      ],
+      "agents": [
+        "./plugins/sheetagent/agents/sheet-agent.md"
+      ],
+      "hooks": "./plugins/sheetagent/hooks/hooks.json"
     }
   ]
 }

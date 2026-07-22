@@ -1,14 +1,28 @@
 ---
 name: researchwrite
-description: |
-  Proposal-first scientific writing pipeline. Three modes (compose/revise/hybrid) with four-layer QA pipeline. Enforces evidence-before-prose, argument-before-sections, and contracts-before-paragraphs.
+description: >
+  Proposal-first scientific writing pipeline. Three modes
+  (compose/revise/hybrid) with four-layer QA pipeline. Enforces
+  evidence-before-prose, argument-before-sections, and
+  contracts-before-paragraphs.
 version: 1.0.0
 author: 十五 (JL Lab)
 license: MIT
 metadata:
   hermes:
-    tags: [research, writing, proposal, revision, qa, multi-agent]
-    related_skills: [brainstorming, professor, avoid-ai-writing, docx]
+    tags:
+      - research
+      - writing
+      - proposal
+      - revision
+      - qa
+      - multi-agent
+    related_skills:
+      - brainstorming
+      - professor
+      - avoid-ai-writing
+      - docx
+disable: true
 ---
 
 # researchwrite — proposal-first 科研写作 pipeline

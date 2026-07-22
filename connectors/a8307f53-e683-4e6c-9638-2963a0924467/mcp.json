@@ -125,7 +125,8 @@
     },
     "connector:github": {
       "timeout": 600000,
-      "url": "https://api.githubcopilot.com/mcp/"
+      "url": "https://api.githubcopilot.com/mcp/",
+      "disabled": true
     },
     "connector:notion": {
       "url": "https://mcp.notion.com/mcp",
@@ -339,6 +340,12 @@
       "env": {
         "YINGMI_API_KEY": "${YINGMI_API_KEY}"
       },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:jinshuju": {
+      "url": "https://jinshuju.net/mcp",
+      "type": "streamableHttp",
       "timeout": 30000,
       "disabled": true
     }

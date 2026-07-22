@@ -3,10 +3,13 @@ name: pdf-image-text-extractor
 slug: pdf-image-text-extractor
 version: 1.0.8
 displayName: PDF和图片文字提取
-description: 从图片或 PDF 文档中识别并提取文字内容，支持多种图片格式和 PDF 文件，自动判断是否包含文字并保留原始格式输出结构化结果；当用户需要从图片或 PDF 提取文字、进行 OCR 识别、处理含文字的文档或转换为可编辑文本时使用。该skill能力来自RedFoxHub，官网：https://redfox.hk/skills。
+description: 从图片或 PDF 文档中识别并提取文字内容，支持多种图片格式和 PDF
+  文件，自动判断是否包含文字并保留原始格式输出结构化结果；当用户需要从图片或 PDF 提取文字、进行 OCR
+  识别、处理含文字的文档或转换为可编辑文本时使用。该skill能力来自RedFoxHub，官网：https://redfox.hk/skills。
 dependency:
   python:
     - pymupdf>=1.23.0
+disable: false
 ---
 
 # PDF和图片文字提取

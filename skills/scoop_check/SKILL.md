@@ -1,6 +1,13 @@
 ---
 name: scoop-check
-description: Check whether a proposed research novelty (given a problem statement and claimed idea/novelty) overlaps with existing published work. TRIGGER when the user asks to verify research novelty, check if an idea is new, compare a proposed contribution to prior art, do a literature/prior-art search for a specific claim, or assess whether a paper idea has been scooped. DO NOT TRIGGER for general literature reviews unrelated to a specific novelty claim, or for writing related-work sections of an already-validated idea.
+description: Check whether a proposed research novelty (given a problem
+  statement and claimed idea/novelty) overlaps with existing published work.
+  TRIGGER when the user asks to verify research novelty, check if an idea is
+  new, compare a proposed contribution to prior art, do a literature/prior-art
+  search for a specific claim, or assess whether a paper idea has been scooped.
+  DO NOT TRIGGER for general literature reviews unrelated to a specific novelty
+  claim, or for writing related-work sections of an already-validated idea.
+disable: true
 ---
 
 # Scoop Check
@@ -11,101 +18,101 @@ Systematically verify whether a proposed research novelty overlaps with existing
 
 This skill requires exactly **two inputs** from the user:
 
-1. **Research problem** â€?the specific issue, challenge, or gap in knowledge being addressed.
-2. **Novelty** â€?the specific claimed contribution (new method, theorem, dataset, framing, or insight) that distinguishes this work from prior art.
+1. **Research problem** ï¿½?the specific issue, challenge, or gap in knowledge being addressed.
+2. **Novelty** ï¿½?the specific claimed contribution (new method, theorem, dataset, framing, or insight) that distinguishes this work from prior art.
 
-If either input is missing, vague, or conflated (e.g., the "novelty" merely restates the problem), infer the most reasonable interpretation and proceed immediately. Do **not** use `AskUserQuestion` or pause for confirmation at any point â€?always proceed directly through every step.
+If either input is missing, vague, or conflated (e.g., the "novelty" merely restates the problem), infer the most reasonable interpretation and proceed immediately. Do **not** use `AskUserQuestion` or pause for confirmation at any point ï¿½?always proceed directly through every step.
 
 ## Procedure
 
-Execute the steps below in order. At the start of the procedure, use `TaskCreate` to register all seven steps as tasks up front, then mark each as `in_progress` when you begin it and `completed` when you finish. The procedure is long enough that progress tracking is always worth the small overhead â€?without it, it's easy to skip a step (especially the per-step logging in the Important Notes) or lose track of which candidates still need a deep dive.
+Execute the steps below in order. At the start of the procedure, use `TaskCreate` to register all seven steps as tasks up front, then mark each as `in_progress` when you begin it and `completed` when you finish. The procedure is long enough that progress tracking is always worth the small overhead ï¿½?without it, it's easy to skip a step (especially the per-step logging in the Important Notes) or lose track of which candidates still need a deep dive.
 
-### Step 1 â€?Decompose the Novelty
+### Step 1 ï¿½?Decompose the Novelty
 
 Break the claimed **Novelty** into four atomic axes, presented as a labeled list:
 
-- **Problem framing** â€?Task definition, inputs, outputs, and evaluation regime.
-- **Core mechanism** â€?The technical contribution â€?architecture, algorithm, proof technique, or data construction.
-- **Key insight** â€?What makes it work; what prior state-of-the-art lacked.
-- **Application domain** â€?Where it applies and how broadly.
+- **Problem framing** ï¿½?Task definition, inputs, outputs, and evaluation regime.
+- **Core mechanism** ï¿½?The technical contribution ï¿½?architecture, algorithm, proof technique, or data construction.
+- **Key insight** ï¿½?What makes it work; what prior state-of-the-art lacked.
+- **Application domain** ï¿½?Where it applies and how broadly.
 
-### Step 2 â€?Search and Deduplicate
+### Step 2 ï¿½?Search and Deduplicate
 
 Read the **Research problem** and craft three complementary search queries:
 
-- **Query 1 â€?Original-Problem:** restate the original research problem.
+- **Query 1 ï¿½?Original-Problem:** restate the original research problem.
   *Example:* `score-based generative model fast inference`
-- **Query 2 â€?Broad-Domain:** the high-level area, ~3â€? words.
+- **Query 2 ï¿½?Broad-Domain:** the high-level area, ~3ï¿½? words.
   *Example:* `diffusion model sampling efficiency`
-- **Query 3 â€?Method-Signature:** the specific technical move, ~5â€? words.
+- **Query 3 ï¿½?Method-Signature:** the specific technical move, ~5ï¿½? words.
   *Example:* `consistency model knowledge distillation`
 
 Send all three queries to the **`paper-search`** skill (located in `~/.workbuddy/skills/`). `paper-search` runs a unified query across multiple sources and returns structured JSON with title, abstract, and metadata.
 
-Because the three queries hit arXiv as separate process invocations, pace them so adjacent arXiv requests are **â‰?4 s apart** to avoid triggering the rate limit (HTTP 429) that silently zeroes out the connector. `paper-search`'s arXiv module enforces this automatically via a cross-process file lock (`arxiv_search_throttle.lock` in the temp dir), so concurrent/back-to-back queries queue and each request fires â‰?4 s after the previous one â€?you do not need to add manual sleeps, but do not bypass that module by calling arXiv directly. Override the interval only via the `ARXIV_MIN_INTERVAL` env var if needed.
+Because the three queries hit arXiv as separate process invocations, pace them so adjacent arXiv requests are **ï¿½?4 s apart** to avoid triggering the rate limit (HTTP 429) that silently zeroes out the connector. `paper-search`'s arXiv module enforces this automatically via a cross-process file lock (`arxiv_search_throttle.lock` in the temp dir), so concurrent/back-to-back queries queue and each request fires ï¿½?4 s after the previous one ï¿½?you do not need to add manual sleeps, but do not bypass that module by calling arXiv directly. Override the interval only via the `ARXIV_MIN_INTERVAL` env var if needed.
 
 Then merge the results across all three queries and deduplicate by title (normalize case and whitespace before comparing).
 
-After the search-based results are merged, augment the set with **additional papers recalled from your own training knowledge** that are directly relevant to the Research problem or Novelty but did not surface in the search results. The reason for this step: `paper-search` depends on keyword matches against indexed sources and routinely misses landmark or tangentially-phrased prior work that you nonetheless know about â€?and missing the canonical reference is the most common way a novelty check fails. Add these recalled papers with the same fields as the searched ones (Title, Date, Source if known) so they flow through the rest of the pipeline identically.
+After the search-based results are merged, augment the set with **additional papers recalled from your own training knowledge** that are directly relevant to the Research problem or Novelty but did not surface in the search results. The reason for this step: `paper-search` depends on keyword matches against indexed sources and routinely misses landmark or tangentially-phrased prior work that you nonetheless know about ï¿½?and missing the canonical reference is the most common way a novelty check fails. Add these recalled papers with the same fields as the searched ones (Title, Date, Source if known) so they flow through the rest of the pipeline identically.
 
 Constraints on recalled papers:
 
 - **No overlap.** Before adding a recalled paper, check it against the deduplicated search results by normalized title (and by arXiv ID / DOI when available). Skip any that are already present.
 - **Mark provenance.** Tag each recalled entry with `Source: model-recall` (in addition to any URL/ID you can supply) so downstream steps know the entry did not come from a live search and may need extra verification in Step 5.
-- **Stay relevant and modest in count.** Add only papers you are confident exist and are directly relevant â€?typically 0â€?. If you cannot recall any with confidence, add none; fabricating citations is far worse than a smaller candidate pool.
-- **Flag uncertainty.** If you are unsure about a recalled paper's exact date, venue, or author list, leave those fields blank rather than guessing â€?the deep dive in Step 5 will resolve them from the actual PDF.
+- **Stay relevant and modest in count.** Add only papers you are confident exist and are directly relevant ï¿½?typically 0ï¿½?. If you cannot recall any with confidence, add none; fabricating citations is far worse than a smaller candidate pool.
+- **Flag uncertainty.** If you are unsure about a recalled paper's exact date, venue, or author list, leave those fields blank rather than guessing ï¿½?the deep dive in Step 5 will resolve them from the actual PDF.
 
 The combined set (search results + non-overlapping recalled papers) is the input to the next step.
 
-### Step 3 â€?Abstract-Level Triage
+### Step 3 ï¿½?Abstract-Level Triage
 
 For every deduplicated paper, read the title and abstract and extract a first-pass record with the following fields:
 
-- **Title** â€?Full paper title.
-- **Date** â€?Publication or preprint date (YYYY-MM).
-- **Problem framing** â€?The task, inputs, outputs, and evaluation setup the paper targets.
-- **Core mechanism** â€?The main technical contribution â€?architecture, algorithm, proof technique, or data construction method.
-- **Key insight** â€?The central idea that enables the contribution; what prior work lacked.
-- **Application domain** â€?The field, modality, or setting where the method is applied or evaluated.
-- **Overlap score (0â€?)** â€?Number of the four axes (problem framing, core mechanism, key insight, application domain) that plausibly match the proposed novelty, judging from the abstract alone. This count feeds the 5-level verdict in Step 6 via `level = 5 âˆ?(axes matching)` (0 axes matching â†?Level 5 / most novel; 4 axes matching â†?Level 1 / fully scooped).
-- **Source** â€?URL, arXiv ID, DOI, or other identifier needed to retrieve the full text. The hostname usually encodes the venue well enough for triage (e.g., `arxiv.org` â†?preprint, `openreview.net` â†?conference submission, publisher domains â†?peer-reviewed); the formal venue is captured in Step 5 once it's actually needed.
+- **Title** ï¿½?Full paper title.
+- **Date** ï¿½?Publication or preprint date (YYYY-MM).
+- **Problem framing** ï¿½?The task, inputs, outputs, and evaluation setup the paper targets.
+- **Core mechanism** ï¿½?The main technical contribution ï¿½?architecture, algorithm, proof technique, or data construction method.
+- **Key insight** ï¿½?The central idea that enables the contribution; what prior work lacked.
+- **Application domain** ï¿½?The field, modality, or setting where the method is applied or evaluated.
+- **Overlap score (0ï¿½?)** ï¿½?Number of the four axes (problem framing, core mechanism, key insight, application domain) that plausibly match the proposed novelty, judging from the abstract alone. This count feeds the 5-level verdict in Step 6 via `level = 5 ï¿½?(axes matching)` (0 axes matching ï¿½?Level 5 / most novel; 4 axes matching ï¿½?Level 1 / fully scooped).
+- **Source** ï¿½?URL, arXiv ID, DOI, or other identifier needed to retrieve the full text. The hostname usually encodes the venue well enough for triage (e.g., `arxiv.org` ï¿½?preprint, `openreview.net` ï¿½?conference submission, publisher domains ï¿½?peer-reviewed); the formal venue is captured in Step 5 once it's actually needed.
 
-Abstracts are short and often hide the details that determine whether a paper actually scoops a contribution â€?methodological assumptions, scope of experiments, and limitations frequently live only in the body. The overlap score is therefore a triage signal, not a final verdict.
+Abstracts are short and often hide the details that determine whether a paper actually scoops a contribution ï¿½?methodological assumptions, scope of experiments, and limitations frequently live only in the body. The overlap score is therefore a triage signal, not a final verdict.
 
-### Step 4 â€?Identify High-Potential Candidates
+### Step 4 ï¿½?Identify High-Potential Candidates
 
-Select the subset of papers most likely to threaten or inform the novelty claim. The input here is the **full combined set** from Step 3 â€?both `paper-search` results and any non-overlapping recalled papers from Step 2's memory-augmentation pass. Apply the criteria below to every paper uniformly; do **not** auto-promote recalled papers just because you added them, and do not auto-demote them just because their Source is `model-recall`. They earn their slot the same way as anything else.
+Select the subset of papers most likely to threaten or inform the novelty claim. The input here is the **full combined set** from Step 3 ï¿½?both `paper-search` results and any non-overlapping recalled papers from Step 2's memory-augmentation pass. Apply the criteria below to every paper uniformly; do **not** auto-promote recalled papers just because you added them, and do not auto-demote them just because their Source is `model-recall`. They earn their slot the same way as anything else.
 
 A paper is a **high-potential candidate** if **any** of the following hold:
 
-- Overlap score â‰?2 on the abstract pass.
+- Overlap score ï¿½?2 on the abstract pass.
 - The abstract matches on **core mechanism** specifically, even if the application domain or framing differs (mechanism overlap is the most dangerous kind of overlap).
 - The paper is from the same narrow subfield and published within the last 24 months, even with a lower overlap score, since recent close-neighborhood work is the most likely to have anticipated the contribution.
-- The abstract is ambiguous about the method in a way that could either confirm or rule out overlap â€?i.e., the paper cannot be safely dismissed from the abstract alone.
+- The abstract is ambiguous about the method in a way that could either confirm or rule out overlap ï¿½?i.e., the paper cannot be safely dismissed from the abstract alone.
 
-Cap the candidate set at the top **3â€? papers** *after* triage â€?the cap applies to the post-filter selection, not the Step 3 input set, so a large search + recall pool is fine as long as you narrow it here. If more than 7 papers qualify, keep the 7 with the highest overlap score (breaking ties in favor of mechanism matches and recency). If fewer than 3 papers meet the criteria, lower the threshold and include the next-most-similar papers so that the deep-dive in Step 5 still has meaningful coverage. List the candidates explicitly with the reason each was selected.
+Cap the candidate set at the top **3ï¿½? papers** *after* triage ï¿½?the cap applies to the post-filter selection, not the Step 3 input set, so a large search + recall pool is fine as long as you narrow it here. If more than 7 papers qualify, keep the 7 with the highest overlap score (breaking ties in favor of mechanism matches and recency). If fewer than 3 papers meet the criteria, lower the threshold and include the next-most-similar papers so that the deep-dive in Step 5 still has meaningful coverage. List the candidates explicitly with the reason each was selected.
 
-### Step 5 â€?Full-Paper Deep Dive on Candidates
+### Step 5 ï¿½?Full-Paper Deep Dive on Candidates
 
-For each high-potential candidate, retrieve and read the full paper using the recipe below. Don't shortcut by handing the PDF URL to `WebFetch` directly â€?it returns a model-written summary that drops the methodological detail this step exists to capture.
+For each high-potential candidate, retrieve and read the full paper using the recipe below. Don't shortcut by handing the PDF URL to `WebFetch` directly ï¿½?it returns a model-written summary that drops the methodological detail this step exists to capture.
 
-**Budget per paper.** Skim, don't read end-to-end. The deep dive's purpose is to verify the four axes against the body of the paper â€?not to summarize the whole work. A practical heuristic: once you've quoted or referenced **three concrete passages** that together pin down the problem setup, the core mechanism, and the scope/assumptions, you have enough to fill in the verified record â€?stop reading. If the extracted `.txt` is unusually large (e.g., a long thesis, a survey, or a paper with extensive appendices), restrict the skim to the introduction, method, and conclusion / limitations sections and note the partial coverage in the candidate's record. If `fetch_paper.sh` fails or produces garbled output, stop early and use the graceful fallback in sub-step 4 below rather than burning the budget on retries.
+**Budget per paper.** Skim, don't read end-to-end. The deep dive's purpose is to verify the four axes against the body of the paper ï¿½?not to summarize the whole work. A practical heuristic: once you've quoted or referenced **three concrete passages** that together pin down the problem setup, the core mechanism, and the scope/assumptions, you have enough to fill in the verified record ï¿½?stop reading. If the extracted `.txt` is unusually large (e.g., a long thesis, a survey, or a paper with extensive appendices), restrict the skim to the introduction, method, and conclusion / limitations sections and note the partial coverage in the candidate's record. If `fetch_paper.sh` fails or produces garbled output, stop early and use the graceful fallback in sub-step 4 below rather than burning the budget on retries.
 
 1. **Resolve a PDF URL.** Start from the source link / ID recorded in Step 3. For arXiv entries, convert `https://arxiv.org/abs/<id>` to `https://arxiv.org/pdf/<id>.pdf`. For OpenReview / ACL Anthology / publisher pages, follow the "PDF" link. Use `WebFetch` first only to locate the PDF URL when it is not obvious (e.g., ask it "what is the direct PDF link on this page?").
 2. **Fetch and extract with the bundled script.** Pick a `<pdf_name>` that identifies the paper (e.g., a slugified title or the arXiv ID like `2310_12345`) so multiple candidates don't clobber each other, then run:
    ```bash
    scripts/fetch_paper.sh "<PDF_URL>" "<pdf_name>"
    ```
-   The script downloads to `./papers/<pdf_name>.pdf`, verifies the result is a real PDF (HTML error pages saved as `.pdf` are a common failure mode), extracts text with `pdftotext -layout`, and falls back through plain `pdftotext` â†?`pdfplumber` â†?`pymupdf` if needed. On success it prints `ok: â€¦` and the final `.txt` path on the last line; on failure it prints `FAILED: <reason>` and exits non-zero.
-3. **Read the extracted text.** Use the `Read` tool on the printed `.txt` path. Focus on the introduction (for claimed contributions), the method section (for the actual mechanism), the experiments section (for scope and assumptions), and the conclusion / limitations. Skim related-work for what the authors themselves consider prior art â€?this often surfaces additional papers to triage.
-4. **Fall back gracefully.** If `fetch_paper.sh` exits non-zero (paywall, 403, dead link, scanned-image PDF that no extractor can handle), try `WebFetch` on the abstract / HTML version with a targeted question, and record the limitation explicitly. Do not pretend to have read the full paper when you have not â€?the deep dive's value comes from grounding judgments in the body of the work.
+   The script downloads to `./papers/<pdf_name>.pdf`, verifies the result is a real PDF (HTML error pages saved as `.pdf` are a common failure mode), extracts text with `pdftotext -layout`, and falls back through plain `pdftotext` ï¿½?`pdfplumber` ï¿½?`pymupdf` if needed. On success it prints `ok: â€¦` and the final `.txt` path on the last line; on failure it prints `FAILED: <reason>` and exits non-zero.
+3. **Read the extracted text.** Use the `Read` tool on the printed `.txt` path. Focus on the introduction (for claimed contributions), the method section (for the actual mechanism), the experiments section (for scope and assumptions), and the conclusion / limitations. Skim related-work for what the authors themselves consider prior art ï¿½?this often surfaces additional papers to triage.
+4. **Fall back gracefully.** If `fetch_paper.sh` exits non-zero (paywall, 403, dead link, scanned-image PDF that no extractor can handle), try `WebFetch` on the abstract / HTML version with a targeted question, and record the limitation explicitly. Do not pretend to have read the full paper when you have not ï¿½?the deep dive's value comes from grounding judgments in the body of the work.
 
 From the full paper, extract a richer record that **supersedes** the abstract-level entry:
 
 | Field | What to capture (from full text) |
 |-------|----------------------------------|
 | **Problem framing (verified)** | Exact task setup, inputs/outputs, datasets and metrics actually used |
-| **Core mechanism (verified)** | The actual algorithm/architecture/proof â€?including the specific technical moves, not just the headline name |
+| **Core mechanism (verified)** | The actual algorithm/architecture/proof ï¿½?including the specific technical moves, not just the headline name |
 | **Key insight (verified)** | The reasoning the authors give for why the mechanism works; what they claim prior work lacked |
 | **Application domain (verified)** | Concrete domains, modalities, and scales evaluated |
 | **Venue (verified)** | The publication venue or repository where the paper appears (e.g., NeurIPS 2024, ICLR 2023, ACL Findings, TMLR, arXiv preprint, OpenReview submission). Use "arXiv preprint" if the paper has not yet appeared at a peer-reviewed venue, and "unknown" only if the PDF genuinely does not disclose it. |
@@ -115,85 +122,85 @@ From the full paper, extract a richer record that **supersedes** the abstract-le
 
 If the deep dive shows that a paper initially flagged as high-overlap actually targets a different setting or uses a materially different mechanism, downgrade it and note the reason. Conversely, if the body reveals a closer match than the abstract suggested, upgrade it. The point of Step 5 is to correct the unavoidable noise in abstract-level triage before the final comparison.
 
-### Step 6 â€?Compare Against the Proposed Novelty
+### Step 6 ï¿½?Compare Against the Proposed Novelty
 
 Build a comparison as a list, starting with the proposed work and followed by each prior work. For every entry, include the same set of fields so the comparison is structured and directly readable.
 
-Use exactly this layout â€?note that every `Field: value` pair sits on its own indented line:
+Use exactly this layout ï¿½?note that every `Field: value` pair sits on its own indented line:
 
 - **Proposed work**
-  - Title: â€?
-  - Date: â€?
-  - Source: â€?
-  - Problem framing: â€?
-  - Core mechanism: â€?
-  - Key insight: â€?
-  - Application domain: â€?
+  - Title: ï¿½?
+  - Date: ï¿½?
+  - Source: ï¿½?
+  - Problem framing: ï¿½?
+  - Core mechanism: ï¿½?
+  - Key insight: ï¿½?
+  - Application domain: ï¿½?
 - **Prior work A**
-  - Title: â€?
-  - Date: â€?
-  - Source: â€?
-  - Problem framing: â€?
-  - Core mechanism: â€?
-  - Key insight: â€?
-  - Application domain: â€?
+  - Title: ï¿½?
+  - Date: ï¿½?
+  - Source: ï¿½?
+  - Problem framing: ï¿½?
+  - Core mechanism: ï¿½?
+  - Key insight: ï¿½?
+  - Application domain: ï¿½?
 - **Prior work B**
-  - Title: â€?
-  - Date: â€?
-  - Source: â€?
-  - Problem framing: â€?
-  - Core mechanism: â€?
-  - Key insight: â€?
-  - Application domain: â€?
+  - Title: ï¿½?
+  - Date: ï¿½?
+  - Source: ï¿½?
+  - Problem framing: ï¿½?
+  - Core mechanism: ï¿½?
+  - Key insight: ï¿½?
+  - Application domain: ï¿½?
 
-Continue the list for every prior work under consideration. For each prior work, count how many of the four axes match the proposed work (0â€?) and map that count to one of **five novelty levels**, where **Level 5 is the most novel** (no axis overlaps) and **Level 1 is the least novel** (all four axes match / fully scooped). The four axes give exactly five possible match-counts, so each count corresponds 1:1 to a level: `level = 5 âˆ?(axes matching)`.
+Continue the list for every prior work under consideration. For each prior work, count how many of the four axes match the proposed work (0ï¿½?) and map that count to one of **five novelty levels**, where **Level 5 is the most novel** (no axis overlaps) and **Level 1 is the least novel** (all four axes match / fully scooped). The four axes give exactly five possible match-counts, so each count corresponds 1:1 to a level: `level = 5 ï¿½?(axes matching)`.
 
 | Axes matching | Level | Label |
 |---------------|-------|-------|
-| 0 | 5 | **No Overlap** â€?most novel |
+| 0 | 5 | **No Overlap** ï¿½?most novel |
 | 1 | 4 | **Low Overlap** |
 | 2 | 3 | **Medium Overlap** |
 | 3 | 2 | **High Overlap** |
-| 4 | 1 | **Full Overlap** â€?fully scooped, least novel |
+| 4 | 1 | **Full Overlap** ï¿½?fully scooped, least novel |
 
 A higher level means **more novel** (less overlap with prior work): Level 5 = no overlapping prior work, Level 1 = a prior work matches on all four axes.
 
-The overall verdict is determined by the strongest (most-overlapping) entry: take the **worst case** â€?the **minimum level** across all prior works, since the single closest prior work caps the novelty. If there are no prior works at all, the verdict is Level 5 (No Overlap). This explicit mapping is what the Report's Verdict section consumes â€?do not introduce a different rule there.
+The overall verdict is determined by the strongest (most-overlapping) entry: take the **worst case** ï¿½?the **minimum level** across all prior works, since the single closest prior work caps the novelty. If there are no prior works at all, the verdict is Level 5 (No Overlap). This explicit mapping is what the Report's Verdict section consumes ï¿½?do not introduce a different rule there.
 
-### Step 7 â€?Articulate the Delta
+### Step 7 ï¿½?Articulate the Delta
 
 Produce a one-sentence delta statement in this form:
 
-> Unlike [closest prior work], which [does X under assumption Y], the proposed work [does Xâ€?/ drops Y / extends to Z], yielding [concrete measurable benefit].
+> Unlike [closest prior work], which [does X under assumption Y], the proposed work [does Xï¿½?/ drops Y / extends to Z], yielding [concrete measurable benefit].
 
-The sentence is the artifact reviewers actually care about â€?it names the closest prior work, the specific axis on which the proposed work diverges, and the resulting benefit. Make those three slots concrete: a generic "extends prior work to a new setting" tells the reader nothing. If the closest prior work is from Step 5's verified records, draw the assumption/mechanism phrasing directly from that record so the comparison is grounded in the body of the paper rather than the abstract.
+The sentence is the artifact reviewers actually care about ï¿½?it names the closest prior work, the specific axis on which the proposed work diverges, and the resulting benefit. Make those three slots concrete: a generic "extends prior work to a new setting" tells the reader nothing. If the closest prior work is from Step 5's verified records, draw the assumption/mechanism phrasing directly from that record so the comparison is grounded in the body of the paper rather than the abstract.
 
-If no crisp one-sentence delta can be written, the novelty likely overlaps with existing work and the user should reframe â€?say so explicitly, and identify which prior work is blocking the delta, rather than forcing a sentence that doesn't hold up.
+If no crisp one-sentence delta can be written, the novelty likely overlaps with existing work and the user should reframe ï¿½?say so explicitly, and identify which prior work is blocking the delta, rather than forcing a sentence that doesn't hold up.
 
-After producing the delta, roll up the per-paper levels from Step 6 into an overall **Verdict** (take the worst case â€?the **minimum level** across all prior works) â€?exactly one of the five levels:
+After producing the delta, roll up the per-paper levels from Step 6 into an overall **Verdict** (take the worst case ï¿½?the **minimum level** across all prior works) ï¿½?exactly one of the five levels:
 
-- **Level 5 â€?No Overlap (most novel)** â€?every entry in Step 6 was *all axes differ*, or there were no prior works at all. The delta statement stands on its own.
-- **Level 4 â€?Low Overlap** â€?the closest entry matched on exactly one axis (*three axes differ*). Tangential prior work exists; the delta is comfortable.
-- **Level 3 â€?Medium Overlap** â€?the closest entry matched on two axes (*two axes differ*). Related work exists; the delta is defensible but must be stated explicitly in any future write-up.
-- **Level 2 â€?High Overlap** â€?the closest entry matched on three axes (*one axis differs*). Closely competing work exists; the delta hinges on a single distinguishing axis and is fragile â€?sharpen it or reframe.
-- **Level 1 â€?Full Overlap (least novel)** â€?at least one entry matched on all four axes (*all axes match*). Matching prior work exists on all axes; recommend reframing the contribution.
+- **Level 5 ï¿½?No Overlap (most novel)** ï¿½?every entry in Step 6 was *all axes differ*, or there were no prior works at all. The delta statement stands on its own.
+- **Level 4 ï¿½?Low Overlap** ï¿½?the closest entry matched on exactly one axis (*three axes differ*). Tangential prior work exists; the delta is comfortable.
+- **Level 3 ï¿½?Medium Overlap** ï¿½?the closest entry matched on two axes (*two axes differ*). Related work exists; the delta is defensible but must be stated explicitly in any future write-up.
+- **Level 2 ï¿½?High Overlap** ï¿½?the closest entry matched on three axes (*one axis differs*). Closely competing work exists; the delta hinges on a single distinguishing axis and is fragile ï¿½?sharpen it or reframe.
+- **Level 1 ï¿½?Full Overlap (least novel)** ï¿½?at least one entry matched on all four axes (*all axes match*). Matching prior work exists on all axes; recommend reframing the contribution.
 
-State the chosen verdict label **with its level number** (e.g., "Level 3 â€?Medium Overlap"), then a one-paragraph justification that names the specific papers (by title) driving the decision.
+State the chosen verdict label **with its level number** (e.g., "Level 3 ï¿½?Medium Overlap"), then a one-paragraph justification that names the specific papers (by title) driving the decision.
 
-Note: the *kind* of delta (new territory vs. measurable improvement vs. sideways tradeoff) is already conveyed by the sentence itself and by the verdict, so no separate category label is needed â€?adding one would just duplicate the verdict on a different axis and invite contradictions (e.g., a "Medium Overlap" verdict paired with a "Strictly new" label).
+Note: the *kind* of delta (new territory vs. measurable improvement vs. sideways tradeoff) is already conveyed by the sentence itself and by the verdict, so no separate category label is needed ï¿½?adding one would just duplicate the verdict on a different axis and invite contradictions (e.g., a "Medium Overlap" verdict paired with a "Strictly new" label).
 
 ## Report
 
 Render the final report inline in the conversation as a single, self-contained markdown document. Include **all** of the following sections in this exact order, with no omissions or summarization:
 
-1. **Verdict** â€?exactly one of the five levels from Step 7, stated with its level number and label: **Level 5 â€?No Overlap (most novel)**, **Level 4 â€?Low Overlap**, **Level 3 â€?Medium Overlap**, **Level 2 â€?High Overlap**, or **Level 1 â€?Full Overlap (least novel)**.
-2. **Delta** â€?the one-sentence delta statement from Step 7. If no crisp delta could be written, say so and identify which prior work blocks it.
-3. **Decomposed claim** â€?the four axes from Step 1, presented as a labeled list (Problem framing, Core mechanism, Key insight, Application domain).
-4. **Structured papers** â€?every deduplicated paper from Step 3, rendered as a markdown list. For each paper, include one bullet per field (Title, Date, Problem framing, Core mechanism, Key insight, Application domain, Overlap score, Source), matching the field list defined in Step 3. Separate papers with a blank line or a horizontal rule for readability. Do not truncate the list; if zero papers were found, state this explicitly and list the queries that returned no results.
-5. **Comparison result** â€?the full comparison list from Step 6 (proposed work first, each prior work following), with each entry rendered as a nested bullet list of fields, followed by the per-paper level and label from Step 6's 5-level table â€?i.e. the axes-matching count, the level (1â€?, where 5 = most novel), and the label (*all axes differ* / *three axes differ* / *two axes differ* / *one axis differs* / *all axes match*).
+1. **Verdict** ï¿½?exactly one of the five levels from Step 7, stated with its level number and label: **Level 5 ï¿½?No Overlap (most novel)**, **Level 4 ï¿½?Low Overlap**, **Level 3 ï¿½?Medium Overlap**, **Level 2 ï¿½?High Overlap**, or **Level 1 ï¿½?Full Overlap (least novel)**.
+2. **Delta** ï¿½?the one-sentence delta statement from Step 7. If no crisp delta could be written, say so and identify which prior work blocks it.
+3. **Decomposed claim** ï¿½?the four axes from Step 1, presented as a labeled list (Problem framing, Core mechanism, Key insight, Application domain).
+4. **Structured papers** ï¿½?every deduplicated paper from Step 3, rendered as a markdown list. For each paper, include one bullet per field (Title, Date, Problem framing, Core mechanism, Key insight, Application domain, Overlap score, Source), matching the field list defined in Step 3. Separate papers with a blank line or a horizontal rule for readability. Do not truncate the list; if zero papers were found, state this explicitly and list the queries that returned no results.
+5. **Comparison result** ï¿½?the full comparison list from Step 6 (proposed work first, each prior work following), with each entry rendered as a nested bullet list of fields, followed by the per-paper level and label from Step 6's 5-level table ï¿½?i.e. the axes-matching count, the level (1ï¿½?, where 5 = most novel), and the label (*all axes differ* / *three axes differ* / *two axes differ* / *one axis differs* / *all axes match*).
 
 ## Important Notes
 
-- **Negative results are valuable.** A thorough search that returns nothing is itself evidence of novelty â€?document the queries used.
+- **Negative results are valuable.** A thorough search that returns nothing is itself evidence of novelty ï¿½?document the queries used.
 - **Log every step.** After completing each step, write a markdown file to `./step{step_number}.md` containing the step number, step name, timestamp, and the full structured result of that step. This produces one file per step, enabling downstream tooling to inspect intermediate results.
-- **Display the full report.** Provide the complete detailed report â€?including all search results, analysis, and reasoning â€?not just a summary.
+- **Display the full report.** Provide the complete detailed report ï¿½?including all search results, analysis, and reasoning ï¿½?not just a summary.
