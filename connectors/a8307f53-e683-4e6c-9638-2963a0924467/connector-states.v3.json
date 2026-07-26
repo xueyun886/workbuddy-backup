@@ -1,16 +1,12 @@
 {
-  "enabled": [
-    "ima-mcp"
-  ],
+  "enabled": [],
   "headerOverridesBearerStripped": true,
   "staleManagedAuthHeadersPurged": true,
   "accountIdentityKey": "a8307f53-e683-4e6c-9638-2963a0924467||enterprise",
   "everConnected": [
-    "ima-mcp",
     "github"
   ],
   "userDisabled": {
-    "ima-mcp": false,
     "github": true
   },
   "disabledToolsOverrides": {},
@@ -26,18 +22,11 @@
     "createdAt": 1783397069805
   },
   "headerOverrides": {
-    "ima-mcp": {
-      "Authorization": {
-        "iv": "DO9wgMA1GBuBbQu8",
-        "tag": "g4jMEkqblaNWSDs0r1PTUQ==",
-        "ct": "MlO5+nID6DGqUU1COWIQ6uRhQQWrUZ0i62kcfh5j6FTeoHHtG5SpBfyDTkBG2DaJM/b60swc5XmGYi9mXJIR/iuZyIksAWjPJ+faKLNPraLZLd3bZ6CF1QFWsPQ/9kcPSJC2ve/SIyWHPdNitKL0ENtXGByNWh8O5k3BWnrmYkzKiPvzdaYMphVxuLmlxdWwL3U2Ew=="
-      }
-    },
     "github": {
       "Authorization": {
-        "iv": "PjeovRCnTnDt9J++",
-        "tag": "PRCCoSLjfKCRbWewXUoGQw==",
-        "ct": "chKii4Vm3MucidWeAdQe4AMKy4zVYxb1kGq9IPUKILB7kelToCPS/eGa7EuIDJY="
+        "iv": "5dO5BSxyOdZ6cqmF",
+        "tag": "9+3Qu9m7jJeisAhA5YJSPw==",
+        "ct": "3HLiaxqkAYx2NSBH7NNbpC0XmWw7TqZbsCUUlg/0d/VXAIkDTngEvrigWm9dYfk="
       }
     }
   },

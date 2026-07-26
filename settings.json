@@ -1,52 +1,55 @@
 {
-  "sandbox": {
-    "extraAllowWrite": [
-      "~/.tencent-cloudq",
-      "~/.andonq",
-      "~/.xiaoe-cloud",
-      "~/.config/wecom/",
-      "~/.lark-cli",
-      "~/.lark-channel/",
-      "~/.dws",
-      "/tmp/dws-cache",
-      "~/.tmeet",
-      "~/Library/Application Support/tmeet"
-    ]
-  },
-  "claw": {
-    "channels": {},
-    "users": {
-      "a8307f53-e683-4e6c-9638-2963a0924467": {
-        "channels": {
-          "wechatmp": {
-            "enabled": true,
-            "connectionMode": "webhook",
-            "artifactUploadEnabled": true
-          },
-          "weixinClawBot": {
-            "enabled": true,
-            "channelId": "a67cc2085f19@im.bot",
-            "botToken": "a67cc2085f19@im.bot:06000032bd1350cf0a7ff09fef854afedcb03c",
-            "baseUrl": "https://ilinkai.weixin.qq.com",
-            "accountId": "a67cc2085f19@im.bot",
-            "userId": "o9cq803RgIPIMnFz1thj8mIf9PGs@im.wechat",
-            "connectionMode": "polling"
-          }
-        }
-      }
+    "sandbox": {
+        "extraAllowWrite": [
+            "~/.tencent-cloudq",
+            "~/.andonq",
+            "~/.xiaoe-cloud",
+            "~/.config/wecom/",
+            "~/.lark-cli",
+            "~/.lark-channel/",
+            "~/.dws",
+            "/tmp/dws-cache",
+            "~/.tmeet",
+            "~/Library/Application Support/tmeet"
+        ]
     },
-    "legacyOwnerUid": "a8307f53-e683-4e6c-9638-2963a0924467"
-  },
-  "enableModelOptimization": {
-    "enabled": false
-  },
-  "enabledPlugins": {
-    "data-analysis@cb_teams_marketplace": false,
-    "document-skills@cb_teams_marketplace": false,
-    "general-skills@cb_teams_marketplace": false,
-    "ppt-implement@cb_teams_marketplace": false,
-    "deep-research@cb_teams_marketplace": false,
-    "data@cb_teams_marketplace": false,
-    "design-to-code@cb_teams_marketplace": false
-  }
+    "claw": {
+        "channels": {},
+        "users": {
+            "a8307f53-e683-4e6c-9638-2963a0924467": {
+                "channels": {
+                    "wechatmp": {
+                        "enabled": true,
+                        "connectionMode": "webhook",
+                        "artifactUploadEnabled": true
+                    },
+                    "weixinClawBot": {
+                        "enabled": true,
+                        "channelId": "a67cc2085f19@im.bot",
+                        "botToken": "a67cc2085f19@im.bot:06000032bd1350cf0a7ff09fef854afedcb03c",
+                        "baseUrl": "https://ilinkai.weixin.qq.com",
+                        "accountId": "a67cc2085f19@im.bot",
+                        "userId": "o9cq803RgIPIMnFz1thj8mIf9PGs@im.wechat",
+                        "connectionMode": "polling"
+                    }
+                }
+            }
+        },
+        "legacyOwnerUid": "a8307f53-e683-4e6c-9638-2963a0924467"
+    },
+    "enableModelOptimization": {
+        "enabled": false
+    },
+    "enabledPlugins": {
+        "data-analysis@cb_teams_marketplace": false,
+        "document-skills@cb_teams_marketplace": false,
+        "general-skills@cb_teams_marketplace": false,
+        "ppt-implement@cb_teams_marketplace": false,
+        "deep-research@cb_teams_marketplace": false,
+        "data@cb_teams_marketplace": false,
+        "design-to-code@cb_teams_marketplace": false,
+        "weixinpay@workbuddy-builtin": true,
+        "tencent-docs-plugin@workbuddy-builtin": true,
+        "tencent-pptx@workbuddy-builtin": true
+    }
 }

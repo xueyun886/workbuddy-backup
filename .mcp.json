@@ -2,8 +2,8 @@
   "mcpServers": {
     "connector-proxy": {
       "type": "http",
-      "url": "http://127.0.0.1:57149/mcp",
-      "description": "Aggregated proxy containing MCP servers: ima-mcp"
+      "url": "http://127.0.0.1:53908/mcp",
+      "description": "Aggregated proxy containing MCP servers: agent-mail"
     },
     "tavily-search": {
       "type": "http",

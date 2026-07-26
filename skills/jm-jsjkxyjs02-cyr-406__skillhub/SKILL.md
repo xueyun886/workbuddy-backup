@@ -3,7 +3,7 @@ name: 办公高效技能
 slug: office-efficiency
 version: 1.0.0
 description: 熟练使用Word、Excel、PPT办公软件，快速完成文档排版、数据处理和演示文档制作。使用场景：(1)需要排版Word文档、制作报告或标书；(2)需要处理Excel数据、制作图表或报表；(3)需要制作或优化PPT演示文稿；(4)需要三件套协同完成办公任务。
-disable: false
+disable: true
 ---
 
 ## 使用场景

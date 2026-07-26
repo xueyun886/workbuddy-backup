@@ -20,7 +20,8 @@
     "connector:ima-mcp": {
       "type": "streamableHttp",
       "url": "https://ima.qq.com/mcp",
-      "timeout": 20000
+      "timeout": 20000,
+      "disabled": true
     },
     "connector:lexiang": {
       "timeout": 600000,
@@ -241,9 +242,6 @@
     "connector:qixinhuiyan-mcp": {
       "type": "streamableHttp",
       "url": "https://mcp.qixin.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${QIXIN_API_KEY}"
-      },
       "disabled": true
     },
     "connector:patsnap-search": {

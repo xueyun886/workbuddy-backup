@@ -15,7 +15,7 @@ description: Browser automation CLI for AI agents. Use when the user needs to
   automation or web tools.
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 hidden: true
-disable: false
+disable: true
 ---
 
 # agent-browser

@@ -9,7 +9,7 @@ description: 从图片或 PDF 文档中识别并提取文字内容，支持多�
 dependency:
   python:
     - pymupdf>=1.23.0
-disable: false
+disable: true
 ---
 
 # PDF和图片文字提取
