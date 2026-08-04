@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.4.0] - 2026-07-30
+### Changed
+- **SKILL.md 分层精简** — 从 578 行缩减至 82 行（-83%），对标 OpenAI 上下文压缩策略
+- 详细教程按主题拆分为 6 个独立 references 文件（按需加载）：LiteParse / PaddleOCR Python 3.13 / 预处理 / 结构化解析 / PP-OCRv6 / 完整备份
+- 保留 SKILL.md 核心：快速选择命令 + 工作流 + 性能速查 + 注意事项
+- 新增预处理关键词标注（deskew/orient/unwarp）
+
+### Added
+- **ppocrv6-guide.md 更新** — 新增官方 v3.7.0 50 语言统一模型、Apple Silicon CoreML 加速、浏览器端运行、Web 工作台、OpenVINO 加速数据
+
 ## [3.3.0] - 2026-06-26
 ### Added
 - **GPU 加速** — DirectML 后端支持 Intel/AMD/NVIDIA GPU，默认 GPU 推理

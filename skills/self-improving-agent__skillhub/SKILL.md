@@ -7,7 +7,7 @@ description: "Captures learnings, errors, and corrections to enable continuous
   realizes its knowledge is outdated or incorrect, (6) A better approach is
   discovered for a recurring task. Also review learnings before major tasks."
 metadata: null
-disable: false
+disable: true
 ---
 
 # Self-Improvement Skill

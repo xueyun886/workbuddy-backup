@@ -112,9 +112,6 @@
     },
     "connector:tyc-mcp": {
       "url": "https://mcp.tianyancha.com/v1",
-      "headers": {
-        "Authorization": "${TIANYANCHA_API_KEY}"
-      },
       "type": "streamableHttp",
       "timeout": 600000,
       "disabled": true
@@ -344,6 +341,147 @@
     "connector:jinshuju": {
       "url": "https://jinshuju.net/mcp",
       "type": "streamableHttp",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:moka": {
+      "type": "streamableHttp",
+      "url": "https://mcp.mokahr.com/mcp",
+      "disabled": true
+    },
+    "connector:infimind-ecommerce-image": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@infimind/image-mcp-cli@1.0.9"
+      ],
+      "runtime": {
+        "type": "node",
+        "version": ">=18.0.0"
+      },
+      "env": {
+        "MCP_TOKEN": "${MCP_TOKEN}"
+      },
+      "staticEnv": {
+        "API_URL": "https://aigc-next.ecpro.com"
+      },
+      "timeout": 600000,
+      "disabledTools": [
+        "get_user_credits",
+        "get_user_products",
+        "create_smart_refine_task",
+        "prepare_koc_collage_task",
+        "submit_koc_collage_task",
+        "create_image_expand_task",
+        "prepare_image_expand_task",
+        "submit_image_expand_task",
+        "create_color_change_task",
+        "create_visual_migration_task",
+        "create_koc_note_package_task",
+        "prepare_koc_note_package_task",
+        "submit_koc_note_package_task"
+      ],
+      "disabled": true
+    },
+    "connector:infimind-video": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@infimind/video-mcp-cli@1.0.11"
+      ],
+      "env": {
+        "SORA_MCP_TOKEN": "${SORA_MCP_TOKEN}"
+      },
+      "staticEnv": {
+        "SORA_API_URL": "https://aigc-next.iclip.cn/api"
+      },
+      "timeout": 60000,
+      "runtime": {
+        "type": "node",
+        "version": ">=18.0.0"
+      },
+      "disabled": true
+    },
+    "connector:linkfox-product-selection": {
+      "type": "streamableHttp",
+      "url": "https://mcp-tool-gateway.linkfox.com/mcp/any-tool",
+      "headers": {
+        "Authorization": "${LINKFOX_AGENT_API_KEY}"
+      },
+      "disabled": true
+    },
+    "connector:archive-hospital-mcp": {
+      "type": "streamableHttp",
+      "url": "https://bingli.tengmed.com/mcp",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:wind-finance": {
+      "type": "streamableHttp",
+      "url": "https://mcp.wind.com.cn/vserver_workbuddy/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${WIND_API_KEY}",
+        "Accept": "application/json, text/event-stream"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:qcc-legal": {
+      "type": "streamableHttp",
+      "url": "https://agent.qcc.com/mcp/legal/stream",
+      "disabled": true
+    },
+    "connector:salesnail-instructor": {
+      "type": "streamableHttp",
+      "url": "https://sn.long-arena.com/mcp",
+      "disabled": true
+    },
+    "connector:mx-ds-mcp": {
+      "type": "streamableHttp",
+      "url": "https://mxapi.eastmoney.com/mxds/v2/mcp",
+      "timeout": 180000,
+      "disabled": true
+    },
+    "connector:cisp-mcp": {
+      "type": "streamableHttp",
+      "url": "https://cisp.zenitera.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${CISP_API_KEY}"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:ai-hive": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@infimind-next/ai-hive-mcp@0.2.1"
+      ],
+      "timeout": 60000,
+      "runtime": {
+        "type": "node",
+        "version": ">=20.19.0"
+      },
+      "disabled": true
+    },
+    "connector:chuhaijiang": {
+      "type": "streamableHttp",
+      "url": "https://mcp.gateway.chuhaijiang.com/mcp",
+      "headers": {
+        "X-API-Key": "${CHJ_API_KEY}"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:kuaicha-search": {
+      "type": "streamableHttp",
+      "url": "https://bizveris.kuaicha365.com/mcp",
+      "headers": {
+        "open-authorization": "Bearer ${KUAICHA_API_KEY}"
+      },
       "timeout": 30000,
       "disabled": true
     }

@@ -3,17 +3,18 @@
         "type": "zip",
         "source": {
             "source": "zip",
-            "url": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-c15d8162-9bfa-4ffc-b300-47b82fdd5565.zip",
-            "path": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-c15d8162-9bfa-4ffc-b300-47b82fdd5565.zip"
+            "url": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-e7a7ceb6-8adf-4464-a35f-e8907f02812d.zip",
+            "path": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-e7a7ceb6-8adf-4464-a35f-e8907f02812d.zip"
         },
         "installLocation": "C:\\Users\\ZWW\\.workbuddy\\plugins\\marketplaces\\cb_teams_marketplace",
         "isBuiltIn": true,
         "autoUpdate": true,
         "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
-        "lastUpdated": "2026-07-26T01:00:24.251Z",
+        "lastUpdated": "2026-08-04T04:09:04.339Z",
         "manifest": {
             "name": "cb_teams_marketplace",
             "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
+            "description_en": "CodeBuddy Teams Marketplace - A collection of team collaboration and document processing plugins",
             "owner": {
                 "name": "Laurent Zhou",
                 "email": "laurentzhou@tencent.com"
@@ -123,6 +124,7 @@
                 {
                     "name": "ppt-implement",
                     "description": "智能 PPT 生成助手，一键将您的想法转化为精美演示文稿",
+                    "description_en": "Intelligent PPT generator that transforms your ideas into polished presentations with one click.",
                     "source": "./plugins/ppt-implement",
                     "version": "1.0.13",
                     "category": "productivity",
@@ -269,6 +271,7 @@
                 {
                     "name": "webapp-testing",
                     "description": "Web 应用测试助手，引导用户启动、配置和测试 Web 应用",
+                    "description_en": "Web application testing assistant that guides users through launching, configuring, and testing web apps.",
                     "source": "./plugins/webapp-testing",
                     "version": "1.0.0",
                     "category": "development",
@@ -324,6 +327,7 @@
                 {
                     "name": "skill-creator",
                     "description": "提供创建高效 Claude 技能的指南,通过专业知识、工作流程和工具集成来扩展 AI 助手的能力",
+                    "description_en": "A guide for creating effective skills that extend AI assistant capabilities through domain expertise, workflows, and tool integrations.",
                     "source": "./plugins/skill-creator",
                     "license": "Apache-2.0"
                 },
@@ -674,14 +678,14 @@
         "type": "zip",
         "source": {
             "source": "zip",
-            "url": "https://download.codebuddy.cn/plugin-marketplace/codebuddy-plugins-official-f0557bdc-a6af-40e4-aa47-0e91523f6e68.zip",
-            "path": "https://download.codebuddy.cn/plugin-marketplace/codebuddy-plugins-official-f0557bdc-a6af-40e4-aa47-0e91523f6e68.zip"
+            "url": "https://download.codebuddy.cn/plugin-marketplace/codebuddy-plugins-official-334d9010-c4f0-4880-b67c-ade4a93f3e14.zip",
+            "path": "https://download.codebuddy.cn/plugin-marketplace/codebuddy-plugins-official-334d9010-c4f0-4880-b67c-ade4a93f3e14.zip"
         },
         "installLocation": "C:\\Users\\ZWW\\.workbuddy\\plugins\\marketplaces\\codebuddy-plugins-official",
         "isBuiltIn": true,
         "autoUpdate": true,
         "description": "CodeBuddy 官方插件市场",
-        "lastUpdated": "2026-07-26T01:00:24.252Z",
+        "lastUpdated": "2026-08-04T04:09:04.030Z",
         "manifest": {
             "name": "codebuddy-plugins-official",
             "description": "CodeBuddy 官方插件市场",
@@ -2336,7 +2340,7 @@
                 {
                     "name": "security-scan",
                     "description": "腾讯云鼎实验室出品，专业的代码安全审计插件。支持 Fast（极速扫描）、Light（快速扫描）和 Deep（深度扫描）三种模式。基于 SQLite 语义索引 + 5 Agent 专业化架构，5维深度验证保障结果可信。全链路 --auto 无人值守模式 + POC 多维差异验证 + 安全门禁与 Git Hook 自动化。",
-                    "version": "3.5.13",
+                    "version": "3.5.14",
                     "source": "./plugins/security-scan",
                     "author": {
                         "name": "CSIGCodeSec",
@@ -2721,19 +2725,36 @@
             "path": "C:\\Users\\ZWW\\.workbuddy\\plugins\\marketplaces\\experts"
         },
         "installLocation": "C:\\Users\\ZWW\\.workbuddy\\plugins\\marketplaces\\experts",
-        "description": "Marketplace from C:\\Users\\ZWW\\.workbuddy\\plugins\\marketplaces\\experts",
-        "lastUpdated": "2026-07-08T12:09:44.639Z",
-        "autoUpdate": false
+        "isBuiltIn": false,
+        "autoUpdate": true,
+        "description": "experts marketplace (auto-generated)",
+        "lastUpdated": "2026-08-04T04:26:55.512Z",
+        "manifest": {
+            "name": "experts",
+            "description": "experts marketplace (auto-generated)",
+            "plugins": [
+                {
+                    "name": "ppt-implement",
+                    "source": "./plugins/ppt-implement",
+                    "description": "智能 PPT 生成助手，一键将您的想法转化为精美演示文稿"
+                },
+                {
+                    "name": "mermaid-diagram-expert",
+                    "source": "./plugins/mermaid-diagram-expert",
+                    "description": "Mermaid diagram design and rendering expert - writes Mermaid code from natural language, renders SVG/ASCII with 15+ themes and 6 diagram types"
+                }
+            ]
+        }
     },
     "workbuddy-builtin": {
         "type": "directory",
         "source": {
             "source": "directory",
-            "path": "D:\\Program Files (x86)\\WorkBuddy\\resources\\app.asar.unpacked\\resources\\builtin-plugins"
+            "path": "C:\\Users\\ZWW\\.workbuddy\\plugins\\cache\\workbuddy-builtin"
         },
-        "installLocation": "D:\\Program Files (x86)\\WorkBuddy\\resources\\app.asar.unpacked\\resources\\builtin-plugins",
+        "installLocation": "C:\\Users\\ZWW\\.workbuddy\\plugins\\cache\\workbuddy-builtin",
         "autoUpdate": false,
         "description": "WorkBuddy builtin plugins",
-        "lastUpdated": "2026-07-26T01:28:46.432Z"
+        "lastUpdated": "2026-08-04T09:10:28.849Z"
     }
 }

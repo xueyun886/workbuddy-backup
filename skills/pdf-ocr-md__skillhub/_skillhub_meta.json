@@ -1,8 +1,7 @@
 {
   "slug": "pdf-ocr-md",
-  "name": "PDF识别提取专家",
-  "version": "3.3.0",
-  "installedAt": 1783651010430,
-  "source": "skillhub",
-  "iconDownloadFailedAt": 1785049400212
+  "name": "pdf-ocr-md",
+  "version": "3.4.0",
+  "installedAt": 1785816479063,
+  "source": "skillhub"
 }

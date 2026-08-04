@@ -1,8 +1,7 @@
 {
   "slug": "pdf-image-text-extractor",
-  "name": "PDF和图片文字提取",
-  "version": "1.0.9",
-  "installedAt": 1783650957509,
-  "source": "skillhub",
-  "iconDownloadFailedAt": 1785049400211
+  "name": "pdf-image-text-extractor",
+  "version": "1.0.10",
+  "installedAt": 1785816478749,
+  "source": "skillhub"
 }

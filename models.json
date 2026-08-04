@@ -1,16 +1,5 @@
 [
   {
-    "id": "agnes-2.0-flash",
-    "name": "agnes-2.0-flash",
-    "vendor": "Custom",
-    "url": "https://apihub.agnes-ai.com/v1/chat/completions",
-    "apiKey": "sk-DO8yFUzePxL7OHriAP1Auejp670bcWKryhQGu4IcwsjG01J9",
-    "supportsToolCall": true,
-    "supportsImages": false,
-    "supportsReasoning": false,
-    "useCustomProtocol": false
-  },
-  {
     "id": "glm-5",
     "name": "GLM-5",
     "vendor": "GLM Coding Plan",
@@ -19,5 +8,18 @@
     "supportsToolCall": true,
     "supportsImages": false,
     "supportsReasoning": false
+  },
+  {
+    "id": "agnes-2.5-flash",
+    "name": "agnes-2.5-flash",
+    "vendor": "Custom",
+    "url": "https://apihub.agnes-ai.cn/v1",
+    "apiKey": "sk-DO8yFUzePxL7OHriAP1Auejp670bcWKryhQGu4IcwsjG01J9",
+    "supportsToolCall": true,
+    "supportsImages": true,
+    "supportsReasoning": true,
+    "useCustomProtocol": false,
+    "maxInputTokens": 65536,
+    "maxOutputTokens": 65536
   }
 ]
