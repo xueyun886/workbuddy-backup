@@ -20,8 +20,7 @@
     "connector:ima-mcp": {
       "type": "streamableHttp",
       "url": "https://ima.qq.com/mcp",
-      "timeout": 20000,
-      "disabled": true
+      "timeout": 20000
     },
     "connector:lexiang": {
       "timeout": 600000,
@@ -38,24 +37,6 @@
       "url": "https://saas.docs.qq.com/api/v6/open/agent/mcp",
       "disabled": true
     },
-    "connector:tapd-woa": {
-      "url": "https://mcpgw.knot.woa.com/tapd/",
-      "disabled": true
-    },
-    "connector:iwiki-woa": {
-      "url": "https://prod.mcp.it.woa.com/app_iwiki_mcp/mcp3",
-      "disabled": true
-    },
-    "connector:gongfeng-woa": {
-      "url": "https://mcpgw.knot.woa.com/gongfeng",
-      "disabled": true
-    },
-    "connector:zhiyan-cicd": {
-      "url": "https://mcpgw.knot.woa.com/zhiyan/delivery",
-      "transportType": "streamable-http",
-      "timeout": 60000,
-      "disabled": true
-    },
     "connector:tencent-survey": {
       "type": "streamableHttp",
       "url": "https://wj.qq.com/api/v2/mcp",
@@ -70,10 +51,6 @@
       "url": "https://www.weiyun.com/api/v3/mcpserver",
       "type": "streamableHttp",
       "timeout": 60000,
-      "disabled": true
-    },
-    "connector:km": {
-      "url": "https://prod.mcp.it.woa.com/paasfront_km-pro_woa_com/mcp",
       "disabled": true
     },
     "connector:fbs-connector": {
@@ -161,12 +138,6 @@
       "staticEnv": {
         "INTEGRATION_IDE": "WorkBuddy"
       },
-      "disabled": true
-    },
-    "connector:bugly": {
-      "type": "streamableHttp",
-      "url": "https://bugly.mcp.it.woa.com",
-      "timeout": 30000,
       "disabled": true
     },
     "connector:bugly-token": {
@@ -467,6 +438,11 @@
       },
       "disabled": true
     },
+    "connector:finenter": {
+      "type": "sse",
+      "url": "https://mcp-server-global.comein.cn/mcp-servers/mcp-server-brm/sse",
+      "disabled": true
+    },
     "connector:chuhaijiang": {
       "type": "streamableHttp",
       "url": "https://mcp.gateway.chuhaijiang.com/mcp",
@@ -481,6 +457,15 @@
       "url": "https://bizveris.kuaicha365.com/mcp",
       "headers": {
         "open-authorization": "Bearer ${KUAICHA_API_KEY}"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:youshu-bd-mate": {
+      "type": "streamableHttp",
+      "url": "https://open.yscredit.com/ys-mcp/report",
+      "headers": {
+        "Authorization": "Bearer ${API_KEY}"
       },
       "timeout": 30000,
       "disabled": true

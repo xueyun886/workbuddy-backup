@@ -10,7 +10,7 @@
         "isBuiltIn": true,
         "autoUpdate": true,
         "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
-        "lastUpdated": "2026-08-04T04:09:04.339Z",
+        "lastUpdated": "2026-08-05T05:18:42.939Z",
         "manifest": {
             "name": "cb_teams_marketplace",
             "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
@@ -685,7 +685,7 @@
         "isBuiltIn": true,
         "autoUpdate": true,
         "description": "CodeBuddy 官方插件市场",
-        "lastUpdated": "2026-08-04T04:09:04.030Z",
+        "lastUpdated": "2026-08-05T05:18:48.404Z",
         "manifest": {
             "name": "codebuddy-plugins-official",
             "description": "CodeBuddy 官方插件市场",
@@ -2728,7 +2728,7 @@
         "isBuiltIn": false,
         "autoUpdate": true,
         "description": "experts marketplace (auto-generated)",
-        "lastUpdated": "2026-08-04T04:26:55.512Z",
+        "lastUpdated": "2026-08-05T05:18:48.419Z",
         "manifest": {
             "name": "experts",
             "description": "experts marketplace (auto-generated)",
@@ -2755,6 +2755,6 @@
         "installLocation": "C:\\Users\\ZWW\\.workbuddy\\plugins\\cache\\workbuddy-builtin",
         "autoUpdate": false,
         "description": "WorkBuddy builtin plugins",
-        "lastUpdated": "2026-08-04T09:10:28.849Z"
+        "lastUpdated": "2026-08-05T09:27:54.175Z"
     }
 }
