@@ -256,18 +256,6 @@
     "connector:qingflow": {
       "type": "streamableHttp",
       "url": "https://mcp.qingflow.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${QINGFLOW_TOKEN}"
-      },
-      "timeout": 30000,
-      "disabled": true
-    },
-    "connector:region-insight": {
-      "type": "sse",
-      "url": "https://mcp.isjike.com/mcp-servers/region-insight/sse",
-      "headers": {
-        "Authorization": "Bearer ${REGION_INSIGHT_API_KEY}"
-      },
       "timeout": 30000,
       "disabled": true
     },
@@ -445,10 +433,7 @@
     },
     "connector:chuhaijiang": {
       "type": "streamableHttp",
-      "url": "https://mcp.gateway.chuhaijiang.com/mcp",
-      "headers": {
-        "X-API-Key": "${CHJ_API_KEY}"
-      },
+      "url": "https://mcp.gateway.chuhaijiang.com/mcp/oauth",
       "timeout": 30000,
       "disabled": true
     },
@@ -466,6 +451,51 @@
       "url": "https://open.yscredit.com/ys-mcp/report",
       "headers": {
         "Authorization": "Bearer ${API_KEY}"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:shanglv-mcp-gateway": {
+      "type": "streamableHttp",
+      "url": "https://mcp-gateway.yql.net/mcp/",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:xingtu-claw-risk": {
+      "url": "https://claw-mcp.tcredit.com/mcp/sse",
+      "type": "sse",
+      "timeout": 600000,
+      "disabled": true
+    },
+    "connector:mzl-trademark": {
+      "type": "streamableHttp",
+      "url": "https://www.mozlen.com/mcp",
+      "timeout": 65000,
+      "disabled": true
+    },
+    "connector:picset-commerce-images": {
+      "type": "streamableHttp",
+      "url": "https://picsetai.cn/functions/v1/agent-mcp-v1/mcp",
+      "headers": {
+        "Authorization": "Bearer ${PICSET_AGENT_SK}"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:picset-video-generation": {
+      "type": "streamableHttp",
+      "url": "https://picsetai.cn/functions/v1/agent-video-mcp-v1/mcp",
+      "headers": {
+        "Authorization": "Bearer ${PICSET_AGENT_SK}"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:opendata": {
+      "type": "sse",
+      "url": "https://mcp.isjike.com/mcp-servers/opendata/sse",
+      "headers": {
+        "Authorization": "Bearer ${REGION_INSIGHT_API_KEY}"
       },
       "timeout": 30000,
       "disabled": true

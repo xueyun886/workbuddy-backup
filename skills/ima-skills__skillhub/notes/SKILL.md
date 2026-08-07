@@ -1,7 +1,3 @@
----
-disable: true
----
-
 # Notes (笔记)
 
 > ⛔ Before ANY write (`import_doc`/`append_doc`): validate ALL string fields (`content`, `title`) are legal UTF-8.
