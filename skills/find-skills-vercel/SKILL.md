@@ -5,7 +5,7 @@ description: Helps users discover and install agent skills when they ask
   can...", or express interest in extending capabilities. This skill should be
   used when the user is looking for functionality that might exist as an
   installable skill.
-disable: true
+disable-model-invocation: true
 ---
 
 # Find Skills

@@ -16,7 +16,7 @@ metadata:
         bins:
           - summarize
         label: Install summarize (brew)
-disable: true
+disable-model-invocation: true
 ---
 
 # Summarize

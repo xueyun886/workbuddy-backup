@@ -13,7 +13,7 @@ description: Render a pre-extracted paper's structured 9-section spec
   paper2assets �?paper2poster �?html2pptx run in sequence, each invokable on its
   own.
 allowed-tools: Bash(*), Read, Write, Edit, Grep, Glob, AskUserQuestion, WebFetch, WebSearch
-disable: true
+disable-model-invocation: true
 ---
 
 # paper2poster �?paper_spec.md �?HTML poster �?PDF/PNG + editable PPTX

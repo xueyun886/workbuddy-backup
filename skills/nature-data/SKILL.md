@@ -14,7 +14,7 @@ description: Prepare, audit, or revise Nature-ready Data Availability
   数据共享、代码可用性、学术写作数据声明、写数据声明、数据存放、数据仓库选择.
 version: 2.0.0
 author: Yuan1z skill, refactored into static/dynamic layers
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature Data Availability — Router

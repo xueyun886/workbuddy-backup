@@ -22,7 +22,7 @@ metadata:
       - professor
       - avoid-ai-writing
       - docx
-disable: true
+disable-model-invocation: true
 ---
 
 # researchwrite — proposal-first 科研写作 pipeline

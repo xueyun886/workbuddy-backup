@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta charset="UTF-8"><title>em Scale Fixture (US2)</title></head>
+<body>
+
+<!-- AC1: font-size drives em margin → 22 * 0.5 = 11pt -->
+<p style="font-size:22pt;margin-bottom:0.5em">大标题 em 段后距</p>
+
+<!-- AC2: font-size drives em text-indent → 9 * 2 = 18pt -->
+<p style="font-size:9pt;text-indent:2em">正文 em 首行缩进</p>
+
+<!-- AC3: no font-size + em → fallback 12pt → 0.5 * 12 = 6pt -->
+<p style="margin-bottom:0.5em">无字号 em 段后距 回落</p>
+
+<!-- AC4: absolute pt margin → unaffected by em -->
+<p style="margin:10pt">绝对单位 段距</p>
+
+<!-- FR-004 decision-lock: two consecutive paragraphs each margin-bottom:12pt -->
+<p style="margin-bottom:12pt">连续段落一 12pt 段后距</p>
+<p style="margin-bottom:12pt">连续段落二 12pt 段后距</p>
+
+</body>
+</html>

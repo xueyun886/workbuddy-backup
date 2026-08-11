@@ -13,7 +13,7 @@ allowed-tools:
 metadata:
   trigger: 编辑或审阅文本，去除 AI 写作痕迹
   source: 翻译自 blader/humanizer，参考 hardikpandya/stop-slop
-disable: true
+disable-model-invocation: true
 ---
 
 # Humanizer-zh: 去除 AI 写作痕迹

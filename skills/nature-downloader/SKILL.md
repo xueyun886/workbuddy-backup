@@ -8,7 +8,7 @@ metadata:
     routes additionally require the user's authenticated Chrome session and
     remote debugging. Uses only lawful OA, publisher API, and user-authorized
     institutional access.
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature Literature Downloader

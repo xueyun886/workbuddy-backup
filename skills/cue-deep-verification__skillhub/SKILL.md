@@ -9,7 +9,7 @@ metadata:
   source: cuecue.cn/playbook
   scene: 深度核查
   generated_from: /api/playbook
-disable: true
+disable-model-invocation: true
 ---
 
 # Cue「深度核查」研究 skill

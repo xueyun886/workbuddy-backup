@@ -23,7 +23,7 @@ metadata:
       - nature-citation
       - arxiv
       - zotero
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature Literature Pipeline

@@ -11,7 +11,7 @@ description: Build a complete Nature-style Chinese PPTX presentation from a
   academic expression. Also trigger when improving weak paper-to-PPT output with
   cropped figures, loose alignment, obvious AI-style wording, or heavy manual
   rework.
-disable: true
+disable-model-invocation: true
 ---
 
 # Paper-to-PPTX — Router

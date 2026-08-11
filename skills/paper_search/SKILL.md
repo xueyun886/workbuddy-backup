@@ -5,7 +5,7 @@ description: Search papers across arXiv, DBLP, OpenAlex, OpenReview, Semantic
   ./scripts/search_papers.py. Use when the user asks to find papers, related
   work, prior art, or recent publications on a specific topic, especially when
   they mention a date range or specific venues like NeurIPS, ICLR, or ICML.
-disable: true
+disable-model-invocation: true
 ---
 
 # Paper Search Skill

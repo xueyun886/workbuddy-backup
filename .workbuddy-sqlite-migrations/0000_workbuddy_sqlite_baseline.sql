@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS automations (
     skills_json TEXT NOT NULL DEFAULT '[]',
     push_to_wechat INTEGER NOT NULL DEFAULT 0,
     push_to_wecom_bot INTEGER NOT NULL DEFAULT 0,
+    wecom_bot_source TEXT,
     owner_user_id TEXT,
     owner_status TEXT NOT NULL DEFAULT 'legacy_unassigned',
     owner_source TEXT,

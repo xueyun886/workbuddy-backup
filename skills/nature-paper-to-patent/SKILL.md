@@ -9,7 +9,7 @@ description: Convert scientific papers, theses, technical reports, source code,
   formulas as editable Office Math, generate claim-aligned flowcharts and
   methodology figures, compare a paper with an existing patent, audit support
   and consistency, or deliver Chinese DOCX patent/disclosure files.
-disable: true
+disable-model-invocation: true
 ---
 
 # Paper to Chinese Patent

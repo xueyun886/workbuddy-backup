@@ -11,7 +11,7 @@ description: Simulate a Nature-style reviewer assessment from the referee
   peer review for any journal, critiquing a draft as a reviewer would, assessing
   novelty/rigor before submission, and Chinese phrasings like
   审稿人视角、模拟审稿、预审、帮我审一下论文、投稿前自审、审稿意见模拟、找论文问题.
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature Reviewer Assessment Skill

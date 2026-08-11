@@ -5,7 +5,7 @@ description: Generate ONE reviewer-defensible, implementable research idea with
   when the user asks for a research idea, novelty analysis, bottleneck
   diagnosis, or paper-shape suggestion. Skip code review, debugging, and
   unconstrained brainstorming without research context.
-disable: true
+disable-model-invocation: true
 ---
 
 # Idea Spark Skill

@@ -13,7 +13,7 @@ description: Build full-paper Chinese-English side-by-side, figure/table-aware,
   读论文、精读论文、论文翻译、文献翻译、文献阅读、学术阅读、帮我读这篇文章、翻译这篇paper.
 version: 2.0.0
 author: Community contribution, refactored into static/dynamic layers
-disable: true
+disable-model-invocation: true
 ---
 
 # Full-Paper Markdown Reader — Router

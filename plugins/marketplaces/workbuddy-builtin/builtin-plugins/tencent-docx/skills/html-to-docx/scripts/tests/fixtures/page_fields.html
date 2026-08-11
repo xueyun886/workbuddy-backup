@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @page {
+    @bottom-center { content: counter(page) " / " counter(pages); }
+    @top-right     { content: string(chapter); }
+  }
+  h1 { string-set: chapter content(text); }
+</style>
+</head>
+<body>
+  <section role="body">
+    <h1>第一章 引言</h1>
+    <p>正文内容。</p>
+  </section>
+</body>
+</html>

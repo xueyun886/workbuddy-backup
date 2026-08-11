@@ -15,7 +15,7 @@ description: Add strict Nature/CNS citations to manuscript text by splitting
   and Chinese phrasings like 学术写作引用、写论文加引用、写paper找文献、加参考文献、配文献、引用文献、文献支撑.
 version: 2.0.0
 author: Yuan1z skill, refactored into static/dynamic layers
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature Citation — Router

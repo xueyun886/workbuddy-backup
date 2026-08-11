@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta charset="UTF-8"><title>Paragraph Border & Shading Fixture (US1)</title></head>
+<body>
+
+<!-- AC1: single-side border with color -->
+<p style="border-left:3px solid #1a4d8f">左边框 蓝色实线</p>
+
+<!-- AC5: border shorthand → four sides -->
+<p style="border:1px solid #ccc">四边边框 灰色实线</p>
+
+<!-- Edge: border-left missing color → auto/black, must not raise -->
+<p style="border-left:2px solid">左边框 缺颜色</p>
+
+<!-- Edge: dashed style -->
+<p style="border-left:2px dashed #999">左边框 虚线</p>
+
+<!-- AC3: background-color → shd fill -->
+<p style="background-color:#eef4fb">浅蓝底纹段落</p>
+
+<!-- Edge: gradient background → ignored + warning, must not raise -->
+<p style="background:linear-gradient(90deg, #fff, #000)">渐变背景 忽略</p>
+
+<!-- Continuous same border-left ×3 (Office auto-merges) -->
+<p style="border-left:3px solid #1a4d8f">连续边框段落一</p>
+<p style="border-left:3px solid #1a4d8f">连续边框段落二</p>
+<p style="border-left:3px solid #1a4d8f">连续边框段落三</p>
+
+</body>
+</html>

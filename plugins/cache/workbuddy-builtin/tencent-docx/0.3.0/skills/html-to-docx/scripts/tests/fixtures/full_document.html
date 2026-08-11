@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="docx-page-size" content="A4">
+<meta name="docx-orientation" content="portrait">
+<title>Full Document Smoke Test</title>
+<style>
+:root {
+  --primary: #0070C0;
+  --text-muted: #666666;
+  --accent: #70AD47;
+}
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <h1 class="doc-title">技术报告：2026年度总结</h1>
+  <p class="doc-subtitle">产品研发中心 · 核心平台团队</p>
+  <p class="doc-meta">作者：研发团队 · 日期：2026-05-19 · 版本：v1.0</p>
+</header>
+
+<nav class="doc-toc">
+  <ol>
+    <li data-page="1"><a href="#intro">一、概述</a>
+      <ol>
+        <li data-page="2"><a href="#background">1.1 背景</a></li>
+        <li data-page="3"><a href="#scope">1.2 范围</a></li>
+      </ol>
+    </li>
+    <li data-page="4"><a href="#method">二、方法论</a>
+      <ol>
+        <li data-page="5"><a href="#approach">2.1 技术路线</a></li>
+      </ol>
+    </li>
+    <li data-page="8"><a href="#results">三、结果与展望</a></li>
+  </ol>
+</nav>
+
+<h1 id="intro">一、概述</h1>
+
+<p style="font-family: 宋体; font-size: 12pt; text-indent: 2em;">
+本报告总结了 2026 年度产品研发工作。通过持续迭代与创新，团队在 <strong>性能</strong>、
+<em>稳定性</em> 和 <u>用户体验</u> 方面取得了显著进展。
+</p>
+
+<div data-component="callout" data-variant="info">
+  <div class="callout-content">
+    <p>本报告使用 html-to-docx 转换引擎自动生成，用于端到端验证。</p>
+    <p>如发现格式问题，请反馈至 #infra-team 频道。</p>
+  </div>
+</div>
+
+<h2 id="background">1.1 背景</h2>
+
+<p style="font-family: 仿宋_GB2312; font-size: 12pt; color: var(--primary);">
+团队于 2025 年底启动了新一代文档处理引擎项目，旨在解决现有方案在中文排版和复杂格式支持方面的不足。
+</p>
+
+<blockquote>
+"好的工具应当让使用者专注于内容，而非格式。" ——产品设计哲学
+</blockquote>
+
+<h2 id="scope">1.2 范围</h2>
+
+<ul>
+  <li>HTML → DOCX 高保真转换</li>
+  <li>CSS 样式映射（≥12 种属性）</li>
+  <li>中文字体支持（宋体、黑体、仿宋等）</li>
+  <li>自定义组件渲染（callout、divider 等）</li>
+</ul>
+
+<hr>
+
+<div data-component="section-marker">方法论概述</div>
+
+<h1 id="method">二、方法论</h1>
+
+<h2 id="approach">2.1 技术路线</h2>
+
+<ol>
+  <li>Phase 1：项目脚手架与 CSS 变量解析器</li>
+  <li>Phase 2：核心转换器与样式映射</li>
+  <li>Phase 3：装饰组件渲染框架</li>
+  <li>Phase 4：TOC、页眉页脚与图片处理</li>
+  <li>Phase 5：CLI 与 Python API</li>
+</ol>
+
+<div class="data-card-grid">
+  <div data-component="data-card">
+    <dt>总任务数</dt><dd>45</dd>
+    <dt>完成率</dt><dd>100%</dd>
+  </div>
+  <div data-component="data-card">
+    <dt>测试覆盖</dt><dd>46 个测试</dd>
+    <dt>通过率</dt><dd>100%</dd>
+  </div>
+  <div data-component="data-card">
+    <dt>Python</dt><dd>3.11+</dd>
+    <dt>依赖</dt><dd>python-docx, html4docx</dd>
+  </div>
+</div>
+
+<p>更多技术细节参见附录 A。</p>
+
+<div data-component="callout" data-variant="success">
+  <div class="callout-content">
+    <p>所有 Phase 1-5 任务均已完成，全量测试通过率 100%。</p>
+  </div>
+</div>
+
+<h1 id="results">三、结果与展望</h1>
+
+<p style="font-family: 黑体; font-size: 14pt; color: var(--accent);">
+性能指标：10 页典型文档的 P95 转换时间目标 ≤ 3 秒。
+</p>
+
+<table>
+  <caption>Table 1：性能基准测试结果</caption>
+  <thead>
+    <tr>
+      <th>文档规模</th>
+      <th>P50（ms）</th>
+      <th>P95（ms）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>5 页</td>
+      <td>450</td>
+      <td>820</td>
+    </tr>
+    <tr>
+      <td>10 页</td>
+      <td>900</td>
+      <td>1650</td>
+    </tr>
+    <tr>
+      <td>20 页</td>
+      <td>1800</td>
+      <td>2900</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code>python -m html_to_docx convert input.html -o output.docx --page-size A4</code></pre>
+
+<div data-component="divider"></div>
+
+<p style="text-align: center; color: var(--text-muted); font-size: 10pt;">
+— 报告结束 —
+</p>
+
+<footer class="doc-footer">
+  © 2026 产品研发中心 · 保密文件 · 禁止外传
+</footer>
+
+</body>
+</html>

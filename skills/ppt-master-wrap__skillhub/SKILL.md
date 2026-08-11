@@ -1,5 +1,5 @@
 ---
-disable: true
+disable-model-invocation: true
 ---
 
 # Ppt Master Wrap

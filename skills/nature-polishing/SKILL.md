@@ -16,7 +16,7 @@ description: Polish, restructure, or translate academic prose into
   such as 学术写作、科研写作、论文润色、写paper、SCI写作、英文论文润色、语言润色、润色、改写、学术英语、英文写作.
 version: 6.1.0
 author: Yuan1z skill, refactored into static/dynamic layers
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature-Style Academic Polishing — Router

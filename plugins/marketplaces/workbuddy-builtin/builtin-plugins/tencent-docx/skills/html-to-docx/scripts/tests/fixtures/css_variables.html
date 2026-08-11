@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- First :root block: base variables -->
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --font-size: 16px;
+      --spacing: 8px;
+      --border: 1px solid var(--primary-color);
+      --nested-a: var(--primary-color);
+      --nested-b: var(--nested-a);
+      --nested-c: var(--nested-b);
+    }
+
+    body {
+      font-size: var(--font-size);
+      color: var(--primary-color);
+    }
+
+    .card {
+      border: var(--border);
+      padding: var(--spacing);
+    }
+  </style>
+
+  <!-- Second :root block: overrides / additions -->
+  <style>
+    :root {
+      --accent-color: #e74c3c;
+      --computed-spacing: calc(var(--spacing) * 2);
+    }
+
+    .accent {
+      color: var(--accent-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- Simple var() replacement -->
+  <h1 style="color: var(--primary-color);">Heading</h1>
+
+  <!-- Fallback for undefined variable -->
+  <p style="color: var(--undefined-var, #cccccc);">Fallback paragraph</p>
+
+  <!-- Undefined variable with no fallback (should be left as-is) -->
+  <p style="color: var(--completely-undefined);">Undefined no fallback</p>
+
+  <!-- Nested var() via class -->
+  <div class="card">Card with border from nested var</div>
+
+  <!-- Inline style with multiple vars -->
+  <span style="color: var(--secondary-color); font-size: var(--font-size); margin: var(--spacing);">
+    Multi-var inline style
+  </span>
+
+  <!-- Deep nesting (3 levels: nested-c -> nested-b -> nested-a -> primary-color) -->
+  <p style="color: var(--nested-c);">Deep nested var</p>
+
+  <!-- Accent color from second :root block -->
+  <em class="accent" style="color: var(--accent-color);">Accent text</em>
+</body>
+</html>

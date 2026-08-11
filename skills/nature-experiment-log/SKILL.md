@@ -17,7 +17,7 @@ metadata:
     related_skills:
       - nature-literature-pipeline
       - feishu-cli-integration
-disable: true
+disable-model-invocation: true
 ---
 
 # experiment-log — 实验日志标准化

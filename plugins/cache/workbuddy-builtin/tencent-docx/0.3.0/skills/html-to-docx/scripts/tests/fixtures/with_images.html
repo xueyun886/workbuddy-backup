@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Images Test</title></head>
+<body>
+
+<!-- Base64 inline 1×1 PNG (valid, should embed) -->
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="1x1 pixel" width="100" height="100">
+
+<!-- Non-existent local path (should produce fallback paragraph) -->
+<img src="/nonexistent/path/to/missing_image.png" alt="missing image">
+
+<!-- Remote URL (will attempt download; test via monkeypatching) -->
+<img src="https://httpbin.org/image/png" alt="remote image" width="200">
+
+<!-- Oversized image (3000px wide) simulated via width attribute -->
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="oversized" width="3000">
+
+</body>
+</html>

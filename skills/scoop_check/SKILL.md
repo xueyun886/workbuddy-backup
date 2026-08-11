@@ -7,7 +7,7 @@ description: Check whether a proposed research novelty (given a problem
   search for a specific claim, or assess whether a paper idea has been scooped.
   DO NOT TRIGGER for general literature reviews unrelated to a specific novelty
   claim, or for writing related-work sections of an already-validated idea.
-disable: true
+disable-model-invocation: true
 ---
 
 # Scoop Check

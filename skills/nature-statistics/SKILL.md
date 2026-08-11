@@ -9,7 +9,7 @@ description: Audit, revise, or draft manuscript statistical reporting for Nature
   publication-ready Statistical analysis text. Also trigger on general
   paper-statistics requests such as
   统计审查、统计分析小节、统计方法、p值、样本量、重复数、多重比较、置信区间、效应量、图注统计、审稿人统计意见.
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature Statistics Reporting Skill

@@ -7,7 +7,7 @@ description: Use when transforming an academic paper, arXiv/OpenReview PDF,
   version (`blog_zh.docx`) and an English research-blog version
   (`blog_en.docx`). Use for drafting, revising, or packaging article copy,
   figure placement, captions, image prompts, and the final `.docx` deliverables.
-disable: true
+disable-model-invocation: true
 ---
 
 # Bilingual Paper Editorial

@@ -3,7 +3,7 @@ name: paper2reel
 description: Build an interactive HTML viewer that aligns paper2poster output
   with slide/video deck frames through a sidecar content_alignment.json, without
   modifying the original poster, PPTX, or blog deliverables.
-disable: true
+disable-model-invocation: true
 ---
 
 # paper2reel - aligned artifact viewer

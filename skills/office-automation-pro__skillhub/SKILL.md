@@ -3,7 +3,7 @@ name: office-automation
 description: 常见办公流程自动化处理 - 智能办公助手，支持文档处理、数据整理、邮件管理、日程安排、报表生成等
 version: 1.0.0
 license: MIT
-disable: true
+disable-model-invocation: true
 ---
 
 # 办公自动化

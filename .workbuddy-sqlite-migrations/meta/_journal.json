@@ -8,6 +8,20 @@
       "when": 1782445443000,
       "tag": "0000_workbuddy_sqlite_baseline",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784544000000,
+      "tag": "0001_session_plugin_context",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1800000000000,
+      "tag": "0002_last_user_prompt_expert_selection",
+      "breakpoints": true
     }
   ]
 }

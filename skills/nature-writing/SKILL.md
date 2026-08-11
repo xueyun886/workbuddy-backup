@@ -11,7 +11,7 @@ description: Draft, restructure, or plan Nature-style manuscript sections and
   general academic-writing and first-submission requests such as writing a paper
   from scratch, drafting a manuscript/section, structuring a paper, submission
   package, 投稿材料、首次投稿、投稿前 cover letter、投稿信、标题页、亮点、作者贡献、数据可用性声明、推荐审稿人.
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature-Style Scientific Writing — Router

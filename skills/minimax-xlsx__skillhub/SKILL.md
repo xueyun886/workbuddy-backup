@@ -6,7 +6,7 @@ description: MiniMax spreadsheet production system. Engage for any task that
   formula recalculation via recalc.py (LibreOffice headless), and the
   MiniMaxXlsx CLI (C#/.NET) for structural validation, formula auditing, and
   pivot table synthesis.
-disable: true
+disable-model-invocation: true
 ---
 
 <brief>

@@ -14,7 +14,7 @@ description: Create, revise, audit, and export submission-grade scientific
   interactive dashboards, statistics-only analysis, data cleaning, literature
   review, code debugging, pure photo editing, or Illustrator/Figma-first
   infographics without manuscript-figure intent.
-disable: true
+disable-model-invocation: true
 ---
 
 # Nature Figure Making — Router

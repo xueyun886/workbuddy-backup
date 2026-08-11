@@ -7,7 +7,7 @@ description: Draft, revise, polish, and quality-check Chinese official documents
   discipline, and reduced AI-flavored phrasing. Use when the user asks for
   通知、通报、报告、请示、批复、函、纪要、决定、通告、议案、倡议书、工作方案、工作计划、工作总结、简报、讲话稿、发言稿、汇报材料、调研报告、宣传稿、公开信、感谢信、信访回复、理论评论、政策解读,
   or asks to 一键生成/润色/改写/降AI味/减少AI味/人民日报风格/检查格式/生成可交付公文.
-disable: true
+disable-model-invocation: true
 ---
 
 # 公文写作

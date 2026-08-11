@@ -1,0 +1,1 @@
+ALTER TABLE sessions ADD COLUMN last_user_prompt_expert_selection TEXT;

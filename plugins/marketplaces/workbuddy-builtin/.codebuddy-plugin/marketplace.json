@@ -1,0 +1,248 @@
+{
+    "name": "workbuddy-builtin",
+    "description": "WorkBuddy unified builtin marketplace. This directory is the target root for welcomeMode, interaction mode, skill, MCP, template, and resource plugins.",
+    "owner": {
+        "name": "WorkBuddy",
+        "email": "workbuddy@tencent.com"
+    },
+    "metadata": {
+        "version": "1.0.0",
+        "phase": "addon-context-orchestration",
+        "workbuddySeed": {
+            "version": 1,
+            "revision": "5.3.11+45487630f55",
+            "sourceMarketplaces": [
+                "plugins/workbuddy-builtin"
+            ],
+            "sourceRoots": [
+                "D:\\Program Files (x86)\\WorkBuddy\\resources\\app.asar.unpacked\\resources\\plugins\\workbuddy-builtin"
+            ]
+        }
+    },
+    "plugins": [
+        {
+            "name": "welcomemode-code",
+            "description": "WorkBuddy coding welcomeMode root agent and resources.",
+            "source": "./welcomemode/code",
+            "version": "0.1.7",
+            "category": "welcomeMode"
+        },
+        {
+            "name": "welcomemode-work",
+            "description": "WorkBuddy working welcomeMode root agent and resources.",
+            "source": "./welcomemode/work",
+            "version": "0.1.5",
+            "category": "welcomeMode"
+        },
+        {
+            "name": "welcomemode-design",
+            "description": "WorkBuddy design welcomeMode root agent and resources.",
+            "source": "./welcomemode/design",
+            "version": "0.1.5",
+            "category": "welcomeMode"
+        },
+        {
+            "name": "interactionmode-craft",
+            "description": "WorkBuddy craft interaction mode fragment and tool policy.",
+            "source": "./interactionmode/craft",
+            "version": "0.1.4",
+            "category": "interaction"
+        },
+        {
+            "name": "interactionmode-ask",
+            "description": "WorkBuddy ask interaction mode fragment and tool policy.",
+            "source": "./interactionmode/ask",
+            "version": "0.1.0",
+            "category": "interaction"
+        },
+        {
+            "name": "interactionmode-plan",
+            "description": "WorkBuddy plan interaction mode fragment and tool policy.",
+            "source": "./interactionmode/plan",
+            "version": "0.1.0",
+            "category": "interaction"
+        },
+        {
+            "name": "interactionmode-expert",
+            "description": "WorkBuddy expert interaction mode fragment and tool policy.",
+            "source": "./interactionmode/expert",
+            "version": "0.1.1",
+            "category": "interaction"
+        },
+        {
+            "name": "prompt-common",
+            "description": "WorkBuddy shared prompt fragments for welcomeMode templates.",
+            "source": "./prompt-common",
+            "version": "0.1.2",
+            "category": "template"
+        },
+        {
+            "name": "skill-ardot-design-core",
+            "description": "WorkBuddy bundled skill resource: ardot-design-core.",
+            "source": "./skills/ardot-design-core",
+            "version": "0.1.2",
+            "category": "skill"
+        },
+        {
+            "name": "skill-expert-manager",
+            "description": "WorkBuddy bundled skill resource: expert-manager.",
+            "source": "./skills/expert-manager",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-wb-finance-skill",
+            "description": "WorkBuddy bundled skill resource: wb-finance-skill.",
+            "source": "./skills/wb-finance-skill",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-ardot-poster",
+            "description": "WorkBuddy bundled skill resource: ardot-poster.",
+            "source": "./skills/ardot-poster",
+            "version": "0.1.1",
+            "category": "skill"
+        },
+        {
+            "name": "skill-marketplace-skill-installer",
+            "description": "WorkBuddy bundled skill resource: marketplace-skill-installer.",
+            "source": "./skills/marketplace-skill-installer",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-recommend-connectors",
+            "description": "Recommend real, currently disconnected Connector plugins for the active task.",
+            "source": "./skills/recommend-connectors",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-recommend-experts",
+            "description": "Recommend curated, locally valid Experts or Expert Teams for the active task.",
+            "source": "./skills/recommend-experts",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-ardot-design-router",
+            "description": "WorkBuddy bundled skill resource: ardot-design-router.",
+            "source": "./skills/ardot-design-router",
+            "version": "0.1.1",
+            "category": "skill"
+        },
+        {
+            "name": "skill-ardot-design-to-code",
+            "description": "WorkBuddy bundled skill resource: ardot-design-to-code.",
+            "source": "./skills/ardot-design-to-code",
+            "version": "0.1.1",
+            "category": "skill"
+        },
+        {
+            "name": "skill-buddy-multimodal-generation",
+            "description": "WorkBuddy bundled skill resource: buddy-multimodal-generation.",
+            "source": "./skills/buddy-multimodal-generation",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-ardot-ui-design",
+            "description": "WorkBuddy bundled skill resource: ardot-ui-design.",
+            "source": "./skills/ardot-ui-design",
+            "version": "0.1.1",
+            "category": "skill"
+        },
+        {
+            "name": "skill-skill-creator",
+            "description": "WorkBuddy bundled skill resource: skill-creator.",
+            "source": "./skills/skill-creator",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-cloudstudio-deploy",
+            "description": "WorkBuddy bundled skill resource: cloudstudio-deploy.",
+            "source": "./skills/cloudstudio-deploy",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-ardot-slides",
+            "description": "WorkBuddy bundled skill resource: ardot-slides.",
+            "source": "./skills/ardot-slides",
+            "version": "0.1.1",
+            "category": "skill"
+        },
+        {
+            "name": "skill-geo-map-compliance-guard",
+            "description": "WorkBuddy bundled skill resource: geo-map-compliance-guard.",
+            "source": "./skills/geo-map-compliance-guard",
+            "version": "0.1.0",
+            "category": "skill"
+        },
+        {
+            "name": "skill-library",
+            "description": "WorkBuddy bundled skill resource: library.",
+            "source": "./skills/library",
+            "version": "0.5.9",
+            "category": "skill"
+        },
+        {
+            "name": "skill-tencent-docs-routing",
+            "description": "WorkBuddy bundled skill resource: tencent-docs-routing.",
+            "source": "./skills/tencent-docs-routing",
+            "version": "0.1.1",
+            "category": "skill"
+        },
+        {
+            "name": "skill-tencent-local-office-edit",
+            "description": "WorkBuddy bundled skill resource: tencent-local-office-edit.",
+            "source": "./skills/tencent-local-office-edit",
+            "version": "0.0.1",
+            "category": "skill"
+        },
+        {
+            "name": "mcp-ardot-mcp-app",
+            "description": "WorkBuddy bundled MCP app resource: ardot-mcp-app.",
+            "source": "./mcps/ardot-mcp-app",
+            "version": "0.1.0",
+            "category": "mcp-app"
+        },
+        {
+            "name": "weixinpay",
+            "description": "WeixinPay bundled plugin resource.",
+            "source": "./builtin-plugins/weixinpay",
+            "version": "1.6.107",
+            "category": "builtin-plugin"
+        },
+        {
+            "name": "tencent-docs-plugin",
+            "description": "Tencent Docs bundled plugin resource.",
+            "source": "./builtin-plugins/tencent-docs-plugin",
+            "version": "1.0.0",
+            "category": "builtin-plugin"
+        },
+        {
+            "name": "sheetagent",
+            "description": "Tencent Docs bundled spreadsheet agent.",
+            "source": "./builtin-plugins/sheetagent",
+            "version": "0.1.1784877812",
+            "category": "builtin-plugin"
+        },
+        {
+            "name": "tencent-pptx",
+            "description": "Tencent Docs bundled presentation plugin.",
+            "source": "./builtin-plugins/tencent-pptx",
+            "version": "v20260727",
+            "category": "builtin-plugin"
+        },
+        {
+            "name": "tencent-docx",
+            "description": "Tencent Docs bundled document plugin.",
+            "source": "./builtin-plugins/tencent-docx",
+            "version": "0.3.0",
+            "category": "builtin-plugin"
+        }
+    ]
+}

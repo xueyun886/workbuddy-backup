@@ -9,7 +9,7 @@ description: >
   with `~/.workbuddy/skills/paper2poster/scripts/generate_audio.py`, render with
   `~/.workbuddy/skills/paper2video/scripts/render_video.py`, and burn final
   subtitles with `~/.workbuddy/skills/paper2video/scripts/add_subtitles.py`.
-disable: true
+disable-model-invocation: true
 ---
 
 # paper2video - paper/assets/deck -> narrated MP4

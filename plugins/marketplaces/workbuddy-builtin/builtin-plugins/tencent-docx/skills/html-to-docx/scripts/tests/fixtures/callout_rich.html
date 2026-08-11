@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta charset="UTF-8"><title>Callout Rich Text Fixture (US3)</title></head>
+<body>
+
+<!-- callout with bold title + two paragraphs -->
+<div class="callout" data-component="callout">
+  <div class="callout-content">
+    <p><strong>核心结论</strong></p>
+    <p>第一段说明文字，包含 <strong>加粗</strong> 行内强调。</p>
+    <p>第二段补充文字，独立成段不应被拍平。</p>
+  </div>
+</div>
+
+<!-- callout with unordered list -->
+<div class="callout" data-component="callout">
+  <div class="callout-content">
+    <ul>
+      <li>列表项一</li>
+      <li>列表项二</li>
+    </ul>
+  </div>
+</div>
+
+<!-- callout with variant + emoji -->
+<div class="callout" data-component="callout" data-variant="warning">
+  <div class="callout-content">
+    <p>⚠️ 警示型 callout，保留 variant 颜色与 emoji。</p>
+  </div>
+</div>
+
+</body>
+</html>
