@@ -443,7 +443,7 @@
     },
     "connector:kuaicha-search": {
       "type": "streamableHttp",
-      "url": "https://bizveris.kuaicha365.com/mcp",
+      "url": "https://bizveris.kuaicha365.com/mcp?source=workbuddy",
       "headers": {
         "open-authorization": "Bearer ${KUAICHA_API_KEY}"
       },
@@ -508,6 +508,38 @@
       "type": "streamableHttp",
       "url": "https://mcp.bazhuayu.com?includeTools=search_templates,execute_task,get_task_status,export_data,search_tasks,start_or_stop_task",
       "timeout": 60000,
+      "disabled": true
+    },
+    "connector:ezjoin-meeting": {
+      "type": "streamableHttp",
+      "url": "https://www.ezyjoin.cn/api/mcp/message",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:gangtise-mcp": {
+      "type": "streamableHttp",
+      "url": "https://openapi.gangtise.com/application/open-mcp/",
+      "headers": {
+        "accessKey": "${GTS_ACCESS_KEY}",
+        "secretKey": "${GTS_SECRET_KEY}"
+      },
+      "timeout": 60000,
+      "disabled": true
+    },
+    "connector:jiushuyun": {
+      "type": "streamableHttp",
+      "url": "https://work.jiushuyun.com/mcp",
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:pandadata": {
+      "url": "https://pandadatamcp.pandaaiquant.com/mcp",
+      "disabled": true
+    },
+    "connector:kling-ai": {
+      "type": "streamableHttp",
+      "url": "https://klingai.com/mcp",
+      "timeout": 30000,
       "disabled": true
     }
   }
