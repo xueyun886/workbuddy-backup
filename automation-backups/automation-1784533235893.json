@@ -4,8 +4,8 @@
   "prompt": "每日执行 WorkBuddy 配置备份到 GitHub 仓库 xueyun886/workbuddy-backup。\n\n1. 在 C:\\Users\\ZWW\\.workbuddy 目录中执行：\n   git add -A\n   git commit -m \"auto backup: WorkBuddy config <当前日期>\"\n   git push origin main\n\n2. 如果没有任何变更（git add -A 后 git status 仍干净）：\n   - 报告\"今日无变更，无需提交\"并结束。\n\n3. 如果 git push 失败：\n   - 先确认 remote URL 中嵌入的 PAT 是否过期（PAT 有到期日）。若过期，请用户更新：git remote set-url origin https://<新PAT>@github.com/xueyun886/workbuddy-backup.git，再重试。\n   - 若 PAT 有效仍失败，多半是沙箱网络限制。报告：本地提交已创建，但 GitHub 推送因网络限制失败，请用户在可联网环境手动推送或更新凭据。\n   - 不要在没有有效凭据的情况下尝试外部网络访问。\n\n注意：\n- 用 git add -A 代替逐一列举路径：原清单含不存在的路径(如 experts/、automations)会导致整个 git add 报错、一个文件都不暂存，备份每天都会静默失败；git add -A 受 .gitignore 约束，自动纳入全部应备份项（skills/、connectors/、plugins/、memory/、MEMORY.md、身份文件、automation-backups/ 等）并忽略运行时垃圾，且不怕路径缺失或日后新增。\n- 目标仓库已是私有。备份含 workbuddy.db、memory/（对话历史与个人备忘）、MEMORY.md（用户级记忆）及身份文件（BOOTSTRAP/IDENTITY/SOUL/USER.md）。\n- .gitignore 排除运行时垃圾（logs/、sessions/、blobs/ 等）与 SQLite 临时文件（workbuddy.db-shm/.wal）。\n- connectors/ 含加密主密钥 .master.key，已随私有仓库备份，请勿将仓库转公开或添加协作者。",
   "status": "ACTIVE",
   "scheduleType": "recurring",
-  "nextRunAt": 1786524900000.0015,
-  "lastRunAt": 1786495043012,
+  "nextRunAt": 1786697700000.0015,
+  "lastRunAt": 1786524985156,
   "cwds": [
     "C:\\Users\\ZWW\\.workbuddy"
   ],
@@ -24,5 +24,5 @@
   ],
   "permissionMode": "fullAccess",
   "createdAt": 1784533235893,
-  "updatedAt": 1786495043013
+  "updatedAt": 1786524985158
 }

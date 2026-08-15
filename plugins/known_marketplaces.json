@@ -3,14 +3,14 @@
     "type": "zip",
     "source": {
       "source": "zip",
-      "url": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-e7a7ceb6-8adf-4464-a35f-e8907f02812d.zip",
-      "path": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-e7a7ceb6-8adf-4464-a35f-e8907f02812d.zip"
+      "url": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-6a7a8beb-f847-4fac-bd19-652d2ee563e2.zip",
+      "path": "https://download.codebuddy.cn/plugin-marketplace/cb_teams_marketplace-6a7a8beb-f847-4fac-bd19-652d2ee563e2.zip"
     },
     "installLocation": "C:\\Users\\ZWW\\.workbuddy\\plugins\\marketplaces\\cb_teams_marketplace",
     "isBuiltIn": true,
     "autoUpdate": true,
     "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
-    "lastUpdated": "2026-08-12T00:37:49.826Z",
+    "lastUpdated": "2026-08-14T01:52:50.668Z",
     "manifest": {
       "name": "cb_teams_marketplace",
       "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
@@ -87,21 +87,6 @@
             "./plugins/general-skills/skills/find-skills",
             "./plugins/general-skills/skills/ui-ux-pro-max",
             "./plugins/general-skills/skills/frontend-design"
-          ]
-        },
-        {
-          "name": "data-analysis",
-          "description": "Data analysis plugin with Excel spreadsheet creation, editing, and analysis capabilities. Supports formulas, formatting, data analysis, and visualization. Also includes WeChat article search via Sogou for high-quality Chinese content retrieval.",
-          "source": "./plugins/data-analysis",
-          "version": "1.0.0",
-          "category": "productivity",
-          "author": {
-            "name": "CodeBuddy"
-          },
-          "license": "Proprietary",
-          "skills": [
-            "./plugins/data-analysis/skills/xlsx",
-            "./plugins/data-analysis/skills/wechat-article-search"
           ]
         },
         {
@@ -685,7 +670,7 @@
     "isBuiltIn": true,
     "autoUpdate": true,
     "description": "CodeBuddy 官方插件市场",
-    "lastUpdated": "2026-08-12T00:37:54.121Z",
+    "lastUpdated": "2026-08-14T01:52:55.370Z",
     "manifest": {
       "name": "codebuddy-plugins-official",
       "description": "CodeBuddy 官方插件市场",
@@ -2728,7 +2713,7 @@
     "isBuiltIn": false,
     "autoUpdate": true,
     "description": "experts marketplace (auto-generated)",
-    "lastUpdated": "2026-08-12T00:37:54.193Z",
+    "lastUpdated": "2026-08-14T01:52:55.389Z",
     "manifest": {
       "name": "experts",
       "description": "experts marketplace (auto-generated)",

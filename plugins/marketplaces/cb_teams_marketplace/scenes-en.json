@@ -8,9 +8,8 @@
     "plugins": [
       {
         "id": 0,
-        "name": "document-skills",
-        "marketplaceName": "cb_teams_marketplace",
-        "marketplaceUrl": "https://cnb.cool/codebuddy/cbteamsmarketplace"
+        "name": "tencent-docx",
+        "marketplaceName": "workbuddy-builtin"
       }
     ],
     "prompts": [
@@ -101,9 +100,8 @@
       },
       {
         "id": 1,
-        "name": "document-skills",
-        "marketplaceName": "cb_teams_marketplace",
-        "marketplaceUrl": "https://cnb.cool/codebuddy/cbteamsmarketplace"
+        "name": "sheetagent",
+        "marketplaceName": "workbuddy-builtin"
       }
     ],
     "prompts": [
@@ -150,6 +148,35 @@
       "Worker Ledger",
       "Learning Goal Workspace",
       "CyberFit Exercise Tracker"
+    ],
+    "target": "all"
+  },
+  {
+    "id": 1,
+    "unified_id": 105,
+    "name": "Slides Creation",
+    "icon": "slides-creation",
+    "mode": "working",
+    "plugins": [
+      {
+        "id": 0,
+        "name": "tencent-pptx",
+        "marketplaceName": "workbuddy-builtin"
+      }
+    ],
+    "prompts": [
+      "Create a popular-science PPT on the history of AI, organized as a timeline covering symbolism, expert systems, machine learning, deep learning, and large models, highlighting key figures, technologies, and events. Use a \"Tech Archive\" style: deep navy-black (#0B1020) paired with electric blue (#3478F6) and orange-red (#FF6B4A). Focus on a vertical timeline, historical event cards, and technology evolution diagrams; use Source Han Sans for Chinese text, combining historical depth with a futuristic tech feel.",
+      "Create a 2026 AI trends analysis PPT for industry research and executive reporting. Research online the trends in agents, multimodal AI, on-device AI, embodied intelligence, AI coding, and compute chips, presenting the latest progress, business value, and future outlook. Use a \"Future Intelligence Briefing\" style: black-blue (#090D18) paired with neon cyan (#38E8D4) and digital purple (#846BFF). Use trend matrices, vendor comparisons, and market forecast charts—cutting-edge, precise, and opinionated.",
+      "Create a 10-page personal or team year-end review PPT covering annual goals, key projects, core achievements, problem retrospectives, and next-year plans; use placeholders for missing information. Use a clean business style: white background paired with deep blue (#173A63) and warm orange (#F08A4B). Express one core takeaway per page, presented through big numbers, project cards, milestones, and quarterly roadmaps—clear and restrained, highlighting results, contributions, and growth.",
+      "Create a cultural introduction PPT for \"Journey to the West\", covering its creation background, main storyline, key characters, classic episodes, the pantheon of gods and demons, and its cultural influence. Use an \"Eastern Mythology Scroll\" style: rice-paper off-white (#F3E8D2) paired with cinnabar red (#B83A32), ink black, and gilded gold (#C89B4B). Feature the pilgrimage route, character relationship maps, magical-artifact cards, and ink-wash illustrations; design page numbers as seal stamps—classical and vivid, combining storytelling with cultural depth.",
+      "Create a Pop Mart brand analysis PPT; research online the brand's development, core IPs, blind-box mechanics, user profiles, channel layout, overseas markets, and business model. Use a \"Designer Toy Exhibition Catalog\" style: cream white (#F7F3EE) paired with Pop pink (#F4A8C4), bright red (#E94752), and lagoon blue (#64C9D4). Feature large IP images, rounded cards, sticker labels, an IP matrix, and an overseas map—young, vivid, and collectible without being childish."
+    ],
+    "promptTitles": [
+      "AI History PPT",
+      "AI Trends PPT",
+      "Year-End Review PPT",
+      "Journey to the West PPT",
+      "Pop Mart PPT"
     ],
     "target": "all"
   },
@@ -215,34 +242,6 @@
     "target": "all"
   },
   {
-    "id": 1,
-    "unified_id": 105,
-    "name": "Slides Creation",
-    "icon": "slides-creation",
-    "mode": "working",
-    "plugins": [
-      {
-        "id": 0,
-        "name": "ppt-implement",
-        "marketplaceName": "cb_teams_marketplace",
-        "marketplaceUrl": "https://cnb.cool/codebuddy/cbteamsmarketplace"
-      }
-    ],
-    "prompts": [
-      "Create a PowerPoint presentation on the development history of artificial intelligence (AI).",
-      "Create a PowerPoint presentation on 2026 trends in AI agents.",
-      "Create a minimalist-style PowerPoint presentation forCodeBuddy's 2025 year-end summary.",
-      "Create a PowerPoint presentation on POP MART's development history, with one IP character featured on every slide."
-    ],
-    "promptTitles": [
-      "AI History PPT",
-      "AI Trends PPT",
-      "Year-end Summary PPT",
-      "POP MART PPT"
-    ],
-    "target": "all"
-  },
-  {
     "id": 11,
     "unified_id": 106,
     "name": "Product",
@@ -257,9 +256,8 @@
       },
       {
         "id": 1,
-        "name": "document-skills",
-        "marketplaceName": "cb_teams_marketplace",
-        "marketplaceUrl": "https://cnb.cool/codebuddy/cbteamsmarketplace"
+        "name": "tencent-docx",
+        "marketplaceName": "workbuddy-builtin"
       }
     ],
     "prompts": [

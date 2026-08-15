@@ -8,8 +8,8 @@
     "plugins": [
       {
         "id": 0,
-        "name": "document-skills",
-        "marketplaceName": "cb_teams_marketplace"
+        "name": "tencent-docx",
+        "marketplaceName": "workbuddy-builtin"
       }
     ],
     "prompts": [
@@ -99,8 +99,8 @@
       },
       {
         "id": 1,
-        "name": "document-skills",
-        "marketplaceName": "cb_teams_marketplace"
+        "name": "sheetagent",
+        "marketplaceName": "workbuddy-builtin"
       }
     ],
     "prompts": [
@@ -147,6 +147,35 @@
       "打工人小账本",
       "学习目标管理台",
       "CyberFit 运动打卡"
+    ],
+    "target": "all"
+  },
+  {
+    "id": 0,
+    "unified_id": 105,
+    "name": "幻灯片",
+    "icon": "slides-creation",
+    "mode": "working",
+    "plugins": [
+      {
+        "id": 0,
+        "name": "tencent-pptx",
+        "marketplaceName": "workbuddy-builtin"
+      }
+    ],
+    "prompts": [
+      "制作一份 AI 发展历程科普 PPT，按时间线梳理符号主义、专家系统、机器学习、深度学习和大模型，突出关键人物、技术与事件。采用“科技档案馆”风格，深蓝黑（#0B1020）搭配电光蓝（#3478F6）和橙红（#FF6B4A）。以纵向时间轴、历史事件卡片和技术演进图为主，中文使用思源黑体，整体兼具历史纵深与未来科技感。",
+      "制作一份 2026 AI 趋势分析 PPT，用于行业研究和管理层汇报。联网整理 Agent、多模态、端侧 AI、具身智能、AI 编程和算力芯片等趋势，呈现最新进展、商业价值与未来判断。采用“未来情报简报”风格，黑蓝（#090D18）搭配荧光青（#38E8D4）和数字紫（#846BFF）。使用趋势矩阵、厂商对比和市场预测图，整体前沿、精密、有判断力。",
+      "制作一份 10 页的个人或团队年终总结 PPT，内容包括年度目标、重点项目、核心成果、问题复盘和明年规划，缺失信息使用占位符。采用简洁商务风格，白底搭配深蓝（#173A63）和暖橙（#F08A4B）。每页只表达一个核心结论，以大数字、项目卡片、里程碑和季度路线图展示，整体清晰克制，突出结果、贡献与成长。",
+      "制作一份 《西游记》文化介绍 PPT，涵盖创作背景、故事主线、主要人物、经典情节、神魔体系和文化影响。采用“东方神话绘卷”风格，宣纸米白（#F3E8D2）搭配朱砂红（#B83A32）、墨黑和鎏金（#C89B4B）。使用取经路线、人物关系、法宝卡片和水墨插画，页码设计成印章样式，整体古典生动，兼具故事性与文化感。",
+      "制作一份 泡泡玛特品牌分析 PPT，联网整理品牌发展、核心 IP、盲盒机制、用户画像、渠道布局、海外市场和商业模式。采用“潮玩展览册”风格，奶油白（#F7F3EE）搭配泡泡粉（#F4A8C4）、亮红（#E94752）和湖水蓝（#64C9D4）。使用大幅 IP 图片、圆角卡片、贴纸标签、IP 矩阵和海外地图，整体年轻鲜明、有收藏感，但不过度幼稚。"
+    ],
+    "promptTitles": [
+      "AI发展历程PPT",
+      "AI趋势PPT",
+      "年终总结PPT",
+      "西游记介绍PPT",
+      "泡泡玛特PPT"
     ],
     "target": "all"
   },
@@ -211,35 +240,6 @@
     "target": "all"
   },
   {
-    "id": 0,
-    "unified_id": 105,
-    "name": "幻灯片",
-    "icon": "slides-creation",
-    "mode": "working",
-    "plugins": [
-      {
-        "id": 0,
-        "name": "ppt-implement",
-        "marketplaceName": "cb_teams_marketplace"
-      }
-    ],
-    "prompts": [
-      "请生成一个AI人工智能发展历程的ppt",
-      "请生成一个AI Agent 2026年发展趋势的ppt",
-      "请使用简约风生成一个CodeBuddy 2025年的年终总结的ppt",
-      "请生成一个关于介绍西游记的ppt",
-      "做一个popmart发展史ppt，每一页都要有一个ip"
-    ],
-    "promptTitles": [
-      "AI发展历程PPT",
-      "AI趋势PPT",
-      "年终总结PPT",
-      "西游记介绍PPT",
-      "泡泡玛特PPT"
-    ],
-    "target": "all"
-  },
-  {
     "id": 10,
     "unified_id": 106,
     "name": "产品管理",
@@ -253,8 +253,8 @@
       },
       {
         "id": 1,
-        "name": "document-skills",
-        "marketplaceName": "cb_teams_marketplace"
+        "name": "tencent-docx",
+        "marketplaceName": "workbuddy-builtin"
       }
     ],
     "prompts": [

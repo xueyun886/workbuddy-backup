@@ -1,8 +1,7 @@
 {
   "slug": "official-document-skill",
-  "name": "公文写作skill",
-  "version": "1.0.1",
-  "installedAt": 1783654328347,
-  "source": "skillhub",
-  "iconDownloadFailedAt": 1786086174005
+  "name": "official-document-skill",
+  "version": "1.0.3",
+  "installedAt": 1786755983508,
+  "source": "skillhub"
 }

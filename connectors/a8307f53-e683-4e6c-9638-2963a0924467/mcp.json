@@ -4,6 +4,12 @@
       "url": "https://mcp.linear.app/mcp",
       "disabled": true
     },
+    "connector:canva-ai": {
+      "type": "streamableHttp",
+      "url": "https://mcp.canva.com/mcp",
+      "timeout": 60000,
+      "disabled": true
+    },
     "connector:tdx-connector": {
       "url": "https://txmcp.tdx.com.cn:3001/txmcp",
       "type": "streamable-http",
@@ -24,7 +30,8 @@
     "connector:ima-mcp": {
       "type": "streamableHttp",
       "url": "https://ima.qq.com/mcp",
-      "timeout": 20000
+      "timeout": 20000,
+      "disabled": true
     },
     "connector:lexiang": {
       "timeout": 600000,
@@ -537,9 +544,33 @@
       "disabled": true
     },
     "connector:kling-ai": {
-      "type": "streamableHttp",
+      "type": "http",
       "url": "https://klingai.com/mcp",
       "timeout": 30000,
+      "disabled": true
+    },
+    "connector:gongyi-open-mcp": {
+      "type": "streamableHttp",
+      "url": "https://ssl.gongyi.qq.com/gygw-web/api/open/tob/mcp",
+      "disabled": true
+    },
+    "connector:sharecrm": {
+      "type": "streamableHttp",
+      "url": "https://open.fxiaoke.com/mcp/connector?id=workbuddy",
+      "disabled": true
+    },
+    "connector:lingxing-mcp": {
+      "type": "streamableHttp",
+      "url": "https://openmcp.lingxing.com/mcp-servers/lingxing-mcp",
+      "headers": {
+        "X-Mcp-Key": "${LINGXING_MCP_KEY}"
+      },
+      "timeout": 30000,
+      "disabled": true
+    },
+    "connector:salestouch": {
+      "type": "streamableHttp",
+      "url": "https://touch.long-arena.com/mcp",
       "disabled": true
     }
   }
