@@ -10,7 +10,7 @@
     "isBuiltIn": true,
     "autoUpdate": true,
     "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
-    "lastUpdated": "2026-08-14T01:52:50.668Z",
+    "lastUpdated": "2026-08-16T11:56:27.136Z",
     "manifest": {
       "name": "cb_teams_marketplace",
       "description": "CodeBuddy Teams Marketplace - 团队协作与文档处理插件集合",
@@ -670,7 +670,7 @@
     "isBuiltIn": true,
     "autoUpdate": true,
     "description": "CodeBuddy 官方插件市场",
-    "lastUpdated": "2026-08-14T01:52:55.370Z",
+    "lastUpdated": "2026-08-16T11:56:32.589Z",
     "manifest": {
       "name": "codebuddy-plugins-official",
       "description": "CodeBuddy 官方插件市场",
@@ -2713,7 +2713,7 @@
     "isBuiltIn": false,
     "autoUpdate": true,
     "description": "experts marketplace (auto-generated)",
-    "lastUpdated": "2026-08-14T01:52:55.389Z",
+    "lastUpdated": "2026-08-16T11:56:32.613Z",
     "manifest": {
       "name": "experts",
       "description": "experts marketplace (auto-generated)",
@@ -2727,6 +2727,16 @@
           "name": "mermaid-diagram-expert",
           "source": "./plugins/mermaid-diagram-expert",
           "description": "Mermaid diagram design and rendering expert - writes Mermaid code from natural language, renders SVG/ASCII with 15+ themes and 6 diagram types"
+        },
+        {
+          "name": "lighthouse-ops",
+          "source": "./plugins/lighthouse-ops",
+          "description": "Tencent Lighthouse Expert: quickly create Lighthouse servers with instance queries, firewall configuration, snapshot backups, monitoring alerts, command execution, and cloud deployment and hosting for applications."
+        },
+        {
+          "name": "empirical-research-team",
+          "source": "./plugins/empirical-research-team",
+          "description": "A team of experts covering the full empirical research pipeline: data engineering, causal inference, robustness auditing, academic writing, de-AIGC peer review simulation, literature review, and topic refinement."
         }
       ]
     }

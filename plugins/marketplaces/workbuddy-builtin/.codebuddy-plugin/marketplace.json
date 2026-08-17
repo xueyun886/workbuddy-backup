@@ -10,7 +10,7 @@
         "phase": "addon-context-orchestration",
         "workbuddySeed": {
             "version": 1,
-            "revision": "5.3.12+a981f41f9a2",
+            "revision": "5.3.13+20fd9da5c9a",
             "sourceMarketplaces": [
                 "plugins/workbuddy-builtin"
             ],

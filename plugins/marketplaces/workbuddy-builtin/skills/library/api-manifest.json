@@ -331,6 +331,16 @@
       ]
     },
     {
+      "name": "space.page.list-page-publish-artifacts",
+      "title": "获取 Page 发布态产物列表",
+      "method": "POST",
+      "path": "/space/api/agent/v1/list-page-publish-artifacts",
+      "tags": ["page", "readonly"],
+      "args": [
+        { "name": "nodeId", "type": "string", "required": true }
+      ]
+    },
+    {
       "name": "space.page.unpublish-page",
       "title": "取消发布 Page",
       "method": "POST",

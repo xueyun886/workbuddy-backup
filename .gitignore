@@ -28,6 +28,19 @@ projects/
 connectors-marketplace/
 plugin-marketplace-state-new/
 
+# 插件缓存（运行时派生内容，非配置）
+plugins/cache/
+
+# SQLite 临时文件（绝不能进 git）
+edge-sync-mapping*.db-wal
+edge-sync-mapping*.db-shm
+
+# Python 虚拟环境
+.venvs/
+
+# 遥测上报缓存
+pending-telemetry/
+
 # 杂项临时文件
 ioa-im-override.json
 mcp-approvals.json

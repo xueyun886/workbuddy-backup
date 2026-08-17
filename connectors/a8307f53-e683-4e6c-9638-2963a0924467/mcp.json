@@ -30,8 +30,7 @@
     "connector:ima-mcp": {
       "type": "streamableHttp",
       "url": "https://ima.qq.com/mcp",
-      "timeout": 20000,
-      "disabled": true
+      "timeout": 20000
     },
     "connector:lexiang": {
       "timeout": 600000,
@@ -571,6 +570,26 @@
     "connector:salestouch": {
       "type": "streamableHttp",
       "url": "https://touch.long-arena.com/mcp",
+      "disabled": true
+    },
+    "connector:dknowc-mcp": {
+      "type": "streamableHttp",
+      "url": "https://mcp.dknowc.cn/s6/mcp",
+      "disabled": true
+    },
+    "connector:morningstar": {
+      "type": "streamableHttp",
+      "url": "https://mcp.morningstar.cn/mcp",
+      "timeout": 600000,
+      "disabled": true
+    },
+    "connector:sq-company-dynamic": {
+      "type": "streamableHttp",
+      "url": "https://api.chanyedata.com/mcp/c3f5924cc60dbe1729f5cc332e627304/mcp",
+      "headers": {
+        "Authorization": "${API_KEY}"
+      },
+      "timeout": 30000,
       "disabled": true
     }
   }

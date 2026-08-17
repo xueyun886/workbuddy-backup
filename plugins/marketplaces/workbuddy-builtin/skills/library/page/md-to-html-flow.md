@@ -191,6 +191,7 @@ python3 "${CODEBUDDY_PLUGIN_ROOT}/skills/library/page/md_to_html.py" --md "<sour
 | `--format <str>` | 否 | `page`(默认，滚动长页)/`presentation`(WBP 翻页演示) |
 
 - 解析 front-matter → inline md → block md，H1/H2 切卡片，内联全部 css/js 产出**自包含** html。
+- **mermaid 代码块**（```` ```mermaid ````）渲染成 `<div class="mermaid">`，加载 mermaid.js 期间显示 loading 占位；页面加载时按需从固定版本 CDN（国内镜像）动态加载画成图；无网/加载失败/超时才退回代码块文本（`data-mermaid-src` 兜底，零丢失；无 JS 环境有 `<noscript>` 兜底）。图内配色/连线/字体通过 `themeVariables` 运行时读取页面 `:root`（`--accent`/`--panel`/`--text` 等）动态套用，随`--style` 主题走、无需预置；外层 `.mermaid` 容器套 `--panel` 背景与圆角融入卡片。长页与演示两种格式均支持。
 - 4 套主题仅换皮肤；滚动揭示动效对 `prefers-reduced-motion` 降级。
 - 输出契约：成功 `KS_MD2HTML_OK <JSON>`（`{html_path,title,sections,format}`）；失败 `{"error":...}` exit 0。
 - 视觉基线（长页/演示通用）见 `wbp-presentation-contract.md` §7；美化设计方法论见 `beautify-flow.md` §3。
@@ -250,6 +251,7 @@ python3 "${CODEBUDDY_PLUGIN_ROOT}/skills/library/page/md_to_html.py" --md "<sour
 ## 7. 安全边界
 
 - `md_to_html.py` 纯本地，不触网/不读 token；仅处理用户显式给出的路径，不遍历目录、不接通配符。
+- **mermaid 例外**：生成脚本本身仍纯本地不触网；仅产物 html 在浏览器**运行时**按需从固定版本 CDN（国内镜像）加载 mermaid.js 渲染流程图，用 mermaid 默认安全等级（strict）、不启用 htmlLabels，失败退回代码块。除此之外产物不引任何外部资源。
 - md→html 渲染对文本做 HTML 转义；html 中不保留任何 token / 密钥。
 - 分支二只注入**只读** SDK（`query`/`getSchema`/`getRecord`），仅硬编码 `databaseId`，绝不写回原表；写 DOM 不用 `innerHTML`。
 - 网络脚本遵循 `SKILL.md` §调用方式与运行模式（客户端模式 token 走 stdin 首行 + `--token-stdin`）。

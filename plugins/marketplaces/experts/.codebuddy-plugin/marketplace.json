@@ -11,6 +11,16 @@
       "name": "mermaid-diagram-expert",
       "source": "./plugins/mermaid-diagram-expert",
       "description": "Mermaid diagram design and rendering expert - writes Mermaid code from natural language, renders SVG/ASCII with 15+ themes and 6 diagram types"
+    },
+    {
+      "name": "lighthouse-ops",
+      "source": "./plugins/lighthouse-ops",
+      "description": "Tencent Lighthouse Expert: quickly create Lighthouse servers with instance queries, firewall configuration, snapshot backups, monitoring alerts, command execution, and cloud deployment and hosting for applications."
+    },
+    {
+      "name": "empirical-research-team",
+      "source": "./plugins/empirical-research-team",
+      "description": "A team of experts covering the full empirical research pipeline: data engineering, causal inference, robustness auditing, academic writing, de-AIGC peer review simulation, literature review, and topic refinement."
     }
   ]
 }

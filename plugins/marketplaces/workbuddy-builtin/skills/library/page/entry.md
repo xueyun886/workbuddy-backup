@@ -26,6 +26,7 @@
 |---|---|---|---|
 | 纯展示：汇报、报告、总结、讲稿、图文长页、可视化叙事，数据只用于讲述、不需持续增删改 | **静态网页** | 单 HTML 长页或演示页，无 database | 已有资料库节点走 §7；无现成节点、本地素材或泛化生成意图走 §8 → `beautify-flow.md`；已有 HTML 走 §9 |
 | 需要持续管理数据：看板/dashboard、运营页、名单/清单/台账、卡片墙、有筛选排序，或后续要增删改内容、换图、加条目 | **动态网页（带 database）** | HTML + 配套 database，字段可增删改并与页面双向同步 | 走 §9 → `data-page-flow.md`；字段动态化和图片字段分别见 §11.1、§11.2 |
+| 复刻现有 page："做同款 / 照着这个做 / 克隆 / 复刻 / 跟它一样 / 再做一份"，并附带 page 链接 / nodeId / 发布态短链 | **HTML 产物复刻** | 新建等价副本（html + 关联 csv/database），不动源 page | **§4.5 复刻**（`clone-flow.md`）——命中复刻意图**永远优先**走本行，不进 §7 / §8 / §9 |
 | 不确定 | 先看有没有「后续改数据 / 换图 / 加条目」信号：有则动态，无则静态；仍不清时默认静态，并告知可按需升级为带数据表的动态版本 | — | — |
 
 > 与「制作可视化 HTML / 本地素材做成页面 / 汇报分享」重叠时，优先走 §8 `beautify-flow.md`，统一执行文档美化、多端自适应（§4）和播放器意图分流（§5），再按上述总闸选择静态或动态链路。已有 HTML 进入 §9 后，另按 §9.2 的技术预判选择具体分支。
@@ -41,6 +42,7 @@
 | `md-to-html-flow.md` | **非 html 节点一键美化能力**：md→html 分支（`kind=doc`，纯美化、无 database）/ csv→html 分支（`kind=database`，只读动态关联原表、禁写回）/ 选择面板硬门 + md_to_html.py + 挂到源节点下 |
 | `wbp-presentation-contract.md` | **PPT 演示生成契约**：`--format presentation` 的 WBP native 档结构、属性速查、四区结构、逐字稿规则、`.is-active` 页内动画、设计系统；database 绑定标注引用 `data-page-flow.md` §1.5.5 |
 | `edit-flow.md` | 已托管 Page 编辑流程：事务协议、产物下载、改动上传、commit 冲突处理 |
+| `clone-flow.md` | **HTML 产物复刻流程**：取产物 + 并行下载 / 依赖探测分流 / 分支 A 纯 HTML 直传 / 分支 B 数据页（复制表 + databaseId 重映射 + 挂载）/ 循环依赖破解 + 并发兜底 |
 | `html-parse-spec.md` | HTML 解析策略与 canonical schema 输出规范（9 种策略 + 多策略合并 + 置信度 + canonical 输出格式 + 附录：兜底场景数据源识别优先级） |
 | 本文 §6（`page_database_relation.py`） | Page ↔ Database 数据关联绑定管理：查/建立/解除「某 page 引用了哪些 database、某 database 被哪些 page 引用」的关联登记（读写服务端独立关联表，非父子节点·非目录归属） |
 
@@ -127,11 +129,17 @@ Page 内容来自静态产物（HTML/CSS/JS）；只读流程直接拉取产物�
 # 1. 查询最新版本与产物列表；可加 --version <版本号> 查询指定版本
 python3 "${CODEBUDDY_PLUGIN_ROOT}/skills/library/page/list_page_artifacts.py" --token-stdin --node-id "<page_node_id>"
 
+# 1'. 查询发布态（对外定格版本）产物列表；固定取 meta.publishVersion，无 --version 入参
+python3 "${CODEBUDDY_PLUGIN_ROOT}/skills/library/page/list_page_publish_artifacts.py" --token-stdin --node-id "<page_node_id>"
+
 # 2. 按 list 响应中的 data.url + artifacts[].path 下载产物到当前任务工作目录
 ```
 
 下载后在 `<work_dir>` 下的 HTML/CSS/JS 中搜索目标文本；入口 HTML 通常可从
 `list_page_artifacts.py` 返回的 `data.artifacts` 判断。
+
+- **编辑态 vs 发布态**：`list_page_artifacts.py` 取的是编辑态最新（或 `--version` 指定）版本，用于读取 / 编辑当前草稿；`list_page_publish_artifacts.py` 取的是**已发布对外的定格版本**（`meta.publishVersion`），用于查看用户实际访问到的发布内容。二者产物结构一致（`data.url` + `data.artifacts[].path`，已过滤内部文件 `janus.data.json`）。
+- 若目标 page **从未发布过**，`list_page_publish_artifacts.py` 返回错误码 `Code_ERR_PAGE_NOT_PUBLISHED`（页面尚未发布，非资源不存在）；此时应引导用户先走 §5 `publish_page.py` 发布，或改用 `list_page_artifacts.py` 读编辑态内容。
 
 ---
 
@@ -148,6 +156,27 @@ python3 "${CODEBUDDY_PLUGIN_ROOT}/skills/library/page/list_page_artifacts.py" --
 编辑已托管 Page 是独立流程，完整协议映射、命令形态、stdout 契约、并发处理与安全边界见 `edit-flow.md`。
 
 入口只负责路由；按 `edit-flow.md` 的标准编辑流程执行。
+
+---
+
+## 4.5 能力 · HTML 产物复刻（clone-flow）
+
+### 触发
+
+用户要求把一个**已存在的已托管 Page** 复刻 / 克隆一份到资料库（"做同款 / 照着这个做一份 /
+克隆 / 复刻 / 跟它一样"），并给出该页面的 `/space/d/<nodeId>` 链接、裸 nodeId 或发布态短链
+`/p/<nodeId>` 时，走本能力。命中复刻意图的分流硬门见顶部总闸表。
+
+区别于 §1 `import_html`（导入**本地**文件）和 §4 编辑（改**原页面**）：复刻从**远端产物**拉取，
+新建一份等价页面，不改动源页面。纯展示页直传复刻；接了 database 的数据页先复制表、
+再重映射 databaseId、最后挂载。
+
+### 流程文档
+
+复刻为独立流程，完整分支铁序（分支 A 纯 HTML / 分支 B 数据页）、取产物 + 并行下载、
+databaseId 重映射硬门、循环依赖破解与并发兜底见 `clone-flow.md`。
+
+入口只负责路由；`read_file` 读取 `clone-flow.md` 全文后按其执行。
 
 ---
 

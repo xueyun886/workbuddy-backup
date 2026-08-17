@@ -33,6 +33,8 @@ from _common import HttpError, error_exit, http_request, safe_print  # noqa: E40
 
 API_PATH = "/space/api/agent/v1/list-page-artifacts"
 _SPACE_D_RE = re.compile(r"/space/d/([^/?#]+)")
+# 发布态短链 workbuddy.link/p/<id>。
+_PUBLISH_P_RE = re.compile(r"/p/([^/?#]+)")
 _INT64_MIN = -(2**63)
 _INT64_MAX = 2**63 - 1
 
@@ -42,6 +44,9 @@ def _normalize_node_id(raw: str) -> str:
     if not value:
         return ""
     match = _SPACE_D_RE.search(value)
+    if match:
+        return match.group(1).strip()
+    match = _PUBLISH_P_RE.search(value)
     if match:
         return match.group(1).strip()
     return value

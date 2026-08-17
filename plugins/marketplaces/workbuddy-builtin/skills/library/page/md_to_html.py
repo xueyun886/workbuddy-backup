@@ -511,9 +511,12 @@ def _render_blocks_html(blocks: list[dict]) -> tuple[str, int]:
             inner = "".join(f"<p>{_inline(x)}</p>" for x in b["lines"] if x.strip())
             cur.append(f"<blockquote>{inner}</blockquote>")
         elif t == "code":
-            cur.append(
-                f'<pre><code>{_html.escape(b["code"])}</code></pre>'
-            )
+            if (b.get("lang") or "").lower() == "mermaid":
+                cur.append(_render_mermaid(b["code"]))
+            else:
+                cur.append(
+                    f'<pre><code>{_html.escape(b["code"])}</code></pre>'
+                )
         elif t == "img":
             alt = _html.escape(b["alt"], quote=True)
             src = _html.escape(b["src"], quote=True)
@@ -598,6 +601,7 @@ def _build_html(
         meta_line=meta_line,
         sections=sections_html,
         js=_JS_TEMPLATE,
+        mermaid_js=_MERMAID_JS,
     )
 
 
@@ -649,6 +653,21 @@ pre {{
   border-radius: 12px; padding: 16px; overflow: auto;
 }}
 pre code {{ background: none; padding: 0; }}
+.mermaid {{
+  background: var(--panel); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px; padding: 20px; margin: 16px 0; text-align: center; overflow-x: auto;
+}}
+.mermaid svg {{ max-width: 100%; height: auto; }}
+.mermaid-loading {{
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--muted); font-size: 14px;
+}}
+.mermaid-loading::before {{
+  content: ""; width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.2); border-top-color: var(--accent);
+  animation: mermaidSpin .8s linear infinite;
+}}
+@keyframes mermaidSpin {{ to {{ transform: rotate(360deg); }} }}
 blockquote {{
   margin: 12px 0; padding: 8px 16px; border-left: 4px solid var(--accent);
   background: rgba(255,255,255,.04); border-radius: 0 10px 10px 0; color: var(--muted);
@@ -667,6 +686,7 @@ footer {{ text-align: center; color: var(--muted); font-size: 12px; padding: 40p
 @media (prefers-reduced-motion: reduce) {{
   html {{ scroll-behavior: auto; }}
   .reveal {{ opacity: 1; transform: none; transition: none; }}
+  .mermaid-loading::before {{ animation: none; }}
 }}
 """
 
@@ -687,6 +707,60 @@ _JS_TEMPLATE = """
 })();
 """
 
+# 仅当页面存在 .mermaid 时才按需加载：加载中显示 loading 占位，成功→图，失败/无网/超时→退回代码块。
+# 用动态 import() 表达式（非顶层 import 声明），避免脚本重复执行时'mermaid already declared'。
+_MERMAID_JS = """
+(function () {
+  if (!document.querySelector('.mermaid') || window.__mermaidLoaded) return;
+  window.__mermaidLoaded = true;
+  function fallback() {
+    document.querySelectorAll('.mermaid').forEach(function (el) {
+      if (el.getAttribute('data-mermaid-done')) return;
+      var pre = document.createElement('pre'), code = document.createElement('code');
+      code.textContent = el.getAttribute('data-mermaid-src') || el.textContent;
+      pre.appendChild(code); el.replaceWith(pre);
+    });
+  }
+  window.__mermaidFallback = fallback;
+  var s = document.createElement('script');
+  s.type = 'module';
+  s.textContent =
+    'import("https://registry.npmmirror.com/mermaid/11.4.1/files/dist/mermaid.esm.min.mjs").then(function(mod){'
+    +   'var mermaid = mod.default;'
+    +   'var cs = getComputedStyle(document.documentElement);'
+    +   'function v(n,d){return (cs.getPropertyValue(n).trim()||d);}'
+    +   'mermaid.initialize({startOnLoad:false,theme:"base",themeVariables:{'
+    +     'primaryColor:v("--panel","#141b30"),primaryBorderColor:v("--accent","#4f8cff"),'
+    +     'primaryTextColor:v("--text","#eef3fc"),secondaryColor:v("--accent2","#9d8cff"),'
+    +     'tertiaryColor:v("--bg","#0b1020"),lineColor:v("--accent2","#9d8cff"),'
+    +     'textColor:v("--text","#eef3fc"),mainBkg:v("--panel","#141b30"),'
+    +     'nodeBorder:v("--accent","#4f8cff"),clusterBkg:v("--bg","#0b1020"),'
+    +     'clusterBorder:v("--accent","#4f8cff"),edgeLabelBackground:v("--panel","#141b30"),'
+    +     'fontFamily:"-apple-system, PingFang SC, Microsoft YaHei, Segoe UI, sans-serif"}});'
+    +   'document.querySelectorAll(".mermaid").forEach(function(el){el.textContent=el.getAttribute("data-mermaid-src")||el.textContent;});'
+    +   'return mermaid.run({querySelector:".mermaid"});'
+    + '}).then(function(){'
+    +   'document.querySelectorAll(".mermaid").forEach(function(el){el.setAttribute("data-mermaid-done","1");});'
+    + '}).catch(function(){window.__mermaidFallback&&window.__mermaidFallback();});';
+  document.body.appendChild(s);
+  setTimeout(fallback, 8000);  // CDN 长时间无响应也退回代码块
+})();
+"""
+
+
+def _render_mermaid(code: str) -> str:
+    """mermaid 代码块 → <div class="mermaid">：加载中显示 loading，源码存 data-mermaid-src
+    供脚本渲染 / 失败回退；<noscript> 兜底无 JS 环境。"""
+    # 属性内换行需编码为 &#10;，否则浏览器会把换行规范化成空格、破坏 mermaid 语法
+    attr = _html.escape(code, quote=True).replace("\n", "&#10;")
+    esc = _html.escape(code)
+    return (
+        f'<div class="mermaid" data-mermaid-src="{attr}">'
+        f'<span class="mermaid-loading">图表加载中…</span>'
+        f'<noscript><pre><code>{esc}</code></pre></noscript>'
+        f'</div>'
+    )
+
 _PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="zh-CN" data-sp-mode="scroll">
 <head>
@@ -706,6 +780,7 @@ _PAGE_TEMPLATE = """<!DOCTYPE html>
 <footer>由 WorkBuddy 资料库生成</footer>
 </main>
 <script>{js}</script>
+<script>{mermaid_js}</script>
 </body>
 </html>
 """
@@ -908,6 +983,8 @@ def _render_one_block(b: dict) -> str:
         inner = "".join(f"<p>{_inline(x)}</p>" for x in b["lines"] if x.strip())
         return f"<blockquote>{inner}</blockquote>"
     if t == "code":
+        if (b.get("lang") or "").lower() == "mermaid":
+            return _render_mermaid(b["code"])
         return f'<pre><code>{_html.escape(b["code"])}</code></pre>'
     if t == "img":
         alt = _html.escape(b["alt"], quote=True)
@@ -1044,6 +1121,7 @@ def _build_presentation(
         meta_json=meta_json,
         css=css,
         slides="\n    ".join(slides_html),
+        mermaid_js=_MERMAID_JS,
     )
     return html, nsl
 
@@ -1145,6 +1223,20 @@ html, body {{
   border-radius: 12px; padding: 16px; overflow: auto;
 }}
 [data-wbp-slide] pre code {{ background: none; padding: 0; }}
+[data-wbp-slide] .mermaid {{
+  background: var(--panel); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 18px; margin: 14px 0; text-align: center; overflow-x: auto;
+}}
+[data-wbp-slide] .mermaid svg {{ max-width: 100%; height: auto; }}
+[data-wbp-slide] .mermaid-loading {{
+  display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 15px;
+}}
+[data-wbp-slide] .mermaid-loading::before {{
+  content: ""; width: 15px; height: 15px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.2); border-top-color: var(--accent);
+  animation: mermaidSpin .8s linear infinite;
+}}
+@keyframes mermaidSpin {{ to {{ transform: rotate(360deg); }} }}
 [data-wbp-slide] figure {{ margin: 14px 0; }}
 [data-wbp-slide] img {{ max-width: 100%; border-radius: 12px; }}
 [data-wbp-slide] figcaption {{ color: var(--muted); font-size: 13px; text-align: center; margin-top: 8px; }}
@@ -1210,6 +1302,7 @@ _PRES_PAGE_TEMPLATE = """<!doctype html>
   <main data-wbp-deck>
     {slides}
   </main>
+  <script>{mermaid_js}</script>
 </body>
 </html>
 """

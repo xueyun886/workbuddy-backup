@@ -52,6 +52,8 @@
       "tencent-docs-plugin@workbuddy-builtin": true,
       "tencent-pptx@workbuddy-builtin": true,
       "sheetagent@workbuddy-builtin": true,
-      "tencent-docx@workbuddy-builtin": true
+      "tencent-docx@workbuddy-builtin": true,
+      "lighthouse-ops@experts": false,
+      "empirical-research-team@experts": false
     }
 }
